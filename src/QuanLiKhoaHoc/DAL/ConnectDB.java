@@ -24,7 +24,7 @@ public class ConnectDB {
     {
         connect = null;
         try {
-            connect = (Connection) DriverManager.getConnection(connectionURL);
+            connect = DriverManager.getConnection(connectionURL);
             System.out.println("Connect Success!!!");
         } catch (SQLException error)
         {
