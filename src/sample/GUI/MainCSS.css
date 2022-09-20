@@ -1,0 +1,26 @@
+#main{
+    -fx-border-radius: 25px;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+}
+.button{
+    -fx-border-radius: 50%;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-background-color: rgb(214, 30, 55);
+    /*-fx-background-color: TRANSPARENT;*/
+    -fx-background-radius: 50%;
+}
+.button:hover{
+    -fx-background-color: #fa0022;
+    -fx-cursor: hand;
+}
+#windowControl{
+    -fx-border-radius: 25px;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+}
+
+#exitIcon{
+    -fx-background-radius: 50%;
+}
