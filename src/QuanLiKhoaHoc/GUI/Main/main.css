@@ -1,0 +1,58 @@
+#wrapPane, #mainPane{
+    -fx-border-radius: 25px;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-background-radius: 25px;
+}
+
+.button{
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-font-size: 14px;
+}
+
+#closeWindowBtn{
+    -fx-pref-width: 54px;
+    -fx-pref-height: 38px;
+    -fx-background-color: #d1192b;
+}
+
+#closeWindowBtn:hover{
+    -fx-background-color: #fa021b;
+}
+
+#minimizeWindowBtn{
+    -fx-pref-width: 54px;
+    -fx-pref-height: 38px;
+    -fx-background-color: #28c213;
+}
+
+#minimizeWindowBtn:hover{
+    -fx-background-color: #22fa05;
+}
+
+#resizeWindowBtn{
+    -fx-pref-width: 54px;
+    -fx-pref-height: 38px;
+    -fx-background-color: #dbc81d;
+}
+
+#resizeWindowBtn:hover{
+    -fx-background-color: #f7df07;
+}
+
+.button:hover{
+    -fx-cursor: hand;
+}
+
+#windowControl{
+    -fx-spacing: 5px;
+}
+
+#sidebarControl{
+    -fx-padding: 5px;
+    -fx-border-style: solid;
+    -fx-border-radius: 25px;
+    -fx-border-width: 1px 1px 1px 0;
+    -fx-spacing: 10px;
+}
