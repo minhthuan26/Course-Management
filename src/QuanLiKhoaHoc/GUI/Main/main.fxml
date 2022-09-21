@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane fx:id="wrapPane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuanLiKhoaHoc.GUI.Main.Controller">
+   <children>
+      <AnchorPane layoutX="20.0" layoutY="14.0" prefHeight="29.0" prefWidth="770.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+         <children>
+            <HBox fx:id="windowControl" alignment="TOP_RIGHT" layoutX="571.0" layoutY="2.0" prefHeight="43.0" prefWidth="175.0" AnchorPane.rightAnchor="14.0">
+               <children>
+                  <Button fx:id="minimizeWindowBtn" mnemonicParsing="false">
+                     <graphic>
+                        <ImageView fx:id="minimizeIcon" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Icons/minimize_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="resizeWindowBtn" mnemonicParsing="false">
+                     <graphic>
+                        <ImageView fx:id="resizeIcon" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Icons/restore_down_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="closeWindowBtn" mnemonicParsing="false">
+                     <graphic>
+                        <ImageView fx:id="closeIcon" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Icons/exit_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="mainPane" layoutX="19.0" layoutY="61.0" prefHeight="421.0" prefWidth="764.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="60.0">
+         <children>
+            <VBox fx:id="sidebarControl" alignment="CENTER" prefHeight="438.0" prefWidth="228.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button fx:id="teacherManageBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="228.0" text="Quản lí giảng viên">
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Icons/teacher_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="studentManageBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="228.0" text="Quản lí người học">
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Icons/student_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="assignmentManageBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="228.0" text="Phân công giảng dạy">
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Icons/assignment_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="courseManageBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="228.0" text="Quản lí khoá học">
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Icons/course_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="resultManageBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="228.0" text="Kết quả khoá học">
+                     <graphic>
+                        <ImageView fitHeight="41.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../Icons/score_icon.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
