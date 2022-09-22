@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane fx:id="wrapPane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuanLiKhoaHoc.GUI.Main.Controller">
    <children>
       <AnchorPane layoutX="20.0" layoutY="14.0" prefHeight="29.0" prefWidth="770.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
@@ -96,6 +95,7 @@
                   </Button>
                </children>
             </VBox>
+            <AnchorPane fx:id="contentPane" layoutX="305.0" layoutY="56.0" prefHeight="358.0" prefWidth="446.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="305.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
          </children>
       </AnchorPane>
    </children>

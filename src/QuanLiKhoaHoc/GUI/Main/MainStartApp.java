@@ -10,7 +10,9 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Main extends Application {
+public class MainStartApp extends Application {
+
+    public static Scene scene;
 
     public static void main(String[] args) {
         launch(args);
@@ -18,13 +20,25 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("main.css")).toExternalForm());
+        setRoot("main");
+        setStylesheets("main");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quản lí khoá học");
         primaryStage.initStyle(StageStyle.TRANSPARENT);
 //        primaryStage.setMaximized(true);
         primaryStage.show();
+    }
+
+    public static void setRoot(String name) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(MainStartApp.class.getResource(name + ".fxml")));
+        scene = new Scene(root);
+    }
+
+    public static void setStylesheets(String name) throws IOException {
+        scene.getStylesheets().add(Objects.requireNonNull(MainStartApp.class.getResource(name + ".css")).toExternalForm());
+    }
+
+    public static void Test(String string){
+        System.out.println(string);
     }
 }
