@@ -9,7 +9,7 @@
 
 <AnchorPane fx:id="wrapPane" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuanLiKhoaHoc.GUI.Main.Controller">
    <children>
-      <AnchorPane layoutX="20.0" layoutY="14.0" prefHeight="29.0" prefWidth="770.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+      <AnchorPane fx:id="windowPane" layoutX="20.0" layoutY="14.0" prefHeight="29.0" prefWidth="770.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
          <children>
             <HBox fx:id="windowControl" alignment="TOP_RIGHT" layoutX="571.0" layoutY="2.0" prefHeight="43.0" prefWidth="175.0" AnchorPane.rightAnchor="14.0">
                <children>
