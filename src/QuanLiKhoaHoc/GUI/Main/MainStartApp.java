@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -22,9 +23,11 @@ public class MainStartApp extends Application {
     public void start(Stage primaryStage) throws IOException {
         setRoot("main");
         setStylesheets("main");
+        scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quản lí khoá học");
         primaryStage.initStyle(StageStyle.TRANSPARENT);
+
 //        primaryStage.setMaximized(true);
         primaryStage.show();
     }

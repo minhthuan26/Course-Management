@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -22,6 +23,9 @@ public class Controller implements Initializable {
 
     @FXML
     private AnchorPane contentPane;
+
+    @FXML
+    private AnchorPane windowPane;
 
     private Stage primaryStage;
 
@@ -48,6 +52,9 @@ public class Controller implements Initializable {
 
     @FXML
     private Button resultManageBtn;
+
+    private static double xOffset = 0;
+    private static double yOffset = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -139,6 +146,24 @@ public class Controller implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        windowPane.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage = (Stage) wrapPane.getScene().getWindow();
+                xOffset = primaryStage.getX() - event.getScreenX();
+                yOffset = primaryStage.getY() - event.getScreenY();
+            }
+        });
+
+        windowPane.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage = (Stage) wrapPane.getScene().getWindow();
+                primaryStage.setX(event.getScreenX() + xOffset);
+                primaryStage.setY(event.getScreenY() + yOffset);
             }
         });
     }
