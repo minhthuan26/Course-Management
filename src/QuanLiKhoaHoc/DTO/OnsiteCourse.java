@@ -3,14 +3,22 @@ package QuanLiKhoaHoc.DTO;
 import java.sql.Date;
 import java.sql.Time;
 
-public class OnsiteCourse extends Course{
-    int OnsiteCoureId, RoomId, LessonQuantity;
+public class OnsiteCourse{
+    int OnsiteCoureId, courseId, RoomId, LessonQuantity;
     Time TimeStart, TimeEnd;
     Date DayOccur;
 
-    public OnsiteCourse(int courseId, String courseName, String courseDescription, String courseImage, Date dateStart, Date dateEnd, Date dateCreate, int onsiteCoureId, int roomId, int lessonQuantity, Time timeStart, Time timeEnd, Date dayOccur) {
-        super(courseId, courseName, courseDescription, courseImage, dateStart, dateEnd, dateCreate);
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
+    }
+
+    public OnsiteCourse(int onsiteCoureId, int courseId, int roomId, Time timeStart, Time timeEnd, Date dayOccur, int lessonQuantity) {
         OnsiteCoureId = onsiteCoureId;
+        courseId = courseId;
         RoomId = roomId;
         LessonQuantity = lessonQuantity;
         TimeStart = timeStart;
