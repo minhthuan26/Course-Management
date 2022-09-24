@@ -5,6 +5,10 @@
     -fx-background-radius: 25px;
 }
 
+.label{
+    -fx-font-size: 16px;
+}
+
 .button{
     -fx-background-radius: 25px;
     -fx-border-radius: 25px;
@@ -49,6 +53,10 @@
     -fx-spacing: 5px;
 }
 
+.HBox{
+    -fx-spacing: 10px;
+}
+
 #sidebarControl{
     -fx-padding: 5px;
     -fx-border-style: solid;
@@ -56,8 +64,19 @@
     -fx-border-width: 1px 1px 1px 0;
     -fx-spacing: 10px;
 }
+
 .combo-box{
     -fx-background-radius: 25px;
     -fx-border-radius: 25px;
     -fx-font-size: 14px;
+}
+
+#assignmentTableView{
+    -fx-border-radius: 0 0px 25px 0px;
+    -fx-background-radius: 0 0px 25px 25px;
+}
+
+.column-header {
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px;
 }

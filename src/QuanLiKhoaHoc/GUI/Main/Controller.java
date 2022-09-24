@@ -95,6 +95,11 @@ public class Controller implements Initializable {
                 try {
                     contentPane.getChildren().clear();
                     contentPane.getChildren().add(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../StudentManage/studentManage.fxml"))));
+                    AnchorPane content = (AnchorPane) contentPane.getChildren().get(0);
+                    AnchorPane.setBottomAnchor(content, 0.0);
+                    AnchorPane.setTopAnchor(content, 0.0);
+                    AnchorPane.setLeftAnchor(content, 0.0);
+                    AnchorPane.setRightAnchor(content, 0.0);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -107,6 +112,11 @@ public class Controller implements Initializable {
                 try {
                     contentPane.getChildren().clear();
                     contentPane.getChildren().add(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../TeacherManage/teacherManage.fxml"))));
+                    AnchorPane content = (AnchorPane) contentPane.getChildren().get(0);
+                    AnchorPane.setBottomAnchor(content, 0.0);
+                    AnchorPane.setTopAnchor(content, 0.0);
+                    AnchorPane.setLeftAnchor(content, 0.0);
+                    AnchorPane.setRightAnchor(content, 0.0);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -119,6 +129,11 @@ public class Controller implements Initializable {
                 try {
                     contentPane.getChildren().clear();
                     contentPane.getChildren().add(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../ResultManage/resultManage.fxml"))));
+                    AnchorPane content = (AnchorPane) contentPane.getChildren().get(0);
+                    AnchorPane.setBottomAnchor(content, 0.0);
+                    AnchorPane.setTopAnchor(content, 0.0);
+                    AnchorPane.setLeftAnchor(content, 0.0);
+                    AnchorPane.setRightAnchor(content, 0.0);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -131,6 +146,11 @@ public class Controller implements Initializable {
                 try {
                     contentPane.getChildren().clear();
                     contentPane.getChildren().add(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../CourseManage/courseManage.fxml"))));
+                    AnchorPane content = (AnchorPane) contentPane.getChildren().get(0);
+                    AnchorPane.setBottomAnchor(content, 0.0);
+                    AnchorPane.setTopAnchor(content, 0.0);
+                    AnchorPane.setLeftAnchor(content, 0.0);
+                    AnchorPane.setRightAnchor(content, 0.0);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -143,6 +163,11 @@ public class Controller implements Initializable {
                 try {
                     contentPane.getChildren().clear();
                     contentPane.getChildren().add(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../AssignmentManage/assignmentManage.fxml"))));
+                    AnchorPane content = (AnchorPane) contentPane.getChildren().get(0);
+                    AnchorPane.setBottomAnchor(content, 0.0);
+                    AnchorPane.setTopAnchor(content, 0.0);
+                    AnchorPane.setLeftAnchor(content, 0.0);
+                    AnchorPane.setRightAnchor(content, 0.0);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

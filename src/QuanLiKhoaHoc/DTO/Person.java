@@ -7,7 +7,7 @@ public class Person {
     String FirstName, LastName, Email, PhoneNumber, PersonImage;
     Date DateOfBirth;
 
-    public Person(int personId, String firstName, String lastName, String email, String phoneNumber, String personImage, Date dateOfBirth) {
+    public Person(int personId, String firstName, String lastName, String email, String phoneNumber, Date dateOfBirth, String personImage) {
         PersonId = personId;
         FirstName = firstName;
         LastName = lastName;
