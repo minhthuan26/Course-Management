@@ -8,7 +8,7 @@ public class ConnectDB {
     private final String userName = "sa";
     private final String password = "26042001";
     private Connection connect;
-    Statement st = null;
+    PreparedStatement st;
     ResultSet rs = null;
 
     private String connectionURL = "jdbc:sqlserver://"
@@ -33,20 +33,10 @@ public class ConnectDB {
         return connect;
     }
 
-    public Statement getStatement() throws Exception{
-        try{
-            if(this.st == null || this.st.isClosed()){
-                this.st=this.getConnect().createStatement();
-            }
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
-        return this.st;
-    }
-
     public ResultSet excuteQuery(String qry) throws Exception{
         try{
-            this.rs = this.getStatement().executeQuery(qry);
+            this.st = connect.prepareStatement(qry);
+            this.rs = this.st.executeQuery();
         } catch (Exception ex){
             throw new Exception("Error: "+ex.getMessage()+"-"+qry);
         }
@@ -56,7 +46,7 @@ public class ConnectDB {
     public int ExecuteUpdate(String qry) throws Exception{
         int res =0;
         try{
-            res = this.getStatement().executeUpdate(qry);
+            res = this.st.executeUpdate(qry);
         } catch (Exception ex){
             ex.printStackTrace();
         }
