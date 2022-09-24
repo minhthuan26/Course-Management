@@ -2,18 +2,26 @@ package QuanLiKhoaHoc.DTO;
 
 import java.sql.Date;
 
-public class OnlineCourse extends Course{
-    int OnlineCourseId;
+public class OnlineCourse{
+    int OnlineCourseId, courseId;
     String CourseUrl;
 
-    public OnlineCourse(int courseId, String courseName, String courseDescription, String courseImage, Date dateStart, Date dateEnd, Date dateCreate, int onlineCourseId, String courseUrl) {
-        super(courseId, courseName, courseDescription, courseImage, dateStart, dateEnd, dateCreate);
+    public OnlineCourse(int onlineCourseId, int courseId, String courseUrl) {
         OnlineCourseId = onlineCourseId;
+        courseId = courseId;
         CourseUrl = courseUrl;
     }
 
     public int getOnlineCourseId() {
         return OnlineCourseId;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public void setOnlineCourseId(int onlineCourseId) {
