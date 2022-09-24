@@ -1,14 +1,12 @@
 package QuanLiKhoaHoc.DTO;
 
-import java.sql.Date;
-
 public class OnlineCourse{
-    int OnlineCourseId, courseId;
+    int OnlineCourseId, CourseId;
     String CourseUrl;
 
     public OnlineCourse(int onlineCourseId, int courseId, String courseUrl) {
         OnlineCourseId = onlineCourseId;
-        courseId = courseId;
+        CourseId = courseId;
         CourseUrl = courseUrl;
     }
 
@@ -17,11 +15,11 @@ public class OnlineCourse{
     }
 
     public int getCourseId() {
-        return courseId;
+        return CourseId;
     }
 
     public void setCourseId(int courseId) {
-        this.courseId = courseId;
+        this.CourseId = courseId;
     }
 
     public void setOnlineCourseId(int onlineCourseId) {

@@ -4,26 +4,26 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class OnsiteCourse{
-    int OnsiteCoureId, courseId, RoomId, LessonQuantity;
+    int OnsiteCoureId, CourseId, RoomId, LessonQuantity;
     Time TimeStart, TimeEnd;
     Date DayOccur;
 
-    public int getCourseId() {
-        return courseId;
-    }
-
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
-    }
-
     public OnsiteCourse(int onsiteCoureId, int courseId, int roomId, Time timeStart, Time timeEnd, Date dayOccur, int lessonQuantity) {
         OnsiteCoureId = onsiteCoureId;
-        courseId = courseId;
+        CourseId = courseId;
         RoomId = roomId;
         LessonQuantity = lessonQuantity;
         TimeStart = timeStart;
         TimeEnd = timeEnd;
         DayOccur = dayOccur;
+    }
+
+    public int getCourseId() {
+        return CourseId;
+    }
+
+    public void setCourseId(int courseId) {
+        CourseId = courseId;
     }
 
     public int getOnsiteCoureId() {
