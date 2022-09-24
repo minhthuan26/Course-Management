@@ -95,7 +95,7 @@
                   </Button>
                </children>
             </VBox>
-            <AnchorPane fx:id="contentPane" layoutX="305.0" layoutY="56.0" prefHeight="358.0" prefWidth="446.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="305.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0" />
+            <AnchorPane fx:id="contentPane" layoutX="247.0" layoutY="1.0" prefHeight="736.0" prefWidth="914.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="250.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0" />
          </children>
       </AnchorPane>
    </children>
