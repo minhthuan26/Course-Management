@@ -70,7 +70,12 @@
     -fx-background-radius: 0 0px 25px 25px;
 }
 
-.column-header {
+.column-header{
     -fx-border-radius: 25px;
     -fx-background-radius: 25px;
+}
+
+.table-view .column-header-background .label{
+    -fx-font-weight:bold;
+    -fx-font-size: 16px;
 }
