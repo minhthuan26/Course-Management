@@ -9,7 +9,7 @@ public class OnsiteCourse extends Course{
     Date DayOccur;
 
 
-    public OnsiteCourse(int courseId, String courseName, String courseDescription,Date dateCreate , Date dateStart, Date dateEnd,String courseImage , int onsiteCoureId, int roomId, int lessonQuantity, Time timeStart, Time timeEnd, Date dayOccur) {
+    public OnsiteCourse(int courseId, String courseName, String courseDescription,Date dateCreate , Date dateStart, Date dateEnd,String courseImage , int onsiteCoureId, int roomId, Time timeStart, Time timeEnd, Date dayOccur, int lessonQuantity) {
         super(courseId, courseName, courseDescription, dateCreate, dateStart, dateEnd, courseImage);
 
         OnsiteCoureId = onsiteCoureId;
