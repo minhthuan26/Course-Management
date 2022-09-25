@@ -21,12 +21,17 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
-    AssignmentBUS assignmentBUS = new AssignmentBUS();
-    ObservableMap<Integer, String> teacherList;
-    ObservableMap<Integer, String> onsiteCourseList;
-    ObservableMap<Integer, String> onlineCourseList;
-    ObservableMap<Integer, String> allCourseList;
-    ObservableList<AssignmentTableView> assignmentTableViewList;
+    private final AssignmentBUS assignmentBUS = new AssignmentBUS();
+    private ObservableMap<Integer, String> teacherList;
+    private ObservableMap<Integer, String> onsiteCourseList;
+    private ObservableMap<Integer, String> onlineCourseList;
+    private ObservableMap<Integer, String> allCourseList;
+    private ObservableList<AssignmentTableView> assignmentTableViewList;
+    private final ObservableList<String> types = FXCollections.observableArrayList(
+            new String("Onsite"),
+            new String("Online")
+    );
+    private static AssignmentTableView selectedRow = null;
 
     @FXML
     private ChoiceBox<String> courseTypeChoiceBtn;
@@ -39,6 +44,12 @@ public class Controller implements Initializable {
 
     @FXML
     private Button assignBtn;
+
+    @FXML
+    private Button refreshBtn;
+
+    @FXML
+    private Button cancelBtn;
 
     @FXML
     private TableView<AssignmentTableView> assignmentTableView;
@@ -63,13 +74,9 @@ public class Controller implements Initializable {
     }
 
     public void setDefault(){
-        ObservableList<String> types = FXCollections.observableArrayList(
-                new String("Onsite"),
-                new String("Online")
-        );
         courseTypeChoiceBtn.setItems(types);
-        courseTypeChoiceBtn.getSelectionModel().select(0);
-
+        courseTypeChoiceBtn.getSelectionModel().selectFirst();
+        chooseTypeOfCourse();
         ObservableList<String> teacherNameList = FXCollections.observableArrayList();
         teacherList = getTeacherList();
         for(Map.Entry<Integer, String> teacher : teacherList.entrySet()){
@@ -77,8 +84,6 @@ public class Controller implements Initializable {
         }
         teacherChoiceBtn.setItems(teacherNameList);
         teacherChoiceBtn.getSelectionModel().select(0);
-
-        chooseTypeOfCourse();
     }
 
     public ObservableMap<Integer, String> getOnsiteList(){
@@ -129,6 +134,7 @@ public class Controller implements Initializable {
     }
 
     private void chooseTypeOfCourse(){
+
         if(courseTypeChoiceBtn.getSelectionModel().getSelectedItem().equals("Onsite")){
             ObservableList<String> onsiteCourseNameList = FXCollections.observableArrayList();
             onsiteCourseList = getOnsiteList();
@@ -162,10 +168,37 @@ public class Controller implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 Assignment assignment = new Assignment(getSelectedCourseId(), getSelectedTeacherId());
-                if(assignmentBUS.setAssignment(assignment) != null)
+                if(assignmentBUS.setAssignment(assignment) != null){
                     System.out.println("Thêm thành công");
+                    setDefault();
+                    showAssignmentList();
+                }
+
                 else
                     System.out.println("Thêm thật bại");
+            }
+        });
+
+        refreshBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                setDefault();
+                showAssignmentList();
+            }
+        });
+
+        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Assignment assignment = new Assignment(selectRow().CourseId, selectRow().PersonId);
+                if(assignmentBUS.deleteAssignment(assignment) != null){
+                    System.out.println("Huỷ thành công");
+                    setDefault();
+                    showAssignmentList();
+                }
+
+                else
+                    System.out.println("Huỷ thật bại");
             }
         });
     }
@@ -217,9 +250,16 @@ public class Controller implements Initializable {
         return Integer.parseInt(teacherChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
-    public class AssignmentTableView{
-        int CourseId, PersonId;
-        String CourseName, PersonName;
+    public AssignmentTableView selectRow(){
+        if (assignmentTableView.getSelectionModel().getSelectedIndex() < 0)
+            return null;
+        selectedRow = assignmentTableView.getSelectionModel().getSelectedItem();
+        return selectedRow;
+    }
+
+    public static class AssignmentTableView{
+        private int CourseId, PersonId;
+        private String CourseName, PersonName;
 
         public int getCourseId() {
             return CourseId;
@@ -251,6 +291,16 @@ public class Controller implements Initializable {
 
         public void setPersonName(String personName) {
             PersonName = personName;
+        }
+
+        @Override
+        public String toString() {
+            return "AssignmentTableView{" +
+                    "CourseId=" + CourseId +
+                    ", PersonId=" + PersonId +
+                    ", CourseName='" + CourseName + '\'' +
+                    ", PersonName='" + PersonName + '\'' +
+                    '}';
         }
     }
 }
