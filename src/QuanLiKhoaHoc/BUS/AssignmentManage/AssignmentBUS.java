@@ -36,4 +36,8 @@ public class AssignmentBUS {
     public Assignment setAssignment(Assignment assignment){
         return assignmentDAL.setAssignment(assignment);
     }
+
+    public Assignment deleteAssignment(Assignment assignment){
+        return assignmentDAL.deleteAssignment(assignment);
+    }
 }

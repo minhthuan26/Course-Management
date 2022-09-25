@@ -136,12 +136,13 @@ public class AssignmentDAL {
         String query = "insert into Assignment values('" + assignment.getCourseId() + "', '" + assignment.getPersonId() + "')";
         try {
             result = connect.ExecuteUpdate(query);
+            if (result == 0) {
+                return null;
+            }
         } catch (Exception error) {
             error.printStackTrace();
         }
-        if (result == 0) {
-            return null;
-        }
+
         return assignment;
     }
 
@@ -164,5 +165,21 @@ public class AssignmentDAL {
         }
 
         return assignmentList;
+    }
+
+    public Assignment deleteAssignment(Assignment assignment){
+        int result = 0;
+        String query = "delete from Assignment " +
+                "where CourseId='" + assignment.getCourseId() +
+                "' and PersonId='" + assignment.getPersonId() +"'";
+        try{
+            result = connect.ExecuteUpdate(query);
+            if(result == 0)
+                return null;
+        }
+        catch(Exception error){
+            error.printStackTrace();
+        }
+        return assignment;
     }
 }
