@@ -77,10 +77,10 @@
       </AnchorPane>
       <TableView fx:id="assignmentTableView" layoutY="184.0" prefHeight="532.0" prefWidth="908.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="ID khoá học" />
-          <TableColumn prefWidth="75.0" text="Tên khoá học" />
-            <TableColumn prefWidth="75.0" text="ID giảng viên" />
-            <TableColumn prefWidth="92.0" text="Tên giảng viên" />
+          <TableColumn fx:id="courseIdTableColumn" prefWidth="75.0" text="ID khoá học" />
+          <TableColumn fx:id="courseNameTableColumn" prefWidth="75.0" text="Tên khoá học" />
+            <TableColumn fx:id="teacherIdTableColumn" prefWidth="75.0" text="ID giảng viên" />
+            <TableColumn fx:id="teacherNameTableColumn" prefWidth="92.0" text="Tên giảng viên" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

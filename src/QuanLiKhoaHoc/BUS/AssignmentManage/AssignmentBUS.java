@@ -11,6 +11,7 @@ public class AssignmentBUS {
     public static ObservableList<OnsiteCourse> onsiteCourseList;
     public static ObservableList<OnlineCourse> onlineCourseList;
     public static ObservableList<Person> teacherList;
+    public static ObservableList<Assignment> assignmentList;
 
     public ObservableList<Course> getAllCourseList(){
         return allCourseList = assignmentDAL.getAllCourseList();
@@ -26,6 +27,10 @@ public class AssignmentBUS {
 
     public ObservableList<OnsiteCourse> getOnsiteCourseList(){
         return onsiteCourseList = assignmentDAL.getOnsiteCourseList();
+    }
+
+    public ObservableList<Assignment> getAssignmentList(){
+        return assignmentList = assignmentDAL.getAssignmentList();
     }
 
     public Assignment setAssignment(Assignment assignment){
