@@ -1,10 +1,13 @@
 package QuanLiKhoaHoc.DTO;
 
-public class OnlineCourse{
+public class OnlineCourse extends Course{
     int OnlineCourseId, CourseId;
     String CourseUrl;
 
-    public OnlineCourse(int onlineCourseId, int courseId, String courseUrl) {
+
+    public OnlineCourse(int courseId, String courseName, String courseDescription,Date dateCreate , Date dateStart, Date dateEnd,String courseImage,int onlineCourseId, String courseUrl) {
+        super(courseId, courseName, courseDescription,dateCreate , dateStart, dateEnd,courseImage );
+
         OnlineCourseId = onlineCourseId;
         CourseId = courseId;
         CourseUrl = courseUrl;
