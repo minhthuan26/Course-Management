@@ -46,7 +46,8 @@ public class ConnectDB {
     public int ExecuteUpdate(String qry) throws Exception{
         int res =0;
         try{
-            res = this.st.executeUpdate(qry);
+            this.st = connect.prepareStatement(qry);
+            res = this.st.executeUpdate();
         } catch (Exception ex){
             ex.printStackTrace();
         }

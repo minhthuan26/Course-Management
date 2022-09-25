@@ -4,18 +4,29 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class OnsiteCourse extends Course{
-    int OnsiteCoureId, RoomId, LessonQuantity;
+    int OnsiteCoureId, CourseId, RoomId, LessonQuantity;
     Time TimeStart, TimeEnd;
     Date DayOccur;
 
+
     public OnsiteCourse(int courseId, String courseName, String courseDescription,Date dateCreate , Date dateStart, Date dateEnd,String courseImage , int onsiteCoureId, int roomId, int lessonQuantity, Time timeStart, Time timeEnd, Date dayOccur) {
         super(courseId, courseName, courseDescription, dateCreate, dateStart, dateEnd, courseImage);
+
         OnsiteCoureId = onsiteCoureId;
+        CourseId = courseId;
         RoomId = roomId;
         LessonQuantity = lessonQuantity;
         TimeStart = timeStart;
         TimeEnd = timeEnd;
         DayOccur = dayOccur;
+    }
+
+    public int getCourseId() {
+        return CourseId;
+    }
+
+    public void setCourseId(int courseId) {
+        CourseId = courseId;
     }
 
     public int getOnsiteCoureId() {

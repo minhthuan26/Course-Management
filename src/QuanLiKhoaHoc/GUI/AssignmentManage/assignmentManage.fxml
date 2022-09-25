@@ -60,13 +60,22 @@
                                  </image>
                               </ImageView>
                            </graphic></Button>
+                        <Button fx:id="cancelBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="115.0" text="Huỷ">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../Icons/delete_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </HBox>
                </children>
             </AnchorPane>
          </children>
       </AnchorPane>
-      <TableView fx:id="assignmentTableView" layoutY="184.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="170.0">
+      <TableView fx:id="assignmentTableView" layoutY="184.0" prefHeight="532.0" prefWidth="908.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <columns>
           <TableColumn prefWidth="75.0" text="ID khoá học" />
           <TableColumn prefWidth="75.0" text="Tên khoá học" />

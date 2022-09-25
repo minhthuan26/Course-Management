@@ -1,11 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuanLiKhoaHoc.GUI.TeacherManage.Controller">
+<AnchorPane prefHeight="684.0" prefWidth="862.0" style="-fx-border-radius: 25px; -fx-background-radius: 25px;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuanLiKhoaHoc.GUI.TeacherManage.Controller">
    <children>
-      <Label layoutX="188.0" layoutY="125.0" prefHeight="60.0" prefWidth="263.0" text="Teacher Manage" />
+      <AnchorPane layoutY="60.0" prefHeight="89.0" prefWidth="762.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+         <children>
+            <Button fx:id="btnAddTeacher" mnemonicParsing="false" prefHeight="58.0" prefWidth="160.0" text="Thêm" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="599.0" AnchorPane.topAnchor="0.0">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0">
+                     <image>
+                        <Image url="@../../../Icons/icons8_add_50px_2.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btnDeleteTeacher" layoutX="599.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="160.0" text="Xóa" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="599.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0">
+                     <image>
+                        <Image url="@../../../Icons/icons8_delete_16px_1.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btnEditTeacher" layoutX="300.0" mnemonicParsing="false" prefHeight="58.0" prefWidth="160.0" text="Sửa" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="300.0" AnchorPane.topAnchor="0.0">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0">
+                     <image>
+                        <Image url="@../../../Icons/icons8_edit_30px_1.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="346.0" layoutY="155.0" prefHeight="529.0" prefWidth="862.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="155.0">
+         <children>
+            <TableView fx:id="teacherTableView" layoutX="10.0" layoutY="10.0" prefHeight="510.0" prefWidth="843.0" style="-fx-border-radius: 25px; -fx-border-color: black; -fx-background-radius: 25px;" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="10.0">
+               <columns>
+                  <TableColumn prefWidth="192.0" text="ID" fx:id="teacherID" />
+                  <TableColumn prefWidth="150.0" text="Họ" fx:id="teacherHo" />
+                  <TableColumn prefWidth="139.0" text="Tên" fx:id="teacherTen" />
+                  <TableColumn prefWidth="153.0" text="SĐT" fx:id="teacherSDT" />
+                  <TableColumn prefWidth="207.0" text="Ngày Sinh" fx:id="teacherDate" />
+               </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>
