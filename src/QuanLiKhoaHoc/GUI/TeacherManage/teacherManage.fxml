@@ -42,13 +42,13 @@
       </AnchorPane>
       <AnchorPane layoutX="346.0" layoutY="155.0" prefHeight="529.0" prefWidth="862.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="155.0">
          <children>
-            <TableView layoutX="10.0" layoutY="10.0" prefHeight="510.0" prefWidth="843.0" style="-fx-border-radius: 25px; -fx-border-color: black; -fx-background-radius: 25px;" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="10.0">
+            <TableView fx:id="teacherTableView" layoutX="10.0" layoutY="10.0" prefHeight="510.0" prefWidth="843.0" style="-fx-border-radius: 25px; -fx-border-color: black; -fx-background-radius: 25px;" AnchorPane.bottomAnchor="9.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="9.0" AnchorPane.topAnchor="10.0">
                <columns>
-                  <TableColumn prefWidth="192.0" text="ID" />
-                  <TableColumn prefWidth="150.0" text="Ho" />
-                  <TableColumn prefWidth="139.0" text="Ten" />
-                  <TableColumn prefWidth="153.0" text="SDT" />
-                  <TableColumn prefWidth="207.0" text="Ngay Sinh" />
+                  <TableColumn prefWidth="192.0" text="ID" fx:id="teacherID" />
+                  <TableColumn prefWidth="150.0" text="Họ" fx:id="teacherHo" />
+                  <TableColumn prefWidth="139.0" text="Tên" fx:id="teacherTen" />
+                  <TableColumn prefWidth="153.0" text="SĐT" fx:id="teacherSDT" />
+                  <TableColumn prefWidth="207.0" text="Ngày Sinh" fx:id="teacherDate" />
                </columns>
             </TableView>
          </children>
