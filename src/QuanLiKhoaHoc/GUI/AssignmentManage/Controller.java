@@ -11,6 +11,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.Map;
@@ -23,6 +26,8 @@ public class Controller implements Initializable {
     ObservableMap<Integer, String> onsiteCourseList;
     ObservableMap<Integer, String> onlineCourseList;
     ObservableMap<Integer, String> allCourseList;
+    ObservableList<AssignmentTableView> assignmentTableViewList;
+
     @FXML
     private ChoiceBox<String> courseTypeChoiceBtn;
 
@@ -35,9 +40,25 @@ public class Controller implements Initializable {
     @FXML
     private Button assignBtn;
 
+    @FXML
+    private TableView<AssignmentTableView> assignmentTableView;
+
+    @FXML
+    private TableColumn<AssignmentTableView, Integer> courseIdTableColumn;
+
+    @FXML
+    private TableColumn<AssignmentTableView, Integer> teacherIdTableColumn;
+
+    @FXML
+    private TableColumn<AssignmentTableView, String> courseNameTableColumn;
+
+    @FXML
+    private TableColumn<AssignmentTableView, String> teacherNameTableColumn;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         setDefault();
+        showAssignmentList();
         Handle();
     }
 
@@ -66,8 +87,11 @@ public class Controller implements Initializable {
         onsiteCourseList = FXCollections.observableHashMap();
         for(OnsiteCourse onsiteCourse : AssignmentBUS.onsiteCourseList){
             for(Course course : AssignmentBUS.allCourseList)
-                if(course.getCourseId() == onsiteCourse.getCourseId())
+                if(course.getCourseId() == onsiteCourse.getCourseId()){
                     onsiteCourseList.put(course.getCourseId(), course.getCourseName());
+                    break;
+                }
+
         }
         return onsiteCourseList;
     }
@@ -78,8 +102,11 @@ public class Controller implements Initializable {
         onlineCourseList = FXCollections.observableHashMap();
         for(OnlineCourse onlineCourse : AssignmentBUS.onlineCourseList){
             for(Course course : AssignmentBUS.allCourseList)
-                if(course.getCourseId() == onlineCourse.getCourseId())
+                if(course.getCourseId() == onlineCourse.getCourseId()){
                     onlineCourseList.put(course.getCourseId(), course.getCourseName());
+                    break;
+                }
+
         }
         return onlineCourseList;
     }
@@ -134,7 +161,7 @@ public class Controller implements Initializable {
 
             @Override
             public void handle(ActionEvent actionEvent) {
-                Assignment assignment = new Assignment(getCourseId(), getTeacherId());
+                Assignment assignment = new Assignment(getSelectedCourseId(), getSelectedTeacherId());
                 if(assignmentBUS.setAssignment(assignment) != null)
                     System.out.println("Thêm thành công");
                 else
@@ -143,11 +170,87 @@ public class Controller implements Initializable {
         });
     }
 
-    private int getCourseId(){
+    public void showAssignmentList(){
+        assignmentTableViewList = getAssignmentTableViewList();
+        courseIdTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentTableView, Integer>("CourseId"));
+        teacherIdTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentTableView, Integer>("PersonId"));
+        courseNameTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentTableView, String>("CourseName"));
+        teacherNameTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentTableView, String>("PersonName"));
+        assignmentTableView.setItems(assignmentTableViewList);
+    }
+
+    public ObservableList<AssignmentTableView> getAssignmentTableViewList(){
+        AssignmentBUS.assignmentList = assignmentBUS.getAssignmentList();
+        assignmentTableViewList = FXCollections.observableArrayList();
+        allCourseList = getAllCourseList();
+        ObservableMap<Integer, String> allCourseListTmp = allCourseList;
+        ObservableMap<Integer, String> teacherListTmp = teacherList;
+
+        for(Assignment assignment : AssignmentBUS.assignmentList){
+            AssignmentTableView assignmentTableView = new AssignmentTableView();
+            for(Map.Entry<Integer, String> course : allCourseListTmp.entrySet()){
+                if(assignment.getCourseId() == course.getKey()){
+                    assignmentTableView.CourseId = course.getKey();
+                    assignmentTableView.CourseName = course.getValue();
+//                    allCourseListTmp.remove(course.getKey());
+                    break;
+                }
+            }
+            for(Map.Entry<Integer, String> teacher : teacherListTmp.entrySet()){
+                if(assignment.getPersonId() == teacher.getKey()){
+                    assignmentTableView.PersonId = teacher.getKey();
+                    assignmentTableView.PersonName = teacher.getValue();
+//                    teacherListTmp.remove(teacher.getKey());
+                    break;
+                }
+            }
+            assignmentTableViewList.add(assignmentTableView);
+        }
+        return assignmentTableViewList;
+    }
+
+    private int getSelectedCourseId(){
         return Integer.parseInt(courseChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
-    private int getTeacherId(){
+    private int getSelectedTeacherId(){
         return Integer.parseInt(teacherChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
+    }
+
+    public class AssignmentTableView{
+        int CourseId, PersonId;
+        String CourseName, PersonName;
+
+        public int getCourseId() {
+            return CourseId;
+        }
+
+        public void setCourseId(int courseId) {
+            CourseId = courseId;
+        }
+
+        public int getPersonId() {
+            return PersonId;
+        }
+
+        public void setPersonId(int personId) {
+            PersonId = personId;
+        }
+
+        public String getCourseName() {
+            return CourseName;
+        }
+
+        public void setCourseName(String courseName) {
+            CourseName = courseName;
+        }
+
+        public String getPersonName() {
+            return PersonName;
+        }
+
+        public void setPersonName(String personName) {
+            PersonName = personName;
+        }
     }
 }
