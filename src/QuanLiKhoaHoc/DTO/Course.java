@@ -7,14 +7,15 @@ public class Course {
     String CourseName, CourseDescription, CourseImage;
     Date DateStart, DateEnd, DateCreate;
 
-    public Course(int courseId, String courseName, String courseDescription, String courseImage, Date dateStart, Date dateEnd, Date dateCreate) {
+    public Course(int courseId, String courseName, String courseDescription,Date dateCreate , Date dateStart, Date dateEnd,String courseImage) {
         CourseId = courseId;
         CourseName = courseName;
         CourseDescription = courseDescription;
-        CourseImage = courseImage;
         DateStart = dateStart;
         DateEnd = dateEnd;
         DateCreate = dateCreate;
+        CourseImage = courseImage;
+
     }
 
     public int getCourseId() {
@@ -41,14 +42,6 @@ public class Course {
         CourseDescription = courseDescription;
     }
 
-    public String getCourseImage() {
-        return CourseImage;
-    }
-
-    public void setCourseImage(String courseImage) {
-        CourseImage = courseImage;
-    }
-
     public Date getDateStart() {
         return DateStart;
     }
@@ -73,16 +66,24 @@ public class Course {
         DateCreate = dateCreate;
     }
 
+    public String getCourseImage() {
+        return CourseImage;
+    }
+
+    public void setCourseImage(String courseImage) {
+        CourseImage = courseImage;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
                 "CourseId=" + CourseId +
                 ", CourseName='" + CourseName + '\'' +
                 ", CourseDescription='" + CourseDescription + '\'' +
-                ", CourseImage='" + CourseImage + '\'' +
                 ", DateStart=" + DateStart +
                 ", DateEnd=" + DateEnd +
                 ", DateCreate=" + DateCreate +
+                ", CourseImage='" + CourseImage + '\'' +
                 '}';
     }
 }

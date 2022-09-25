@@ -6,8 +6,8 @@ public class OnlineCourse extends Course{
     int OnlineCourseId;
     String CourseUrl;
 
-    public OnlineCourse(int courseId, String courseName, String courseDescription, String courseImage, Date dateStart, Date dateEnd, Date dateCreate, int onlineCourseId, String courseUrl) {
-        super(courseId, courseName, courseDescription, courseImage, dateStart, dateEnd, dateCreate);
+    public OnlineCourse(int courseId, String courseName, String courseDescription,Date dateCreate , Date dateStart, Date dateEnd,String courseImage,int onlineCourseId, String courseUrl) {
+        super(courseId, courseName, courseDescription,dateCreate , dateStart, dateEnd,courseImage );
         OnlineCourseId = onlineCourseId;
         CourseUrl = courseUrl;
     }

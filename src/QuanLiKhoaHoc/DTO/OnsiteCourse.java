@@ -8,8 +8,8 @@ public class OnsiteCourse extends Course{
     Time TimeStart, TimeEnd;
     Date DayOccur;
 
-    public OnsiteCourse(int courseId, String courseName, String courseDescription, String courseImage, Date dateStart, Date dateEnd, Date dateCreate, int onsiteCoureId, int roomId, int lessonQuantity, Time timeStart, Time timeEnd, Date dayOccur) {
-        super(courseId, courseName, courseDescription, courseImage, dateStart, dateEnd, dateCreate);
+    public OnsiteCourse(int courseId, String courseName, String courseDescription,Date dateCreate , Date dateStart, Date dateEnd,String courseImage , int onsiteCoureId, int roomId, int lessonQuantity, Time timeStart, Time timeEnd, Date dayOccur) {
+        super(courseId, courseName, courseDescription, dateCreate, dateStart, dateEnd, courseImage);
         OnsiteCoureId = onsiteCoureId;
         RoomId = roomId;
         LessonQuantity = lessonQuantity;
