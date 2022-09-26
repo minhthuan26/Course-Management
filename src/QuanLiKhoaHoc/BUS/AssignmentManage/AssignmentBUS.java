@@ -1,7 +1,6 @@
 package QuanLiKhoaHoc.BUS.AssignmentManage;
 
 import QuanLiKhoaHoc.DAL.AssignmentManage.AssignmentDAL;
-import QuanLiKhoaHoc.DAL.ConnectDB;
 import QuanLiKhoaHoc.DTO.*;
 import javafx.collections.ObservableList;
 
@@ -10,15 +9,20 @@ public class AssignmentBUS {
     public static ObservableList<Course> allCourseList;
     public static ObservableList<OnsiteCourse> onsiteCourseList;
     public static ObservableList<OnlineCourse> onlineCourseList;
-    public static ObservableList<Person> teacherList;
+    public static ObservableList<Person> teacherAssignmentList;
+    public static ObservableList<Person> allTeacherList;
     public static ObservableList<Assignment> assignmentList;
 
     public ObservableList<Course> getAllCourseList(){
         return allCourseList = assignmentDAL.getAllCourseList();
     }
 
-    public ObservableList<Person> getTeacherList(){
-        return teacherList = assignmentDAL.getTeacherList();
+    public ObservableList<Person> getTeacherAssignmentList(){
+        return teacherAssignmentList = assignmentDAL.getTeacherAssignmnentList();
+    }
+
+    public ObservableList<Person> getAllTeacherList(){
+        return allTeacherList = assignmentDAL.getAllTeacherList();
     }
 
     public ObservableList<OnlineCourse> getOnlineCourseList(){

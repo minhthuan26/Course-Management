@@ -114,4 +114,10 @@
     -fx-background-color:  #0099cc;
 }
 
+.dialog-pane{
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+}
 
