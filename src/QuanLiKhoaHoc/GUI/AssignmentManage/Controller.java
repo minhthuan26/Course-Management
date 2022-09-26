@@ -9,23 +9,25 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
     private final AssignmentBUS assignmentBUS = new AssignmentBUS();
-    private ObservableMap<Integer, String> teacherList;
+    private ObservableMap<Integer, String> teacherAssignmentList;
     private ObservableMap<Integer, String> onsiteCourseList;
     private ObservableMap<Integer, String> onlineCourseList;
     private ObservableMap<Integer, String> allCourseList;
+    private ObservableMap<Integer, String> allTeacherList;
     private ObservableList<AssignmentTableView> assignmentTableViewList;
     private final ObservableList<String> types = FXCollections.observableArrayList(
             new String("Onsite"),
@@ -69,7 +71,6 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         setDefault();
-        showAssignmentList();
         Handle();
     }
 
@@ -78,12 +79,13 @@ public class Controller implements Initializable {
         courseTypeChoiceBtn.getSelectionModel().selectFirst();
         chooseTypeOfCourse();
         ObservableList<String> teacherNameList = FXCollections.observableArrayList();
-        teacherList = getTeacherList();
-        for(Map.Entry<Integer, String> teacher : teacherList.entrySet()){
+        teacherAssignmentList = getTeacherAssignmentList();
+        for(Map.Entry<Integer, String> teacher : teacherAssignmentList.entrySet()){
             teacherNameList.add(teacher.getKey() + "_" + teacher.getValue());
         }
         teacherChoiceBtn.setItems(teacherNameList);
         teacherChoiceBtn.getSelectionModel().select(0);
+        showAssignmentList();
     }
 
     public ObservableMap<Integer, String> getOnsiteList(){
@@ -124,13 +126,21 @@ public class Controller implements Initializable {
         return allCourseList;
     }
 
-    public ObservableMap<Integer, String> getTeacherList(){
-        AssignmentBUS.teacherList = assignmentBUS.getTeacherList();
-        teacherList = FXCollections.observableHashMap();
-        for(Person person : AssignmentBUS.teacherList){
-            teacherList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
+    public ObservableMap<Integer, String> getAllTeacherList(){
+        AssignmentBUS.allTeacherList = assignmentBUS.getAllTeacherList();
+        allTeacherList = FXCollections.observableHashMap();
+        for(Person person : AssignmentBUS.allTeacherList)
+            allTeacherList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
+        return allTeacherList;
+    }
+
+    public ObservableMap<Integer, String> getTeacherAssignmentList(){
+        AssignmentBUS.teacherAssignmentList = assignmentBUS.getTeacherAssignmentList();
+        teacherAssignmentList = FXCollections.observableHashMap();
+        for(Person person : AssignmentBUS.teacherAssignmentList){
+            teacherAssignmentList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
         }
-        return teacherList;
+        return teacherAssignmentList;
     }
 
     private void chooseTypeOfCourse(){
@@ -167,15 +177,28 @@ public class Controller implements Initializable {
 
             @Override
             public void handle(ActionEvent actionEvent) {
-                Assignment assignment = new Assignment(getSelectedCourseId(), getSelectedTeacherId());
-                if(assignmentBUS.setAssignment(assignment) != null){
-                    System.out.println("Thêm thành công");
-                    setDefault();
-                    showAssignmentList();
-                }
-
-                else
+                int courseId = getSelectedCourseId();
+                int teacherId =  getSelectedTeacherId();
+                if(courseId < 0){
                     System.out.println("Thêm thật bại");
+                    alert("Thông báo", "Tất cả các lớp đã được phân công giảng dạy");
+                }
+                else if(teacherId < 0){
+                    System.out.println("Thêm thật bại");
+                    alert("Thông báo", "Tất cả các giảng viên đã được phân công giảng dạy");
+                }
+                else{
+                    Assignment assignment = new Assignment(courseId, teacherId);
+                    if(assignmentBUS.setAssignment(assignment) != null){
+                        System.out.println("Thêm thành công");
+                        alert("Thông báo", "Thêm thành công");
+                        setDefault();
+                    }
+                    else{
+                        System.out.println("Thêm thật bại");
+                        errorAlert("Lỗi", "Thêm thất bại");
+                    }
+                }
             }
         });
 
@@ -183,22 +206,28 @@ public class Controller implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 setDefault();
-                showAssignmentList();
             }
         });
 
         cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                Assignment assignment = new Assignment(selectRow().CourseId, selectRow().PersonId);
-                if(assignmentBUS.deleteAssignment(assignment) != null){
-                    System.out.println("Huỷ thành công");
-                    setDefault();
-                    showAssignmentList();
-                }
+                selectedRow = selectRow();
+                if(selectedRow != null){
+                    Assignment assignment = new Assignment(selectedRow.CourseId, selectedRow.PersonId);
+                    if(assignmentBUS.deleteAssignment(assignment) != null){
+                        System.out.println("Huỷ thành công");
+                        alert("Thông báo", "Đã huỷ phân công");
+                        setDefault();
+                    }
+                    else{
+                        System.out.println("Huỷ thật bại");
+                        errorAlert("Lỗi", "Huỷ phân công thất bại");
+                    }
 
+                }
                 else
-                    System.out.println("Huỷ thật bại");
+                    errorAlert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
             }
         });
     }
@@ -216,8 +245,9 @@ public class Controller implements Initializable {
         AssignmentBUS.assignmentList = assignmentBUS.getAssignmentList();
         assignmentTableViewList = FXCollections.observableArrayList();
         allCourseList = getAllCourseList();
+        allTeacherList = getAllTeacherList();
         ObservableMap<Integer, String> allCourseListTmp = allCourseList;
-        ObservableMap<Integer, String> teacherListTmp = teacherList;
+        ObservableMap<Integer, String> allTeacherListTmp = allTeacherList;
 
         for(Assignment assignment : AssignmentBUS.assignmentList){
             AssignmentTableView assignmentTableView = new AssignmentTableView();
@@ -229,7 +259,7 @@ public class Controller implements Initializable {
                     break;
                 }
             }
-            for(Map.Entry<Integer, String> teacher : teacherListTmp.entrySet()){
+            for(Map.Entry<Integer, String> teacher : allTeacherListTmp.entrySet()){
                 if(assignment.getPersonId() == teacher.getKey()){
                     assignmentTableView.PersonId = teacher.getKey();
                     assignmentTableView.PersonName = teacher.getValue();
@@ -243,10 +273,14 @@ public class Controller implements Initializable {
     }
 
     private int getSelectedCourseId(){
+        if(courseChoiceBtn.getSelectionModel().getSelectedItem() == null)
+            return -1;
         return Integer.parseInt(courseChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
     private int getSelectedTeacherId(){
+        if(teacherChoiceBtn.getSelectionModel().getSelectedItem() == null)
+            return -1;
         return Integer.parseInt(teacherChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
@@ -255,6 +289,37 @@ public class Controller implements Initializable {
             return null;
         selectedRow = assignmentTableView.getSelectionModel().getSelectedItem();
         return selectedRow;
+    }
+
+    private void errorAlert(String title, String Message){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        DialogPane root = alert.getDialogPane();
+        root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("../Main/main.css")).toExternalForm());
+        root.getScene().setFill(Color.TRANSPARENT);
+        Stage dialogStage = (Stage) root.getScene().getWindow();
+        dialogStage.initStyle(StageStyle.TRANSPARENT);
+        alert.setContentText(Message);
+        alert.setHeaderText(null);
+        ButtonType okBtn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okBtn);
+        alert.show();
+    }
+
+    //hiển thị thông báo
+    private void alert(String title, String Message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        DialogPane root = alert.getDialogPane();
+        root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("../Main/main.css")).toExternalForm());
+        root.getScene().setFill(Color.TRANSPARENT);
+        Stage dialogStage = (Stage) root.getScene().getWindow();
+        dialogStage.initStyle(StageStyle.TRANSPARENT);
+        alert.setContentText(Message);
+        alert.setHeaderText(null);
+        ButtonType okBtn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okBtn);
+        alert.show();
     }
 
     public static class AssignmentTableView{
