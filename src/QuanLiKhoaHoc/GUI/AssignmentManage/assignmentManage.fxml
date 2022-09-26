@@ -36,7 +36,7 @@
             </AnchorPane>
             <AnchorPane layoutX="580.0" prefHeight="85.0" prefWidth="290.0" AnchorPane.bottomAnchor="85.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label layoutX="25.0" layoutY="14.0" text="Giảng viên:" AnchorPane.rightAnchor="186.0" AnchorPane.topAnchor="14.0" />
+                  <Label layoutX="25.0" layoutY="14.0" text="Giảng viên:" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="14.0" />
                   <ChoiceBox fx:id="teacherChoiceBtn" layoutX="25.0" layoutY="40.0" prefHeight="28.0" prefWidth="240.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="40.0" />
                </children>
             </AnchorPane>

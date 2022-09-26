@@ -180,11 +180,11 @@ public class Controller implements Initializable {
                 int courseId = getSelectedCourseId();
                 int teacherId =  getSelectedTeacherId();
                 if(courseId < 0){
-                    System.out.println("Thêm thật bại");
+                    System.out.println("Thêm thất bại");
                     alert("Thông báo", "Tất cả các lớp đã được phân công giảng dạy");
                 }
                 else if(teacherId < 0){
-                    System.out.println("Thêm thật bại");
+                    System.out.println("Thêm thất bại");
                     alert("Thông báo", "Tất cả các giảng viên đã được phân công giảng dạy");
                 }
                 else{
@@ -195,7 +195,7 @@ public class Controller implements Initializable {
                         setDefault();
                     }
                     else{
-                        System.out.println("Thêm thật bại");
+                        System.out.println("Thêm thất bại");
                         errorAlert("Lỗi", "Thêm thất bại");
                     }
                 }
@@ -221,7 +221,7 @@ public class Controller implements Initializable {
                         setDefault();
                     }
                     else{
-                        System.out.println("Huỷ thật bại");
+                        System.out.println("Huỷ thất bại");
                         errorAlert("Lỗi", "Huỷ phân công thất bại");
                     }
 
@@ -253,17 +253,17 @@ public class Controller implements Initializable {
             AssignmentTableView assignmentTableView = new AssignmentTableView();
             for(Map.Entry<Integer, String> course : allCourseListTmp.entrySet()){
                 if(assignment.getCourseId() == course.getKey()){
-                    assignmentTableView.CourseId = course.getKey();
-                    assignmentTableView.CourseName = course.getValue();
-//                    allCourseListTmp.remove(course.getKey());
+                    assignmentTableView.setCourseId(course.getKey());
+                    assignmentTableView.setCourseName(course.getValue());
+                    allCourseListTmp.remove(course.getKey());
                     break;
                 }
             }
             for(Map.Entry<Integer, String> teacher : allTeacherListTmp.entrySet()){
                 if(assignment.getPersonId() == teacher.getKey()){
-                    assignmentTableView.PersonId = teacher.getKey();
-                    assignmentTableView.PersonName = teacher.getValue();
-//                    teacherListTmp.remove(teacher.getKey());
+                    assignmentTableView.setPersonId(teacher.getKey());;
+                    assignmentTableView.setPersonName(teacher.getValue());
+                    allTeacherListTmp.remove(teacher.getKey());
                     break;
                 }
             }
