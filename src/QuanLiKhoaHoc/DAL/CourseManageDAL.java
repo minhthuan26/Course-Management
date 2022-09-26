@@ -91,10 +91,10 @@ public class CourseManageDAL {
                             resultSetCourse.getString(7),
                             resultSetOnsiteCourse.getInt(8),
                             resultSetOnsiteCourse.getInt(9),
-                            resultSetOnsiteCourse.getInt(10),
+                            resultSetOnsiteCourse.getTime(10),
                             resultSetOnsiteCourse.getTime(11),
-                            resultSetOnsiteCourse.getTime(12),
-                            resultSetOnsiteCourse.getDate(13)
+                            resultSetOnsiteCourse.getDate(12),
+                            resultSetOnsiteCourse.getInt(13)
                     );
                     onsiteCourseList.add(onsiteCourse);
                 }
