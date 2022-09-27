@@ -54,7 +54,7 @@
             </Button>
          </children>
       </HBox>
-      <SplitPane dividerPositions="0.9948503379465722" layoutX="8.0" layoutY="78.0" orientation="VERTICAL" prefHeight="623.0" prefWidth="891.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="78.0">
+      <SplitPane dividerPositions="0.005149662053427743" layoutX="8.0" layoutY="78.0" orientation="VERTICAL" prefHeight="623.0" prefWidth="891.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="78.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
@@ -88,8 +88,9 @@
                <children>
                   <TableView fx:id="onsiteTableView" layoutY="43.0" prefHeight="568.0" prefWidth="879.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="45.0">
                      <columns>
-                        <TableColumn fx:id="courseIdOnsiteTableColumn" prefWidth="75.0" text="Tên Khóa" />
-                        <TableColumn fx:id="courseNameOnsiteTableColumn" prefWidth="75.0" text="Mô Tả" />
+                        <TableColumn fx:id="courseIdOnsiteTableColumn" prefWidth="75.0" text="Mã Khóa" />
+                        <TableColumn fx:id="courseNameOnsiteTableColumn" prefWidth="75.0" text="Tên Khóa" />
+                        <TableColumn fx:id="courseDescriptionOnsiteTableColumn" prefWidth="75.0" text="Mô Tả" />
                         <TableColumn fx:id="dateCreateOnsiteTableColumn" prefWidth="75.0" text="Ngày Tạo" />
                         <TableColumn fx:id="dateStartOnsiteTableColumn" prefWidth="75.0" text="Bắt Đầu" />
                         <TableColumn fx:id="dateEndOnsiteTableColumn" prefWidth="75.0" text="Kết Thúc" />

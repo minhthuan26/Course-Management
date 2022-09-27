@@ -43,7 +43,9 @@ public class CourseManageDAL {
         ObservableList<OnlineCourse> onlineCourseList = FXCollections.observableArrayList();
         ObservableList<Course> courseList = getCourseList();
         for (Course course : courseList) {
-            String query = "Select * from OnlineCourse where CourseId =" + course.getCourseId();
+            String query = "Select * from OnlineCourse where CourseId =" + course.getCourseId()+
+            " and not exists (Select * from OnsiteCourse where CourseId="+course.getCourseId()+")";
+
             try {
                 ResultSet resultSet = connect.excuteQuery(query);
                 if (resultSet != null) {
@@ -66,44 +68,54 @@ public class CourseManageDAL {
                 error.printStackTrace();
             }
         }
+
         return onlineCourseList;
     }
     public ObservableList<OnsiteCourse> getOnsiteCourseList(){
         ObservableList<OnsiteCourse> onsiteCourseList = FXCollections.observableArrayList();
-
-        String queryOnsiteCourse = "Select * from OnsiteCourse";
-        String queryCourse = "Select * from Course";
-
-        try{
-            ResultSet resultSetOnsiteCourse = connect.excuteQuery(queryOnsiteCourse);
-            ResultSet resultSetCourse = connect.excuteQuery(queryCourse);
-            if(resultSetOnsiteCourse != null){
-                while(resultSetOnsiteCourse.next()){
-                    OnsiteCourse onsiteCourse = new OnsiteCourse(
-                            resultSetCourse.getInt(1),
-                            resultSetCourse.getString(2),
-                            resultSetCourse.getString(3),
-                            resultSetCourse.getDate(4),
-                            resultSetCourse.getDate(5),
-                            resultSetCourse.getDate(6),
-                            resultSetCourse.getString(7),
-                            resultSetOnsiteCourse.getInt(8),
-                            resultSetOnsiteCourse.getInt(9),
-                            resultSetOnsiteCourse.getTime(10),
-                            resultSetOnsiteCourse.getTime(11),
-                            resultSetOnsiteCourse.getDate(12),
-                            resultSetOnsiteCourse.getInt(13)
-                    );
-                    onsiteCourseList.add(onsiteCourse);
+        ObservableList<Course> courseList = getCourseList();
+//        String query = "Select * from OnsiteCourse where CourseId =" +
+//                "not exist (Select * from OnlineCourse where CourseId =3 ) ";
+//        try{
+//            ResultSet resultSet = connect.excuteQuery(query);
+//                if (resultSet != null) {
+//                    System.out.println("ddmm");
+//                }
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//        }
+        for (Course course : courseList) {
+            String query = "Select * from OnsiteCourse where CourseId ="+ course.getCourseId() +
+                    " and not exists (Select * from OnlineCourse where CourseId="+course.getCourseId()+")";
+            try {
+                ResultSet resultSet = connect.excuteQuery(query);
+                if (resultSet != null) {
+                    while (resultSet.next()) {
+                        OnsiteCourse onsiteCourse = new OnsiteCourse(
+                                course.getCourseId(),
+                                course.getCourseName(),
+                                course.getCourseDescription(),
+                                course.getDateCreate(),
+                                course.getDateStart(),
+                                course.getDateEnd(),
+                                course.getCourseImage(),
+                                resultSet.getInt(1),
+                                resultSet.getInt(3),
+                                resultSet.getTime(4),
+                                resultSet.getTime(5),
+                                resultSet.getDate(6),
+                                resultSet.getInt(7)
+                        );
+                        onsiteCourseList.add(onsiteCourse);
+                    }
                 }
+            } catch (Exception error) {
+                error.printStackTrace();
             }
-        }
-        catch(Exception error){
-            error.printStackTrace();
         }
         return onsiteCourseList;
     }
-
 //Them khoa hoc moi
     public Course addCourse(Course course) throws Exception {
         String query = "Insert into Course value (";
@@ -113,7 +125,7 @@ public class CourseManageDAL {
         query = query +"," +"'"+ course.getDateStart()+"'";
         query = query +"," +"'"+ course.getDateEnd()+"'";
         query = query +"," +"'"+ course.getDateCreate()+"'";
-        query = query +"," +"'"+ course.getCourseImage()+"'";
+        query = query +"";
         query = query +")";
         connect.getConnect();
         connect.ExecuteUpdate(query);
@@ -121,6 +133,8 @@ public class CourseManageDAL {
         connect.closeConnect();
         return course;
     }
+
+
 
     public  void addOnlineCourse(Course onlineCourse) throws Exception {
          onlineCourse = addCourse(onlineCourse);
