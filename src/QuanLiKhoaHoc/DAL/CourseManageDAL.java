@@ -73,7 +73,6 @@ public class CourseManageDAL {
     public ObservableList<OnsiteCourse> getOnsiteCourseList(){
         ObservableList<OnsiteCourse> onsiteCourseList = FXCollections.observableArrayList();
         ObservableList<Course> courseList = getCourseList();
-
         for (Course course : courseList) {
             String query = "Select * from OnsiteCourse where CourseId ="+ course.getCourseId();
             try {

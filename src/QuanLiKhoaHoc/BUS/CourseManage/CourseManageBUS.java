@@ -19,20 +19,10 @@ public class CourseManageBUS {
     }
 
     public ObservableList<OnlineCourse> getAllOnlineCourseList() {
-//        try {
-//            allOnlineCourseList = courseManageDAL.getOnlineCourseList();
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
         return allOnlineCourseList= courseManageDAL.getOnlineCourseList();
     }
 
     public ObservableList<OnsiteCourse> getAllOnsiteCourseList() {
-//        try {
-//            allOnsiteCourseList = courseManageDAL.getOnsiteCourseList();
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
         return allOnsiteCourseList = courseManageDAL.getOnsiteCourseList();
     }
 }
