@@ -119,6 +119,7 @@ public class Controller implements Initializable {
                     onsiteTableView.dateEndOnsiteTableColumn = course.getDateEnd();
                 }
             }
+            onsiteTableViews.add(onsiteTableView);
         }
         return onsiteTableViews;
     }
