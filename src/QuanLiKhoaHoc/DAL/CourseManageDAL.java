@@ -39,37 +39,35 @@ public class CourseManageDAL {
     }
     // Lay tat ca du lieu tu bang OnlineCourse
 
-    public ObservableList<OnlineCourse> getOnlineCourseList(){
+    public ObservableList<OnlineCourse> getOnlineCourseList() {
         ObservableList<OnlineCourse> onlineCourseList = FXCollections.observableArrayList();
-
-        String queryOnlineCourse = "Select * from OnlineCourse";
-        String queryCourse = "Select * from Course";
-
-        try{
-        ResultSet resultSetOnlineCourse = connect.excuteQuery(queryOnlineCourse);
-        ResultSet resultSetCourse = connect.excuteQuery(queryCourse);
-        if(resultSetOnlineCourse != null){
-            while(resultSetOnlineCourse.next()){
-                OnlineCourse onlineCourse = new OnlineCourse(
-                        resultSetCourse.getInt(1),
-                        resultSetCourse.getString(2),
-                        resultSetCourse.getString(3),
-                        resultSetCourse.getDate(4),
-                        resultSetCourse.getDate(5),
-                        resultSetCourse.getDate(6),
-                        resultSetCourse.getString(7),
-                        resultSetOnlineCourse.getInt(8),
-                        resultSetOnlineCourse.getString(9)
-                );
-                onlineCourseList.add(onlineCourse);
+        ObservableList<Course> courseList = getCourseList();
+        for (Course course : courseList) {
+            String query = "Select * from OnlineCourse where CourseId =" + course.getCourseId();
+            try {
+                ResultSet resultSet = connect.excuteQuery(query);
+                if (resultSet != null) {
+                    while (resultSet.next()) {
+                        OnlineCourse onlineCourse = new OnlineCourse(
+                                course.getCourseId(),
+                                course.getCourseName(),
+                                course.getCourseDescription(),
+                                course.getDateCreate(),
+                                course.getDateStart(),
+                                course.getDateEnd(),
+                                course.getCourseImage(),
+                                resultSet.getInt(1),
+                                resultSet.getString(3)
+                        );
+                        onlineCourseList.add(onlineCourse);
+                    }
+                }
+            } catch (Exception error) {
+                error.printStackTrace();
             }
         }
+        return onlineCourseList;
     }
-    catch(Exception error){
-        error.printStackTrace();
-    }
-    return onlineCourseList;
-}
     public ObservableList<OnsiteCourse> getOnsiteCourseList(){
         ObservableList<OnsiteCourse> onsiteCourseList = FXCollections.observableArrayList();
 
