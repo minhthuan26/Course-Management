@@ -43,8 +43,7 @@ public class CourseManageDAL {
         ObservableList<OnlineCourse> onlineCourseList = FXCollections.observableArrayList();
         ObservableList<Course> courseList = getCourseList();
         for (Course course : courseList) {
-            String query = "Select * from OnlineCourse where CourseId =" + course.getCourseId()+
-            " and not exists (Select * from OnsiteCourse where CourseId="+course.getCourseId()+")";
+            String query = "Select * from OnlineCourse where CourseId =" + course.getCourseId();
 
             try {
                 ResultSet resultSet = connect.excuteQuery(query);
