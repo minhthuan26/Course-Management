@@ -6,16 +6,19 @@ import QuanLiKhoaHoc.DTO.OnlineCourse;
 import QuanLiKhoaHoc.DTO.OnsiteCourse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.net.URL;
 import java.util.Date;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -25,8 +28,8 @@ public class Controller implements Initializable {
 //    private HBox hBoxTool;
 //    @FXML
 //    private Button btnAdd;
-//    @FXML
-//    private Button btnDelete;
+    @FXML
+    private Button btnDelete;
 //    @FXML
 //    private Button btnEdit;
 
@@ -79,12 +82,75 @@ public class Controller implements Initializable {
     private CourseManageBUS courseManageBUS = new CourseManageBUS();
     private ObservableList<OnlineTableView> onlineTableViews;
     private ObservableList<OnsiteTableView> onsiteTableViews;
+    private static OnlineTableView selectedRowOnline = null;
+    private static OnsiteTableView selectedRowOnsite = null;
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
-
-//        showOnlineCourseList();
+        Handle();
+        showOnlineCourseList();
         showOnsiteCourseList();
     }
+
+
+    private void alert(String title, String Message){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        DialogPane root = alert.getDialogPane();
+        root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("../Main/main.css")).toExternalForm());
+        root.getScene().setFill(Color.TRANSPARENT);
+        Stage dialogStage = (Stage) root.getScene().getWindow();
+        dialogStage.initStyle(StageStyle.TRANSPARENT);
+        alert.setContentText(Message);
+        alert.setHeaderText(null);
+        ButtonType okBtn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        alert.getButtonTypes().setAll(okBtn);
+        alert.show();
+    }
+
+    public  OnlineTableView selectRowOnline(){
+        if (onlineTableView.getSelectionModel().getSelectedIndex()<0)
+            return null;
+        selectedRowOnline = onlineTableView.getSelectionModel().getSelectedItem();
+        return selectedRowOnline;
+
+    }
+    public  OnsiteTableView selectRowOnsite(){
+        if (onsiteTableView.getSelectionModel().getSelectedIndex()<0)
+            return null;
+        selectedRowOnsite = onsiteTableView.getSelectionModel().getSelectedItem();
+        return selectedRowOnsite;
+
+    }
+    public void Handle(){
+        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                selectedRowOnline = selectRowOnline();
+            if (selectedRowOnline!=null){
+                OnlineTableView dataonlineTableView = new OnlineTableView(selectedRowOnline.courseIdOnlineTableColumn, selectedRowOnline.onlineCourseIdOnlineTableColumn);
+                if (courseManageBUS.deleteOnlineCourseTest(dataonlineTableView)!=null){
+                    alert("Thông báo", "Xóa Thành công");
+                    System.out.println("Xóa thành công");
+                    showOnlineCourseList();
+                }
+            }
+                selectedRowOnsite = selectRowOnsite();
+                if (selectedRowOnsite!=null){
+                    OnsiteTableView dataonsiteTableView = new OnsiteTableView(selectedRowOnsite.courseIdOnsiteTableColumn, selectedRowOnsite.onsiteCourseIdOnsiteTableColumn);
+                    if (courseManageBUS.deleteOnsiteCourseTest(dataonsiteTableView)!=null){
+                        alert("Thông báo", "Xóa Thành công");
+                        System.out.println("Xóa thành công");
+                        showOnsiteCourseList();
+                    }
+                }
+            }
+        });
+
+    }
+
     // Lay tat ca du lieu trong db course
     public ObservableList<Course> getAllCourseList(){
         return allCourseList= courseManageBUS.getAllCourseList();
@@ -144,10 +210,9 @@ public class Controller implements Initializable {
                     onlineTableView.courseDescriptionOnlineTableColumn = course.getCourseDescription();
                     onlineTableView.courseImageOnlineTableColumn = course.getCourseImage();
                 }
-                onlineTableViews.add(onlineTableView);
-//                allCourseList.remove(course);
-                break;
             }
+            onlineTableViews.add(onlineTableView);
+
         }
         return onlineTableViews;
     }
@@ -239,7 +304,9 @@ public class Controller implements Initializable {
             this.dateCreateOnlineTableView = dateCreateOnlineTableView;
         }
 
-        public Date getDateStartOnlineTableView() {
+
+
+    public Date getDateStartOnlineTableView() {
             return dateStartOnlineTableView;
         }
 
@@ -254,8 +321,14 @@ public class Controller implements Initializable {
         public void setDateEndOnlineTableView(Date dateEndOnlineTableView) {
             this.dateEndOnlineTableView = dateEndOnlineTableView;
         }
+    public OnlineTableView() {
+    }
+    public OnlineTableView(int courseIdOnlineTableColumn, int onlineCourseIdOnlineTableColumn) {
+        this.courseIdOnlineTableColumn = courseIdOnlineTableColumn;
+        this.onlineCourseIdOnlineTableColumn = onlineCourseIdOnlineTableColumn;
+    }
 
-        int courseIdOnlineTableColumn, onlineCourseIdOnlineTableColumn;
+    int courseIdOnlineTableColumn, onlineCourseIdOnlineTableColumn;
         String courseNameOnlineTableColumn, courseDescriptionOnlineTableColumn, courseImageOnlineTableColumn, courseUrlOnlineTableColumn;
         Date dateCreateOnlineTableView, dateStartOnlineTableView, dateEndOnlineTableView;
     }
@@ -334,7 +407,16 @@ public class Controller implements Initializable {
             this.dateCreateOnsiteTableColumn = dateCreateOnsiteTableColumn;
         }
 
-        int courseIdOnsiteTableColumn, onsiteCourseIdOnsiteTableColumn, lessonQuantityOnsiteTableColumn;
+        int courseIdOnsiteTableColumn;
+
+        public OnsiteTableView(int courseIdOnsiteTableColumn, int onsiteCourseIdOnsiteTableColumn) {
+            this.courseIdOnsiteTableColumn = courseIdOnsiteTableColumn;
+            this.onsiteCourseIdOnsiteTableColumn = onsiteCourseIdOnsiteTableColumn;
+        }
+        public OnsiteTableView(){}
+
+        int onsiteCourseIdOnsiteTableColumn;
+        int lessonQuantityOnsiteTableColumn;
         String courseDescriptionOnsiteTableColumn, courseNameOnsiteTableColumn;
         Date dateStartOnsiteTableColumn, dateEndOnsiteTableColumn, dayOccurOnsiteTableColumn, dateCreateOnsiteTableColumn;
     }

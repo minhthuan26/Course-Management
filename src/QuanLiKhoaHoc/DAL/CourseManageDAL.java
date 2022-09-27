@@ -3,6 +3,7 @@ package QuanLiKhoaHoc.DAL;
 import QuanLiKhoaHoc.DTO.Course;
 import QuanLiKhoaHoc.DTO.OnlineCourse;
 import QuanLiKhoaHoc.DTO.OnsiteCourse;
+import QuanLiKhoaHoc.GUI.CourseManage.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -145,11 +146,42 @@ public class CourseManageDAL {
         connect.closeConnect();
     }
 
-    public void deleteCourse(String id) throws Exception {
-        String query = "Delete from Course Where CourseId='" + id +"'";
+    public Course deleteCourse(Course course) throws Exception {
+        String query = "Delete from Course Where CourseId='" + course.getCourseId() +"'";
         connect.getConnect();
         connect.ExecuteUpdate(query);
         System.out.println(query);
         connect.closeConnect();
+        return course;
+    }
+    public OnlineCourse deleteOnlineCourse(OnlineCourse onlineCourse) throws Exception {
+        String query = "Delete from OnlineCourse Where OnlineCourseId= "+ onlineCourse.getOnlineCourseId() ;
+        connect.getConnect();
+        connect.ExecuteUpdate(query);
+        connect.closeConnect();
+        return onlineCourse;
+    }
+    public Controller.OnlineTableView deleteOnlineCourseTest(Controller.OnlineTableView onlineTableView){
+        String query = "Delete from OnlineCourse Where OnlineCourseId= "+ onlineTableView.getOnlineCourseIdOnlineTableColumn()
+                + " and CourseId= "+onlineTableView.getCourseIdOnlineTableColumn();
+
+        try {
+            connect.ExecuteUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return onlineTableView;
+    }
+
+    public Controller.OnsiteTableView deleteOnsiteCourseTest(Controller.OnsiteTableView onsiteTableView){
+        String query = "Delete from OnsiteCourse Where OnsiteCourseId= "+ onsiteTableView.getOnsiteCourseIdOnsiteTableColumn()
+                + " and CourseId= "+onsiteTableView.getCourseIdOnsiteTableColumn();
+
+        try {
+            connect.ExecuteUpdate(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return onsiteTableView;
     }
 }

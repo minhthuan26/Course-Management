@@ -4,9 +4,8 @@ import QuanLiKhoaHoc.DAL.CourseManageDAL;
 import QuanLiKhoaHoc.DTO.Course;
 import QuanLiKhoaHoc.DTO.OnlineCourse;
 import QuanLiKhoaHoc.DTO.OnsiteCourse;
+import QuanLiKhoaHoc.GUI.CourseManage.Controller;
 import javafx.collections.ObservableList;
-
-import java.sql.SQLException;
 
 public class CourseManageBUS {
     CourseManageDAL courseManageDAL = new CourseManageDAL();
@@ -19,20 +18,16 @@ public class CourseManageBUS {
     }
 
     public ObservableList<OnlineCourse> getAllOnlineCourseList() {
-//        try {
-//            allOnlineCourseList = courseManageDAL.getOnlineCourseList();
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
         return allOnlineCourseList= courseManageDAL.getOnlineCourseList();
     }
 
     public ObservableList<OnsiteCourse> getAllOnsiteCourseList() {
-//        try {
-//            allOnsiteCourseList = courseManageDAL.getOnsiteCourseList();
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
         return allOnsiteCourseList = courseManageDAL.getOnsiteCourseList();
+    }
+    public Controller.OnlineTableView deleteOnlineCourseTest(Controller.OnlineTableView onlineTableView){
+        return courseManageDAL.deleteOnlineCourseTest(onlineTableView);
+    }
+    public Controller.OnsiteTableView deleteOnsiteCourseTest(Controller.OnsiteTableView onsiteTableView){
+        return courseManageDAL.deleteOnsiteCourseTest(onsiteTableView);
     }
 }
