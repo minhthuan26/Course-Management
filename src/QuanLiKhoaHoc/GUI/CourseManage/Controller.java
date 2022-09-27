@@ -82,7 +82,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
 
-        showOnlineCourseList();
+//        showOnlineCourseList();
         showOnsiteCourseList();
     }
     // Lay tat ca du lieu trong db course
@@ -119,6 +119,8 @@ public class Controller implements Initializable {
                     onsiteTableView.dateEndOnsiteTableColumn = course.getDateEnd();
                 }
             }
+            onsiteTableViews.add(onsiteTableView);
+
         }
         return onsiteTableViews;
     }

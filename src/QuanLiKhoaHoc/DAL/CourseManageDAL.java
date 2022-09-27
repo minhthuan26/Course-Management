@@ -43,8 +43,7 @@ public class CourseManageDAL {
         ObservableList<OnlineCourse> onlineCourseList = FXCollections.observableArrayList();
         ObservableList<Course> courseList = getCourseList();
         for (Course course : courseList) {
-            String query = "Select * from OnlineCourse where CourseId =" + course.getCourseId()+
-            " and not exists (Select * from OnsiteCourse where CourseId="+course.getCourseId()+")";
+            String query = "Select * from OnlineCourse where CourseId =" + course.getCourseId();
 
             try {
                 ResultSet resultSet = connect.excuteQuery(query);
@@ -74,20 +73,9 @@ public class CourseManageDAL {
     public ObservableList<OnsiteCourse> getOnsiteCourseList(){
         ObservableList<OnsiteCourse> onsiteCourseList = FXCollections.observableArrayList();
         ObservableList<Course> courseList = getCourseList();
-//        String query = "Select * from OnsiteCourse where CourseId =" +
-//                "not exist (Select * from OnlineCourse where CourseId =3 ) ";
-//        try{
-//            ResultSet resultSet = connect.excuteQuery(query);
-//                if (resultSet != null) {
-//                    System.out.println("ddmm");
-//                }
-//        }
-//        catch (Exception e){
-//            e.printStackTrace();
-//        }
+
         for (Course course : courseList) {
-            String query = "Select * from OnsiteCourse where CourseId ="+ course.getCourseId() +
-                    " and not exists (Select * from OnlineCourse where CourseId="+course.getCourseId()+")";
+            String query = "Select * from OnsiteCourse where CourseId ="+ course.getCourseId();
             try {
                 ResultSet resultSet = connect.excuteQuery(query);
                 if (resultSet != null) {
