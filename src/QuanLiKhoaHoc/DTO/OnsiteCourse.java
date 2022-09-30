@@ -2,14 +2,23 @@ package QuanLiKhoaHoc.DTO;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 public class OnsiteCourse extends Course{
     int OnsiteCoureId, CourseId, RoomId, LessonQuantity;
     Time TimeStart, TimeEnd;
-    Date DayOccur;
+    LocalDate DayOccur;
 
 
-    public OnsiteCourse(int courseId, String courseName, String courseDescription,Date dateCreate , Date dateStart, Date dateEnd,String courseImage , int onsiteCoureId, int roomId, Time timeStart, Time timeEnd, Date dayOccur, int lessonQuantity) {
+    public LocalDate getDayOccur() {
+        return DayOccur;
+    }
+
+    public void setDayOccur(LocalDate dayOccur) {
+        DayOccur = dayOccur;
+    }
+
+    public OnsiteCourse(int courseId, String courseName, String courseDescription, LocalDate dateCreate , LocalDate dateStart, LocalDate dateEnd, String courseImage , int onsiteCoureId, int roomId, Time timeStart, Time timeEnd, LocalDate dayOccur, int lessonQuantity) {
         super(courseId, courseName, courseDescription, dateCreate, dateStart, dateEnd, courseImage);
 
         OnsiteCoureId = onsiteCoureId;
@@ -69,13 +78,7 @@ public class OnsiteCourse extends Course{
         TimeEnd = timeEnd;
     }
 
-    public Date getDayOccur() {
-        return DayOccur;
-    }
 
-    public void setDayOccur(Date dayOccur) {
-        DayOccur = dayOccur;
-    }
 
     @Override
     public String toString() {

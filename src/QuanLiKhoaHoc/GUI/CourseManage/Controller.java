@@ -1,38 +1,48 @@
 package QuanLiKhoaHoc.GUI.CourseManage;
 
 import QuanLiKhoaHoc.BUS.CourseManage.CourseManageBUS;
+import QuanLiKhoaHoc.DTO.Assignment;
 import QuanLiKhoaHoc.DTO.Course;
 import QuanLiKhoaHoc.DTO.OnlineCourse;
 import QuanLiKhoaHoc.DTO.OnsiteCourse;
+import QuanLiKhoaHoc.GUI.StudentManage.main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.util.*;
 
 public class Controller implements Initializable {
 //    @FXML
 //    private AnchorPane mainPane;
 //    @FXML
 //    private HBox hBoxTool;
-//    @FXML
-//    private Button btnAdd;
+    @FXML
+    private Button btnAdd;
     @FXML
     private Button btnDelete;
-//    @FXML
-//    private Button btnEdit;
-
+    @FXML
+    private Button btnRefresh;
+    @FXML
+    private ChoiceBox<String> courseType;
+    @FXML
+    private SplitPane splitPane;
 
 
     // Khai bao OnlineCourse TableView
@@ -75,14 +85,17 @@ public class Controller implements Initializable {
     private TableColumn<OnsiteTableView, Integer> lessonQuantityOnsiteTableColumn;
     @FXML
     private TableColumn<OnsiteTableView, Date> dayOccurOnsiteTableColumn;
-
+    private ObservableList<String> typeCourse = FXCollections.observableArrayList(
+            new String("Online"),
+            new String("Onsite")
+    );
     private ObservableList<Course> allCourseList;
     private  ObservableList<OnsiteCourse> onsiteTableViewList;
     private ObservableList<OnlineCourse> onlineTableViewList;
     private CourseManageBUS courseManageBUS = new CourseManageBUS();
     private ObservableList<OnlineTableView> onlineTableViews;
     private ObservableList<OnsiteTableView> onsiteTableViews;
-    private static OnlineTableView selectedRowOnline = null;
+    private static OnlineTableView selectedRowOnline = null ;
     private static OnsiteTableView selectedRowOnsite = null;
 
 
@@ -92,6 +105,19 @@ public class Controller implements Initializable {
         Handle();
         showOnlineCourseList();
         showOnsiteCourseList();
+
+        courseType.setItems(typeCourse);
+        courseType.getSelectionModel().selectFirst();
+        chooseTypeOfCourse();
+
+    }
+
+    private void chooseTypeOfCourse(){
+        if (courseType.getSelectionModel().getSelectedItem().equals("Onsite")){
+            splitPane.setDividerPositions(0);
+        }else {
+            splitPane.setDividerPositions(1);
+        }
     }
 
 
@@ -125,30 +151,96 @@ public class Controller implements Initializable {
 
     }
     public void Handle(){
+        btnRefresh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                showOnsiteCourseList();
+                showOnlineCourseList();
+            }
+        });
+        courseType.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                chooseTypeOfCourse();
+            }
+        });
         btnDelete.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+
                 selectedRowOnline = selectRowOnline();
-            if (selectedRowOnline!=null){
-                OnlineTableView dataonlineTableView = new OnlineTableView(selectedRowOnline.courseIdOnlineTableColumn, selectedRowOnline.onlineCourseIdOnlineTableColumn);
-                if (courseManageBUS.deleteOnlineCourseTest(dataonlineTableView)!=null){
-                    alert("Thông báo", "Xóa Thành công");
-                    System.out.println("Xóa thành công");
-                    showOnlineCourseList();
+                if(selectedRowOnline != null){
+                    Assignment idOfAssignment= courseManageBUS.getIdAssignment(selectedRowOnline.courseIdOnlineTableColumn);
+                    if (idOfAssignment!=null){
+                        alert("Thông báo", "Vui lòng hủy phân công trước khi xóa");
+
+                    }
+                    else{
+                        Course onlineCourse = courseManageBUS.deleteOnlineCourseTest(selectedRowOnline.getCourseIdOnlineTableColumn());
+                        if (onlineCourse != null){
+                            Course course = courseManageBUS.deleteCourseOnline(onlineCourse);
+                            if (course != null){
+                                alert("Thông báo", "Xóa thành công");
+                                System.out.println(course);
+                                showOnlineCourseList();
+                            }
+                            else {
+                                alert("Thông báo", "Thất bại");
+                            }
+                    }
+
+                    }
                 }
-            }
                 selectedRowOnsite = selectRowOnsite();
-                if (selectedRowOnsite!=null){
-                    OnsiteTableView dataonsiteTableView = new OnsiteTableView(selectedRowOnsite.courseIdOnsiteTableColumn, selectedRowOnsite.onsiteCourseIdOnsiteTableColumn);
-                    if (courseManageBUS.deleteOnsiteCourseTest(dataonsiteTableView)!=null){
-                        alert("Thông báo", "Xóa Thành công");
-                        System.out.println("Xóa thành công");
-                        showOnsiteCourseList();
+                if(selectedRowOnsite != null){
+                    Assignment idOfAssignment= courseManageBUS.getIdAssignment(selectedRowOnsite.courseIdOnsiteTableColumn);
+                    if (idOfAssignment!=null){
+                        alert("Thông báo", "Vui lòng hủy phân công trước khi xóa");
+
+                    }
+                    else {
+                        Course onsiteCourse = courseManageBUS.deleteOnsiteCourseTest(selectRowOnsite().getCourseIdOnsiteTableColumn());
+
+                        if (onsiteCourse != null){
+                            Course course = courseManageBUS.deleteCourseOnline(onsiteCourse);
+                            if (course != null){
+                                alert("Thông báo", "Xóa thành công");
+                                System.out.println("Xoa Thanh cong");
+                                showOnsiteCourseList();
+                            }
+                            else {
+                                alert("Thông báo", "Thất bại");
+                            }
+
+                        }
+
                     }
                 }
             }
         });
 
+        btnAdd.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+//                FXMLLoader loader = new FXMLLoader();
+               Stage newstage = new Stage();
+               MainAddCourse screen = new MainAddCourse();
+               Stage oldstage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
+//               AddCourseController addCourseController = loader.getController();
+//               addCourseController.Handle();
+               newstage.initModality(Modality.WINDOW_MODAL);
+               newstage.initOwner(oldstage);
+
+                try {
+                    screen.start(newstage);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 
     // Lay tat ca du lieu trong db course
@@ -296,31 +388,30 @@ public class Controller implements Initializable {
             this.courseUrlOnlineTableColumn = courseUrlOnlineTableColumn;
         }
 
-        public Date getDateCreateOnlineTableView() {
-            return dateCreateOnlineTableView;
-        }
+    public LocalDate getDateCreateOnlineTableView() {
+        return dateCreateOnlineTableView;
+    }
 
-        public void setDateCreateOnlineTableView(Date dateCreateOnlineTableView) {
-            this.dateCreateOnlineTableView = dateCreateOnlineTableView;
-        }
+    public void setDateCreateOnlineTableView(LocalDate dateCreateOnlineTableView) {
+        this.dateCreateOnlineTableView = dateCreateOnlineTableView;
+    }
 
+    public LocalDate getDateStartOnlineTableView() {
+        return dateStartOnlineTableView;
+    }
 
+    public void setDateStartOnlineTableView(LocalDate dateStartOnlineTableView) {
+        this.dateStartOnlineTableView = dateStartOnlineTableView;
+    }
 
-    public Date getDateStartOnlineTableView() {
-            return dateStartOnlineTableView;
-        }
+    public LocalDate getDateEndOnlineTableView() {
+        return dateEndOnlineTableView;
+    }
 
-        public void setDateStartOnlineTableView(Date dateStartOnlineTableView) {
-            this.dateStartOnlineTableView = dateStartOnlineTableView;
-        }
+    public void setDateEndOnlineTableView(LocalDate dateEndOnlineTableView) {
+        this.dateEndOnlineTableView = dateEndOnlineTableView;
+    }
 
-        public Date getDateEndOnlineTableView() {
-            return dateEndOnlineTableView;
-        }
-
-        public void setDateEndOnlineTableView(Date dateEndOnlineTableView) {
-            this.dateEndOnlineTableView = dateEndOnlineTableView;
-        }
     public OnlineTableView() {
     }
     public OnlineTableView(int courseIdOnlineTableColumn, int onlineCourseIdOnlineTableColumn) {
@@ -329,11 +420,16 @@ public class Controller implements Initializable {
     }
 
     int courseIdOnlineTableColumn, onlineCourseIdOnlineTableColumn;
-        String courseNameOnlineTableColumn, courseDescriptionOnlineTableColumn, courseImageOnlineTableColumn, courseUrlOnlineTableColumn;
-        Date dateCreateOnlineTableView, dateStartOnlineTableView, dateEndOnlineTableView;
+
+    public OnlineTableView(int courseIdOnlineTableColumn) {
+        this.courseIdOnlineTableColumn = courseIdOnlineTableColumn;
+    }
+
+    String courseNameOnlineTableColumn, courseDescriptionOnlineTableColumn, courseImageOnlineTableColumn, courseUrlOnlineTableColumn;
+        LocalDate dateCreateOnlineTableView, dateStartOnlineTableView, dateEndOnlineTableView;
     }
     //Tao class moi merge 2 bang chung lai (Onsite + course)
-    public class OnsiteTableView{
+    public class OnsiteTableView    {
 
         public int getCourseIdOnsiteTableColumn() {
             return courseIdOnsiteTableColumn;
@@ -375,37 +471,7 @@ public class Controller implements Initializable {
             this.courseNameOnsiteTableColumn = courseNameOnsiteTableColumn;
         }
 
-        public Date getDateStartOnsiteTableColumn() {
-            return dateStartOnsiteTableColumn;
-        }
 
-        public void setDateStartOnsiteTableColumn(Date dateStartOnsiteTableColumn) {
-            this.dateStartOnsiteTableColumn = dateStartOnsiteTableColumn;
-        }
-
-        public Date getDateEndOnsiteTableColumn() {
-            return dateEndOnsiteTableColumn;
-        }
-
-        public void setDateEndOnsiteTableColumn(Date dateEndOnsiteTableColumn) {
-            this.dateEndOnsiteTableColumn = dateEndOnsiteTableColumn;
-        }
-
-        public Date getDayOccurOnsiteTableColumn() {
-            return dayOccurOnsiteTableColumn;
-        }
-
-        public void setDayOccurOnsiteTableColumn(Date dayOccurOnsiteTableColumn) {
-            this.dayOccurOnsiteTableColumn = dayOccurOnsiteTableColumn;
-        }
-
-        public Date getDateCreateOnsiteTableColumn() {
-            return dateCreateOnsiteTableColumn;
-        }
-
-        public void setDateCreateOnsiteTableColumn(Date dateCreateOnsiteTableColumn) {
-            this.dateCreateOnsiteTableColumn = dateCreateOnsiteTableColumn;
-        }
 
         int courseIdOnsiteTableColumn;
 
@@ -415,10 +481,47 @@ public class Controller implements Initializable {
         }
         public OnsiteTableView(){}
 
+        public OnsiteTableView(int courseIdOnsiteTableColumn) {
+            this.courseIdOnsiteTableColumn = courseIdOnsiteTableColumn;
+        }
+
         int onsiteCourseIdOnsiteTableColumn;
         int lessonQuantityOnsiteTableColumn;
         String courseDescriptionOnsiteTableColumn, courseNameOnsiteTableColumn;
-        Date dateStartOnsiteTableColumn, dateEndOnsiteTableColumn, dayOccurOnsiteTableColumn, dateCreateOnsiteTableColumn;
+
+        public LocalDate getDateStartOnsiteTableColumn() {
+            return dateStartOnsiteTableColumn;
+        }
+
+        public void setDateStartOnsiteTableColumn(LocalDate dateStartOnsiteTableColumn) {
+            this.dateStartOnsiteTableColumn = dateStartOnsiteTableColumn;
+        }
+
+        public LocalDate getDateEndOnsiteTableColumn() {
+            return dateEndOnsiteTableColumn;
+        }
+
+        public void setDateEndOnsiteTableColumn(LocalDate dateEndOnsiteTableColumn) {
+            this.dateEndOnsiteTableColumn = dateEndOnsiteTableColumn;
+        }
+
+        public LocalDate getDayOccurOnsiteTableColumn() {
+            return dayOccurOnsiteTableColumn;
+        }
+
+        public void setDayOccurOnsiteTableColumn(LocalDate dayOccurOnsiteTableColumn) {
+            this.dayOccurOnsiteTableColumn = dayOccurOnsiteTableColumn;
+        }
+
+        public LocalDate getDateCreateOnsiteTableColumn() {
+            return dateCreateOnsiteTableColumn;
+        }
+
+        public void setDateCreateOnsiteTableColumn(LocalDate dateCreateOnsiteTableColumn) {
+            this.dateCreateOnsiteTableColumn = dateCreateOnsiteTableColumn;
+        }
+
+        LocalDate dateStartOnsiteTableColumn, dateEndOnsiteTableColumn, dayOccurOnsiteTableColumn, dateCreateOnsiteTableColumn;
     }
 
 }
