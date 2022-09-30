@@ -1,13 +1,38 @@
 package QuanLiKhoaHoc.DTO;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Course {
     int CourseId;
     String CourseName, CourseDescription, CourseImage;
-    Date DateStart, DateEnd, DateCreate;
+    LocalDate DateStart, DateEnd, DateCreate;
 
-    public Course(int courseId, String courseName, String courseDescription,Date dateCreate , Date dateStart, Date dateEnd,String courseImage) {
+    public LocalDate getDateStart() {
+        return DateStart;
+    }
+
+    public void setDateStart(LocalDate dateStart) {
+        DateStart = dateStart;
+    }
+
+    public LocalDate getDateEnd() {
+        return DateEnd;
+    }
+
+    public void setDateEnd(LocalDate dateEnd) {
+        DateEnd = dateEnd;
+    }
+
+    public LocalDate getDateCreate() {
+        return DateCreate;
+    }
+
+    public void setDateCreate(LocalDate dateCreate) {
+        DateCreate = dateCreate;
+    }
+
+    public Course(int courseId, String courseName, String courseDescription, LocalDate dateCreate , LocalDate dateStart, LocalDate dateEnd, String courseImage) {
         CourseId = courseId;
         CourseName = courseName;
         CourseDescription = courseDescription;
@@ -16,6 +41,10 @@ public class Course {
         DateCreate = dateCreate;
         CourseImage = courseImage;
 
+    }
+
+
+    public Course(String courseName, String courseDesc, java.util.Date dateCreate, java.util.Date dateStart, java.util.Date dateEnd, Object courseImage) {
     }
 
     public int getCourseId() {
@@ -42,29 +71,7 @@ public class Course {
         CourseDescription = courseDescription;
     }
 
-    public Date getDateStart() {
-        return DateStart;
-    }
 
-    public void setDateStart(Date dateStart) {
-        DateStart = dateStart;
-    }
-
-    public Date getDateEnd() {
-        return DateEnd;
-    }
-
-    public void setDateEnd(Date dateEnd) {
-        DateEnd = dateEnd;
-    }
-
-    public Date getDateCreate() {
-        return DateCreate;
-    }
-
-    public void setDateCreate(Date dateCreate) {
-        DateCreate = dateCreate;
-    }
 
     public String getCourseImage() {
         return CourseImage;

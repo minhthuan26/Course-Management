@@ -1,13 +1,14 @@
 package QuanLiKhoaHoc.DTO;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class OnlineCourse extends Course{
     int OnlineCourseId;
     String CourseUrl;
 
 
-    public OnlineCourse(int courseId, String courseName, String courseDescription, Date dateCreate, Date dateStart, Date dateEnd, String courseImage, int onlineCourseId, String courseUrl) {
+    public OnlineCourse(int courseId, String courseName, String courseDescription, LocalDate dateCreate, LocalDate dateStart, LocalDate dateEnd, String courseImage, int onlineCourseId, String courseUrl) {
         super(courseId, courseName, courseDescription,dateCreate , dateStart, dateEnd,courseImage );
 
         OnlineCourseId = onlineCourseId;

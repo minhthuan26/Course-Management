@@ -91,7 +91,7 @@ public class ResultDAL {
                                 resultSet.getInt(3),
                                 resultSet.getTime(4),
                                 resultSet.getTime(5),
-                                resultSet.getDate(6),
+                                resultSet.getDate(6).toLocalDate(),
                                 resultSet.getInt(7)
                         );
                         onsiteCourseList.add(onsiteCourse);
@@ -147,9 +147,9 @@ public class ResultDAL {
                             resultSet.getInt("CourseID"),
                             resultSet.getString("CourseName"),
                             resultSet.getString("CourseDescription"),
-                            resultSet.getDate("DateEnd"),
-                            resultSet.getDate("DateCreate"),
-                            resultSet.getDate("DateStart"),
+                            resultSet.getDate("DateEnd").toLocalDate(),
+                            resultSet.getDate("DateCreate").toLocalDate(),
+                            resultSet.getDate("DateStart").toLocalDate(),
                             resultSet.getString("CourseImage")
                     );
                     CourseList.add(course);

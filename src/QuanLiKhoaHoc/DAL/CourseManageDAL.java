@@ -1,5 +1,6 @@
 package QuanLiKhoaHoc.DAL;
 
+import QuanLiKhoaHoc.DTO.Assignment;
 import QuanLiKhoaHoc.DTO.Course;
 import QuanLiKhoaHoc.DTO.OnlineCourse;
 import QuanLiKhoaHoc.DTO.OnsiteCourse;
@@ -7,8 +8,11 @@ import QuanLiKhoaHoc.GUI.CourseManage.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDate;
 
 public class CourseManageDAL {
     ConnectDB connect = new ConnectDB();
@@ -24,9 +28,9 @@ public class CourseManageDAL {
                             resultSet.getInt(1),
                             resultSet.getString(2),
                             resultSet.getString(3),
-                            resultSet.getDate(4),
-                            resultSet.getDate(5),
-                            resultSet.getDate(6),
+                            resultSet.getDate(4).toLocalDate(),
+                            resultSet.getDate(5).toLocalDate(),
+                            resultSet.getDate(6).toLocalDate(),
                             resultSet.getString(7)
                             );
                     courseList.add(course);
@@ -92,7 +96,7 @@ public class CourseManageDAL {
                                 resultSet.getInt(3),
                                 resultSet.getTime(4),
                                 resultSet.getTime(5),
-                                resultSet.getDate(6),
+                                resultSet.getDate(6).toLocalDate(),
                                 resultSet.getInt(7)
                         );
                         onsiteCourseList.add(onsiteCourse);
@@ -105,28 +109,56 @@ public class CourseManageDAL {
         return onsiteCourseList;
     }
 //Them khoa hoc moi
-    public Course addCourse(Course course) throws Exception {
-        String query = "Insert into Course value (";
-        query = query + "'"+ course.getCourseId()+"'";
-        query = query +"," +"'"+ course.getCourseName()+"'";
-        query = query + "," + "'" + course.getCourseDescription()+"'";
-        query = query +"," +"'"+ course.getDateStart()+"'";
-        query = query +"," +"'"+ course.getDateEnd()+"'";
-        query = query +"," +"'"+ course.getDateCreate()+"'";
-        query = query +"";
-        query = query +")";
-        connect.getConnect();
-        connect.ExecuteUpdate(query);
-        System.out.println(query);
-        connect.closeConnect();
-        return course;
+    public  Course addCourse(String name, String desc, LocalDate datecre, LocalDate start, LocalDate end) {
+        Course course = getCourseByName(name);
+        if (course==null) {
+            String query = "Insert into Course values('" +
+                    name + "', '" +
+                    desc + "', '" +
+                    datecre + "', '" +
+                    start + "', '" +
+                    end + "', " +
+                    "''"+ ")";
+            int result = 0;
+            try {
+                result = connect.ExecuteUpdate(query);
+                if (result == 0) return null;
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return getCourseByName(name);
+        }
+        return null;
     }
 
+    public Course addOnlineCourse (int courseId, String url){
+        String query = "Insert into OnlineCourse values("+
+                courseId+",'" + url+"')";
+        int result = 0;
+        try{
+            result = connect.ExecuteUpdate(query);
+            if (result==0) return null;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return getCourseById(courseId);
+    }
 
-
-    public  void addOnlineCourse(Course onlineCourse) throws Exception {
-         onlineCourse = addCourse(onlineCourse);
-         String query = "Insert into OnlineCourse value (";
+    public Course addOnsiteCourse (int courseId, int lessonQuan, LocalDate occur){
+        Time start = new Time(1,1,1);
+        Time end = new Time(6,6,6);
+        String query = "Insert into OnsiteCourse values("+
+                courseId+","+1+",'"+start  +"','"+end + "','" + occur+"','"+lessonQuan+"')";
+        int result = 0;
+        try{
+            result = connect.ExecuteUpdate(query);
+            if (result==0) return null;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return getCourseById(courseId);
     }
 //Sua Khoa Hoc
 
@@ -145,42 +177,114 @@ public class CourseManageDAL {
         connect.closeConnect();
     }
 
-    public Course deleteCourse(Course course) throws Exception {
-        String query = "Delete from Course Where CourseId='" + course.getCourseId() +"'";
-        connect.getConnect();
-        connect.ExecuteUpdate(query);
-        System.out.println(query);
-        connect.closeConnect();
+
+
+    public Course getCourseByName(String name){
+        String query = "select * from Course where CourseName='" + name+"'";
+        try{
+            ResultSet resultSet = connect.excuteQuery(query);
+            while(resultSet.next()){
+                return new Course(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getDate(4).toLocalDate(),
+                        resultSet.getDate(5).toLocalDate(),
+                        resultSet.getDate(6).toLocalDate(),
+                        resultSet.getString(7)
+                );
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public Course getCourseById(int courseId){
+        String query = "select * from Course where CourseId=" + courseId;
+        try{
+            ResultSet resultSet = connect.excuteQuery(query);
+            while(resultSet.next()){
+                return new Course(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getDate(4).toLocalDate(),
+                        resultSet.getDate(5).toLocalDate(),
+                        resultSet.getDate(6).toLocalDate(),
+                        resultSet.getString(7)
+                );
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Course deleteOnlineCourseTest(int courseId){
+        String query = "Delete from OnlineCourse Where CourseId= "+courseId;
+        int result = 0;
+        try {
+            result = connect.ExecuteUpdate(query);
+            if (result==0) return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Course course = getCourseById(courseId);
         return course;
     }
-    public OnlineCourse deleteOnlineCourse(OnlineCourse onlineCourse) throws Exception {
-        String query = "Delete from OnlineCourse Where OnlineCourseId= "+ onlineCourse.getOnlineCourseId() ;
-        connect.getConnect();
-        connect.ExecuteUpdate(query);
-        connect.closeConnect();
-        return onlineCourse;
-    }
-    public Controller.OnlineTableView deleteOnlineCourseTest(Controller.OnlineTableView onlineTableView){
-        String query = "Delete from OnlineCourse Where OnlineCourseId= "+ onlineTableView.getOnlineCourseIdOnlineTableColumn()
-                + " and CourseId= "+onlineTableView.getCourseIdOnlineTableColumn();
 
+    public Assignment getIdAssignment(int id){
+        String query = "Select * from Assignment Where CourseId = " + id;
+
+            try {
+                ResultSet resultSet = connect.excuteQuery(query);
+                while (resultSet.next()){
+                    return new Assignment(
+                            resultSet.getInt(1),
+                            resultSet.getInt(2)
+                    );
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+
+        return null;
+    }
+
+    public Course deleteOnsiteCourseTest(int courseId){
+        String query = "Delete from OnsiteCourse Where CourseId= "+courseId;
+        int result = 0;
         try {
-            connect.ExecuteUpdate(query);
+            result = connect.ExecuteUpdate(query);
+            if (result==0) return null;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return onlineTableView;
+        Course course = getCourseById(courseId);
+        return course;
     }
-
-    public Controller.OnsiteTableView deleteOnsiteCourseTest(Controller.OnsiteTableView onsiteTableView){
-        String query = "Delete from OnsiteCourse Where OnsiteCourseId= "+ onsiteTableView.getOnsiteCourseIdOnsiteTableColumn()
-                + " and CourseId= "+onsiteTableView.getCourseIdOnsiteTableColumn();
-
+    public Course deleteCourseOnline(Course course){
+        String query = "Delete from Course Where CourseId="+course.getCourseId();
+        int result=0;
         try {
-            connect.ExecuteUpdate(query);
+            result = connect.ExecuteUpdate(query);
+            if (result == 0){return null;}
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return onsiteTableView;
+        return course;
+    }
+    public Course deleteCourseOnsite(Course course){
+        String query = "Delete from Course Where CourseId="+course.getCourseId();
+        int result=0;
+        try {
+            result = connect.ExecuteUpdate(query);
+            if (result == 0){return null;}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return course;
     }
 }
