@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.Date;
 
-public class TeacherBUS {
+public class TeacherBus {
     public TeacherManageDAL teacherManageDAL = new TeacherManageDAL();
     public ObservableList<Person> teacherList;
 

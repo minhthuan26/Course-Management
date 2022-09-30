@@ -1,6 +1,6 @@
 package QuanLiKhoaHoc.GUI.TeacherManage;
 
-import QuanLiKhoaHoc.BUS.TeacherManage.TeacherBUS;
+import QuanLiKhoaHoc.BUS.TeacherManage.TeacherBus;
 import QuanLiKhoaHoc.DTO.Person;
 import QuanLiKhoaHoc.DTO.PersonRole;
 import javafx.event.ActionEvent;
@@ -17,7 +17,7 @@ import java.sql.Date;
 import java.util.ResourceBundle;
 
 public class addTeacherController implements Initializable {
-    public TeacherBUS teacherBUS = new TeacherBUS();
+    public TeacherBus teacherBUS = new TeacherBus();
     public Stage primaryStage;
     @FXML
     private TextField txtFirstName;

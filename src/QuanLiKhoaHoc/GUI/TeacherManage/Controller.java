@@ -1,6 +1,6 @@
 package QuanLiKhoaHoc.GUI.TeacherManage;
 
-import QuanLiKhoaHoc.BUS.TeacherManage.TeacherBUS;
+import QuanLiKhoaHoc.BUS.TeacherManage.TeacherBus;
 import QuanLiKhoaHoc.DTO.Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +23,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
-    public TeacherBUS teacherBus = new TeacherBUS();
+    public TeacherBus teacherBus = new TeacherBus();
     ObservableList<Person> teacherList;
     @FXML
     private TableView<Person> teacherTableView;
