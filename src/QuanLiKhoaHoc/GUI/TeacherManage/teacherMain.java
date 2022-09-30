@@ -1,4 +1,4 @@
-package QuanLiKhoaHoc.GUI.StudentManage;
+package QuanLiKhoaHoc.GUI.TeacherManage;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +11,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.Objects;
 
-
-public class main extends Application {
+public class teacherMain extends Application {
     public static Scene scene;
 
     public static void main(String[] args) {
@@ -21,7 +20,7 @@ public class main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        setRoot("addStudent");
+        setRoot("addTeacher");
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
@@ -29,12 +28,12 @@ public class main extends Application {
     }
 
     public static void setRoot(String name) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(main.class.getResource(name + ".fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(teacherMain.class.getResource(name + ".fxml")));
         scene = new Scene(root);
     }
 
     public static void setStylesheets(String name) throws IOException {
-        scene.getStylesheets().add(Objects.requireNonNull(main.class.getResource(name + ".css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(teacherMain.class.getResource(name + ".css")).toExternalForm());
     }
 
     public static void Test(String string){

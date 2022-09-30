@@ -2,13 +2,32 @@ package QuanLiKhoaHoc.BUS.StudentManage;
 
 import QuanLiKhoaHoc.DAL.StudentManage.StudentManageDAL;
 import QuanLiKhoaHoc.DTO.Person;
+import QuanLiKhoaHoc.DTO.PersonRole;
 import javafx.collections.ObservableList;
 
+import java.sql.Date;
+
 public class StudentBUS {
+
     public StudentManageDAL studentManageDAL = new StudentManageDAL();
     public ObservableList<Person>studentList;
 
     public ObservableList<Person> getStudentList(){
         return studentList= studentManageDAL.getStudentList();
     }
+    // tao studentrole dua tren student
+    public PersonRole addStudentRole(int id){
+        return studentManageDAL.addStudentRole(id);
+    }
+    // goi ham tao student tu DAL
+    public Person addStudent(String FirstName, String LastName, String Email, String PhoneNumber, Date date){
+        return studentManageDAL.addStudent(FirstName,LastName,Email,PhoneNumber,date);
+    }
+    public PersonRole deletePersonRole(int id){
+        return studentManageDAL.deletePersonRole(id);
+    }
+    public Person deletePerson(Person person){
+        return studentManageDAL.deletePerson(person);
+    }
+
 }

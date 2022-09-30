@@ -1,15 +1,30 @@
 package QuanLiKhoaHoc.BUS.TeacherManage;
 
-import QuanLiKhoaHoc.DAL.StudentManage.StudentManageDAL;
 import QuanLiKhoaHoc.DAL.TeacherManage.TeacherManageDAL;
 import QuanLiKhoaHoc.DTO.Person;
+import QuanLiKhoaHoc.DTO.PersonRole;
 import javafx.collections.ObservableList;
 
-public class TeacherBus {
+import java.sql.Date;
+
+public class TeacherBUS {
     public TeacherManageDAL teacherManageDAL = new TeacherManageDAL();
     public ObservableList<Person> teacherList;
 
     public ObservableList<Person> getTeacherList(){
         return teacherList= teacherManageDAL.getTeacherList();
+    }
+    public PersonRole addTeacherRole(int id){
+        return teacherManageDAL.addTeacherRole(id);
+    }
+    // goi ham tao student tu DAL
+    public Person addTeacher(String FirstName, String LastName, String Email, String PhoneNumber, Date date){
+        return teacherManageDAL.addTeacher(FirstName,LastName,Email,PhoneNumber,date);
+    }
+    public PersonRole deletePersonRole(int id){
+        return teacherManageDAL.deletePersonRole(id);
+    }
+    public Person deletePerson(Person person){
+        return teacherManageDAL.deletePerson(person);
     }
 }
