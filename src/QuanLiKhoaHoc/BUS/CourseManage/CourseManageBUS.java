@@ -1,13 +1,12 @@
 package QuanLiKhoaHoc.BUS.CourseManage;
 
-import QuanLiKhoaHoc.DAL.CourseManageDAL;
+import QuanLiKhoaHoc.DAL.CourseManage.CourseManageDAL;
 import QuanLiKhoaHoc.DTO.Assignment;
 import QuanLiKhoaHoc.DTO.Course;
 import QuanLiKhoaHoc.DTO.OnlineCourse;
 import QuanLiKhoaHoc.DTO.OnsiteCourse;
 import javafx.collections.ObservableList;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class CourseManageBUS {

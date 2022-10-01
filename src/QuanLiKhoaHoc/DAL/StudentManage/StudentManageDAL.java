@@ -2,6 +2,7 @@ package QuanLiKhoaHoc.DAL.StudentManage;
 
 import QuanLiKhoaHoc.DAL.ConnectDB;
 import QuanLiKhoaHoc.DTO.Assignment;
+import QuanLiKhoaHoc.DTO.CourseRegister;
 import QuanLiKhoaHoc.DTO.Person;
 import QuanLiKhoaHoc.DTO.PersonRole;
 import javafx.collections.FXCollections;
@@ -146,6 +147,23 @@ public class StudentManageDAL {
             error.printStackTrace();
         }
         return person;
+    }
+    public CourseRegister getPersonFromCourseRegisterByID(int id){
+        String query = "Select * from CourseRegister Where PersonID = " + id;
+
+        try {
+            ResultSet rs = connect.excuteQuery(query);
+            while (rs.next()){
+                return new CourseRegister(
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getInt(3)
+                );
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return null;
     }
 
 }

@@ -1,6 +1,7 @@
 package QuanLiKhoaHoc.DAL.TeacherManage;
 
 import QuanLiKhoaHoc.DAL.ConnectDB;
+import QuanLiKhoaHoc.DTO.Assignment;
 import QuanLiKhoaHoc.DTO.Person;
 import QuanLiKhoaHoc.DTO.PersonRole;
 import javafx.collections.FXCollections;
@@ -142,5 +143,22 @@ public class TeacherManageDAL {
             error.printStackTrace();
         }
         return person;
+    }
+    public Assignment getIdAssignment(int id){
+        String query = "Select * from Assignment Where PersonID = " + id;
+
+        try {
+            ResultSet resultSet = connect.excuteQuery(query);
+            while (resultSet.next()){
+                return new Assignment(
+                        resultSet.getInt(1),
+                        resultSet.getInt(2)
+                );
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
+        return null;
     }
 }
