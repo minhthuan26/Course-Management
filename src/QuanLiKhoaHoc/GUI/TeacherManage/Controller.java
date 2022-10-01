@@ -1,5 +1,6 @@
 package QuanLiKhoaHoc.GUI.TeacherManage;
 import QuanLiKhoaHoc.BUS.TeacherManage.TeacherBus;
+import QuanLiKhoaHoc.DTO.Assignment;
 import QuanLiKhoaHoc.DTO.Person;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -74,12 +75,17 @@ public class Controller implements Initializable {
             public void handle(ActionEvent event) {
                 selectedRow = selectRow();
                 if (selectedRow != null) {
-                    Person person = new Person(selectedRow.getPersonId(), selectedRow.getFirstName(), selectedRow.getLastName(),
-                            selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth(), selectedRow.getPersonImage());
-                    teacherBus.deletePersonRole(selectedRow.getPersonId());
-                    teacherBus.deletePerson(person);
-                    System.out.println("Xóa thành công");
-                    Alert("Thành công", "Xóa giáo viên thành công");
+                    Assignment idOfAssignment= teacherBus.getAssignmenByID(selectedRow.getPersonId());
+                    if (idOfAssignment!=null){
+                        Alert("Looix","Th nay dang duoc phan cong, deo dc xoa");
+                    }else {
+                        Person person = new Person(selectedRow.getPersonId(), selectedRow.getFirstName(), selectedRow.getLastName(),
+                                selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth(), selectedRow.getPersonImage());
+                        teacherBus.deletePersonRole(selectedRow.getPersonId());
+                        teacherBus.deletePerson(person);
+                        System.out.println("Xóa thành công");
+                        Alert("Thành công", "Xóa giáo viên thành công");
+                    }
                 } else {
                     Alert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
                 }

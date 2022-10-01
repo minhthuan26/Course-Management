@@ -1,6 +1,7 @@
 package QuanLiKhoaHoc.BUS.StudentManage;
 
 import QuanLiKhoaHoc.DAL.StudentManage.StudentManageDAL;
+import QuanLiKhoaHoc.DTO.CourseRegister;
 import QuanLiKhoaHoc.DTO.Person;
 import QuanLiKhoaHoc.DTO.PersonRole;
 import javafx.collections.ObservableList;
@@ -29,5 +30,6 @@ public class StudentBUS {
     public Person deletePerson(Person person){
         return studentManageDAL.deletePerson(person);
     }
+    public CourseRegister getPersonFromCourseRegisterByID(int id){return studentManageDAL.getPersonFromCourseRegisterByID(id);}
 
 }

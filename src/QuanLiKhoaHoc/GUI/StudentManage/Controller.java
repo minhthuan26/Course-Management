@@ -2,6 +2,7 @@ package QuanLiKhoaHoc.GUI.StudentManage;
 
 import QuanLiKhoaHoc.BUS.StudentManage.StudentBUS;
 import QuanLiKhoaHoc.DTO.Assignment;
+import QuanLiKhoaHoc.DTO.CourseRegister;
 import QuanLiKhoaHoc.DTO.Person;
 import QuanLiKhoaHoc.DTO.PersonRole;
 import javafx.collections.FXCollections;
@@ -95,12 +96,17 @@ public class Controller implements Initializable {
             public void handle(ActionEvent event) {
                 selectedRow = selectRow();
                 if (selectedRow != null) {
-                    Person person = new Person(selectedRow.getPersonId(), selectedRow.getFirstName(), selectedRow.getLastName(),
-                            selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth(), selectedRow.getPersonImage());
-                    studentBUS.deletePersonRole(selectedRow.getPersonId());
-                    studentBUS.deletePerson(person);
-                    System.out.println("Xóa thành công");
-                    Alert("Thành công", "Xóa sinh viên thành công");
+                    CourseRegister personExist = studentBUS.getPersonFromCourseRegisterByID(selectedRow.getPersonId());
+                    if(personExist==null){
+                        Person person = new Person(selectedRow.getPersonId(), selectedRow.getFirstName(), selectedRow.getLastName(),
+                                selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth(), selectedRow.getPersonImage());
+                        studentBUS.deletePersonRole(selectedRow.getPersonId());
+                        studentBUS.deletePerson(person);
+                        System.out.println("Xóa thành công");
+                        Alert("Thành công", "Xóa sinh viên thành công");
+                    }else {
+                        Alert("Loi","Thang nay da dc cham diem trong 1 lop loz nao do");
+                    }
                 } else {
                     Alert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
                 }

@@ -1,5 +1,6 @@
-package QuanLiKhoaHoc.DAL;
+package QuanLiKhoaHoc.DAL.CourseManage;
 
+import QuanLiKhoaHoc.DAL.ConnectDB;
 import QuanLiKhoaHoc.DTO.Assignment;
 import QuanLiKhoaHoc.DTO.Course;
 import QuanLiKhoaHoc.DTO.OnlineCourse;
