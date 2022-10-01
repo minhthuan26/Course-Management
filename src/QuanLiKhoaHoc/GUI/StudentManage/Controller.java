@@ -45,6 +45,9 @@ public class Controller implements Initializable {
     @FXML
     private Button btnDeleteStudent;
 
+    @FXML
+    private Button btnRefresh;
+
     private static Person selectedRow = null;
 
     public ObservableList<Person> getStudentList() {
@@ -81,6 +84,12 @@ public class Controller implements Initializable {
             }
 
         });
+        btnRefresh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showStudentList();
+            }
+        });
         btnDeleteStudent.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -92,7 +101,6 @@ public class Controller implements Initializable {
                     studentBUS.deletePerson(person);
                     System.out.println("Xóa thành công");
                     Alert("Thành công", "Xóa sinh viên thành công");
-                    showStudentList();
                 } else {
                     Alert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
                 }
