@@ -23,11 +23,6 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     private final AssignmentBUS assignmentBUS = new AssignmentBUS();
-    private ObservableMap<Integer, String> teacherAssignmentList;
-    private ObservableMap<Integer, String> onsiteCourseList;
-    private ObservableMap<Integer, String> onlineCourseList;
-    private ObservableMap<Integer, String> allCourseList;
-    private ObservableMap<Integer, String> allTeacherList;
     private ObservableList<AssignmentTableView> assignmentTableViewList;
     private final ObservableList<String> types = FXCollections.observableArrayList(
             new String("Onsite"),
@@ -78,89 +73,20 @@ public class Controller implements Initializable {
         courseTypeChoiceBtn.setItems(types);
         courseTypeChoiceBtn.getSelectionModel().selectFirst();
         chooseTypeOfCourse();
-        ObservableList<String> teacherNameList = FXCollections.observableArrayList();
-        teacherAssignmentList = getTeacherAssignmentList();
-        for(Map.Entry<Integer, String> teacher : teacherAssignmentList.entrySet()){
-            teacherNameList.add(teacher.getKey() + "_" + teacher.getValue());
-        }
-        teacherChoiceBtn.setItems(teacherNameList);
+
+        teacherChoiceBtn.setItems(assignmentBUS.getTeacherAssignmentListToGUI());
         teacherChoiceBtn.getSelectionModel().select(0);
         showAssignmentList();
     }
 
-    public ObservableMap<Integer, String> getOnsiteList(){
-        AssignmentBUS.allCourseList = assignmentBUS.getAllCourseList();
-        AssignmentBUS.onsiteCourseList = assignmentBUS.getOnsiteCourseList();
-        onsiteCourseList = FXCollections.observableHashMap();
-        for(OnsiteCourse onsiteCourse : AssignmentBUS.onsiteCourseList){
-            for(Course course : AssignmentBUS.allCourseList)
-                if(course.getCourseId() == onsiteCourse.getCourseId()){
-                    onsiteCourseList.put(course.getCourseId(), course.getCourseName());
-                    break;
-                }
-
-        }
-        return onsiteCourseList;
-    }
-
-    public ObservableMap<Integer, String> getOnlineList(){
-        AssignmentBUS.allCourseList = assignmentBUS.getAllCourseList();
-        AssignmentBUS.onlineCourseList = assignmentBUS.getOnlineCourseList();
-        onlineCourseList = FXCollections.observableHashMap();
-        for(OnlineCourse onlineCourse : AssignmentBUS.onlineCourseList){
-            for(Course course : AssignmentBUS.allCourseList)
-                if(course.getCourseId() == onlineCourse.getCourseId()){
-                    onlineCourseList.put(course.getCourseId(), course.getCourseName());
-                    break;
-                }
-
-        }
-        return onlineCourseList;
-    }
-
-    public ObservableMap<Integer, String> getAllCourseList(){
-        AssignmentBUS.allCourseList = assignmentBUS.getAllCourseList();
-        allCourseList = FXCollections.observableHashMap();
-        for(Course course : AssignmentBUS.allCourseList)
-            allCourseList.put(course.getCourseId(), course.getCourseName());
-        return allCourseList;
-    }
-
-    public ObservableMap<Integer, String> getAllTeacherList(){
-        AssignmentBUS.allTeacherList = assignmentBUS.getAllTeacherList();
-        allTeacherList = FXCollections.observableHashMap();
-        for(Person person : AssignmentBUS.allTeacherList)
-            allTeacherList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
-        return allTeacherList;
-    }
-
-    public ObservableMap<Integer, String> getTeacherAssignmentList(){
-        AssignmentBUS.teacherAssignmentList = assignmentBUS.getTeacherAssignmentList();
-        teacherAssignmentList = FXCollections.observableHashMap();
-        for(Person person : AssignmentBUS.teacherAssignmentList){
-            teacherAssignmentList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
-        }
-        return teacherAssignmentList;
-    }
-
-    private void chooseTypeOfCourse(){
+    public void chooseTypeOfCourse(){
 
         if(courseTypeChoiceBtn.getSelectionModel().getSelectedItem().equals("Onsite")){
-            ObservableList<String> onsiteCourseNameList = FXCollections.observableArrayList();
-            onsiteCourseList = getOnsiteList();
-            for(Map.Entry<Integer, String> onsiteCourse : onsiteCourseList.entrySet()){
-                onsiteCourseNameList.add(onsiteCourse.getKey() + "_" + onsiteCourse.getValue());
-            }
-            courseChoiceBtn.setItems(onsiteCourseNameList);
+            courseChoiceBtn.setItems(assignmentBUS.getOnsiteList());
             courseChoiceBtn.getSelectionModel().select(0);
         }
         else{
-            ObservableList<String> onlineCourseNameList = FXCollections.observableArrayList();
-            onlineCourseList = getOnlineList();
-            for(Map.Entry<Integer, String> onlineCourse : onlineCourseList.entrySet()){
-                onlineCourseNameList.add(onlineCourse.getKey() + "_" + onlineCourse.getValue());
-            }
-            courseChoiceBtn.setItems(onlineCourseNameList);
+            courseChoiceBtn.setItems(assignmentBUS.getOnlineList());
             courseChoiceBtn.getSelectionModel().select(0);
         }
     }
@@ -212,7 +138,7 @@ public class Controller implements Initializable {
         cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                selectedRow = selectRow();
+                selectedRow = selectedRow();
                 if(selectedRow != null){
                     Assignment assignment = new Assignment(selectedRow.CourseId, selectedRow.PersonId);
                     if(assignmentBUS.deleteAssignment(assignment) != null){
@@ -242,28 +168,26 @@ public class Controller implements Initializable {
     }
 
     public ObservableList<AssignmentTableView> getAssignmentTableViewList(){
-        AssignmentBUS.assignmentList = assignmentBUS.getAssignmentList();
+        ObservableList<Assignment> assignmentList = assignmentBUS.getAssignmentList();
         assignmentTableViewList = FXCollections.observableArrayList();
-        allCourseList = getAllCourseList();
-        allTeacherList = getAllTeacherList();
-        ObservableMap<Integer, String> allCourseListTmp = allCourseList;
-        ObservableMap<Integer, String> allTeacherListTmp = allTeacherList;
+        ObservableMap<Integer, String> allCourseList = assignmentBUS.getAllCourseListToGUI();
+        ObservableMap<Integer, String> allteacherList = assignmentBUS.getAllTeacherNameAndIdListToGUI();
 
-        for(Assignment assignment : AssignmentBUS.assignmentList){
+        for(Assignment assignment : assignmentList){
             AssignmentTableView assignmentTableView = new AssignmentTableView();
-            for(Map.Entry<Integer, String> course : allCourseListTmp.entrySet()){
+            for(Map.Entry<Integer, String> course : allCourseList.entrySet()){
                 if(assignment.getCourseId() == course.getKey()){
                     assignmentTableView.setCourseId(course.getKey());
                     assignmentTableView.setCourseName(course.getValue());
-                    allCourseListTmp.remove(course.getKey());
+                    allCourseList.remove(course.getKey());
                     break;
                 }
             }
-            for(Map.Entry<Integer, String> teacher : allTeacherListTmp.entrySet()){
+            for(Map.Entry<Integer, String> teacher : allteacherList.entrySet()){
                 if(assignment.getPersonId() == teacher.getKey()){
                     assignmentTableView.setPersonId(teacher.getKey());;
                     assignmentTableView.setPersonName(teacher.getValue());
-                    allTeacherListTmp.remove(teacher.getKey());
+                    allteacherList.remove(teacher.getKey());
                     break;
                 }
             }
@@ -284,7 +208,7 @@ public class Controller implements Initializable {
         return Integer.parseInt(teacherChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
-    public AssignmentTableView selectRow(){
+    public AssignmentTableView selectedRow(){
         if (assignmentTableView.getSelectionModel().getSelectedIndex() < 0)
             return null;
         selectedRow = assignmentTableView.getSelectionModel().getSelectedItem();

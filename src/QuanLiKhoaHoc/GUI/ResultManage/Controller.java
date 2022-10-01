@@ -1,6 +1,5 @@
 package QuanLiKhoaHoc.GUI.ResultManage;
 
-import QuanLiKhoaHoc.BUS.AssignmentManage.AssignmentBUS;
 import QuanLiKhoaHoc.BUS.ResultManage.ResultBUS;
 import QuanLiKhoaHoc.DTO.*;
 import javafx.collections.FXCollections;
@@ -21,15 +20,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static QuanLiKhoaHoc.BUS.AssignmentManage.AssignmentBUS.allTeacherList;
-
 public class Controller implements Initializable {
     private final ResultBUS resultBUS = new ResultBUS();
-    private ObservableMap<Integer, String> studentNoneResultList;
-    private ObservableMap<Integer, String> onsiteCourseList;
-    private ObservableMap<Integer, String> onlineCourseList;
-    private ObservableMap<Integer, String> allCourseList;
-    private ObservableMap<Integer, String> allStudentList;
     private ObservableList<ResultTableView> resultTableViewList;
     private final ObservableList<String> types = FXCollections.observableArrayList(
             new String("Onsite"),
@@ -203,15 +195,6 @@ public class Controller implements Initializable {
         });
     }
 
-    public ObservableMap<Integer, String> getStudentNoneResultList(int courseId){
-        ResultBUS.studentNoneResultList = resultBUS.getStudentNoneResultList(courseId);
-        studentNoneResultList = FXCollections.observableHashMap();
-        for(Person person : ResultBUS.studentNoneResultList){
-            studentNoneResultList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
-        }
-        return studentNoneResultList;
-    }
-
     private int getSelectedCourseId(){
         if(courseChoiceBtn.getSelectionModel().getSelectedItem() == null)
             return -1;
@@ -224,50 +207,21 @@ public class Controller implements Initializable {
         return Integer.parseInt(studentChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
-    private void chooseTypeOfCourse(){
+    public void chooseTypeOfCourse(){
         if(courseTypeChoiceBtn.getSelectionModel().getSelectedItem().equals("Onsite")){
-            ObservableList<String> onsiteCourseNameList = FXCollections.observableArrayList();
-            onsiteCourseList = getOnsiteList();
-            for(Map.Entry<Integer, String> onsiteCourse : onsiteCourseList.entrySet()){
-                onsiteCourseNameList.add(onsiteCourse.getKey() + "_" + onsiteCourse.getValue());
-            }
-            courseChoiceBtn.setItems(onsiteCourseNameList);
+            courseChoiceBtn.setItems(resultBUS.getOnsiteList());
             courseChoiceBtn.getSelectionModel().select(0);
         }
         else{
-            ObservableList<String> onlineCourseNameList = FXCollections.observableArrayList();
-            onlineCourseList = getOnlineList();
-            for(Map.Entry<Integer, String> onlineCourse : onlineCourseList.entrySet()){
-                onlineCourseNameList.add(onlineCourse.getKey() + "_" + onlineCourse.getValue());
-            }
-            courseChoiceBtn.setItems(onlineCourseNameList);
+            courseChoiceBtn.setItems(resultBUS.getOnlineList());
             courseChoiceBtn.getSelectionModel().select(0);
         }
         getStudenNameList();
     }
 
-    private void getStudenNameList(){
-        ObservableList<String> studentNameList = FXCollections.observableArrayList();
-        studentNoneResultList = getStudentNoneResultList(getSelectedCourseId());
-        for(Map.Entry<Integer, String> teacher : studentNoneResultList.entrySet()){
-            studentNameList.add(teacher.getKey() + "_" + teacher.getValue());
-        }
-        studentChoiceBtn.setItems(studentNameList);
+    public void getStudenNameList(){
+        studentChoiceBtn.setItems(resultBUS.getStudentNoneResultListToGUI(getSelectedCourseId()));
         studentChoiceBtn.getSelectionModel().select(0);
-    }
-
-    public ObservableMap<Integer, String> getOnsiteList(){
-        ResultBUS.allCourseList = resultBUS.getAllCourseList();
-        ResultBUS.onsiteCourseList = resultBUS.getOnsiteCourseList();
-        onsiteCourseList = FXCollections.observableHashMap();
-        for(OnsiteCourse onsiteCourse : ResultBUS.onsiteCourseList){
-            for(Course course : ResultBUS.allCourseList)
-                if(course.getCourseId() == onsiteCourse.getCourseId()){
-                    onsiteCourseList.put(course.getCourseId(), course.getCourseName());
-                    break;
-                }
-        }
-        return onsiteCourseList;
     }
 
     public ResultTableView selectRow(){
@@ -277,41 +231,29 @@ public class Controller implements Initializable {
         return selectedRow;
     }
 
-    public ObservableMap<Integer, String> getAllStudentList(){
-        ResultBUS.allStudentList = resultBUS.getAllStudentList();
-        allStudentList = FXCollections.observableHashMap();
-        for(Person person : ResultBUS.allStudentList)
-            allStudentList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
-        return allStudentList;
-    }
-
     public ObservableList<ResultTableView> getResultTableViewList(){
-        ResultBUS.allCourseRegisterList = resultBUS.getAllCourseRegisterList();
+        ObservableList<CourseRegister> allCourseRegisterList = resultBUS.getAllCourseRegisterList();
         resultTableViewList = FXCollections.observableArrayList();
-        allStudentList = getAllStudentList();
-        allCourseList = getAllCourseList();
-        ObservableMap<Integer, String> allStudentListTmp = allStudentList;
-        ObservableMap<Integer, String> allCourseListTmp = allCourseList;
-        for(CourseRegister courseRegister : ResultBUS.allCourseRegisterList){
+        ObservableMap<Integer, String> allStudentList = resultBUS.getAllStudentListToGUI();
+        ObservableMap<Integer, String> allCourseList = resultBUS.getAllCourseListToGUI();
+        for(CourseRegister courseRegister : allCourseRegisterList){
             ResultTableView resultTableView = new ResultTableView();
-            for(Map.Entry<Integer, String> student : allStudentListTmp.entrySet()){
+            for(Map.Entry<Integer, String> student : allStudentList.entrySet()){
                 if(student.getKey() == courseRegister.getPersonId()){
                     resultTableView.setStudentId(student.getKey());
                     resultTableView.setStudentName(student.getValue());
-//                    allStudentListTmp.remove(student.getKey());
                     break;
                 }
             }
-            for(Map.Entry<Integer, String> course : allCourseListTmp.entrySet()){
+            for(Map.Entry<Integer, String> course : allCourseList.entrySet()){
                 if(course.getKey() == courseRegister.getCourseId()){
                     resultTableView.setCourseId(course.getKey());
                     resultTableView.setCourseName(course.getValue());
-//                    allCourseListTmp.remove(course.getKey());
                     break;
                 }
             }
-            CourseResult courseResult = resultBUS.resultDAL.getCourseResultByRegisterId(courseRegister.getRegisterId());
-            ResultDetail resultDetail = resultBUS.resultDAL.getResultDetailByResultId(courseResult.getResultId());
+            CourseResult courseResult = resultBUS.getCourseResultByRegisterId(courseRegister.getRegisterId());
+            ResultDetail resultDetail = resultBUS.getResultDetailByResultId(courseResult.getResultId());
             resultTableView.setScore(resultDetail.getScore());
             resultTableView.setRating(resultDetail.getRating());
             resultTableViewList.add(resultTableView);
@@ -328,28 +270,6 @@ public class Controller implements Initializable {
         scoreTableColumn.setCellValueFactory(new PropertyValueFactory<ResultTableView, Float>("Score"));
         ratingTableColumn.setCellValueFactory(new PropertyValueFactory<ResultTableView, String>("Rating"));
         resultTableView.setItems(resultTableViewList);
-    }
-
-    public ObservableMap<Integer, String> getOnlineList(){
-        ResultBUS.allCourseList = resultBUS.getAllCourseList();
-        ResultBUS.onlineCourseList = resultBUS.getOnlineCourseList();
-        onlineCourseList = FXCollections.observableHashMap();
-        for(OnlineCourse onlineCourse : ResultBUS.onlineCourseList){
-            for(Course course : ResultBUS.allCourseList)
-                if(course.getCourseId() == onlineCourse.getCourseId()){
-                    onlineCourseList.put(course.getCourseId(), course.getCourseName());
-                    break;
-                }
-        }
-        return onlineCourseList;
-    }
-
-    public ObservableMap<Integer, String> getAllCourseList(){
-        ResultBUS.allCourseList = resultBUS.getAllCourseList();
-        allCourseList = FXCollections.observableHashMap();
-        for(Course course : ResultBUS.allCourseList)
-            allCourseList.put(course.getCourseId(), course.getCourseName());
-        return allCourseList;
     }
 
     private void errorAlert(String title, String Message){
