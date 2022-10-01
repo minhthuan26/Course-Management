@@ -1,5 +1,4 @@
 package QuanLiKhoaHoc.GUI.TeacherManage;
-
 import QuanLiKhoaHoc.BUS.TeacherManage.TeacherBus;
 import QuanLiKhoaHoc.DTO.Person;
 import javafx.collections.FXCollections;
@@ -41,8 +40,9 @@ public class Controller implements Initializable {
     private Button btnAddTeacher;
     @FXML
     private Button btnDeleteTeacher;
+    @FXML
+    private Button btnRefresh;
     private static Person selectedRow = null;
-
     public void handle() {
         btnAddTeacher.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -62,6 +62,13 @@ public class Controller implements Initializable {
             }
 
         });
+        btnRefresh.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showTeacherList();
+            }
+        });
+
         btnDeleteTeacher.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -73,7 +80,6 @@ public class Controller implements Initializable {
                     teacherBus.deletePerson(person);
                     System.out.println("Xóa thành công");
                     Alert("Thành công", "Xóa giáo viên thành công");
-                    showTeacherList();
                 } else {
                     Alert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
                 }

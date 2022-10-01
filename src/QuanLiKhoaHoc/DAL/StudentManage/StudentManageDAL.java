@@ -117,6 +117,8 @@ public class StudentManageDAL {
         }
         return null;
     }
+
+    // xoa person role trc khi xoa person
     public PersonRole deletePersonRole(int id){
         int result = 0;
         String query = "delete from PersonRole " +
@@ -131,7 +133,7 @@ public class StudentManageDAL {
         PersonRole personRole = getPersonRoleByIDs(id);
         return personRole;
     }
-
+    // xoa person
     public Person deletePerson(Person person) {
         int result = 0;
         String query = "delete from Person " +
@@ -145,4 +147,5 @@ public class StudentManageDAL {
         }
         return person;
     }
+
 }

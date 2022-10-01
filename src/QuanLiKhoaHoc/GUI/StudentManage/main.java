@@ -37,7 +37,7 @@ public class main extends Application {
         scene.getStylesheets().add(Objects.requireNonNull(main.class.getResource(name + ".css")).toExternalForm());
     }
 
-    public static void Test(String string){
+    public static void Test(String string) {
         System.out.println(string);
     }
 }

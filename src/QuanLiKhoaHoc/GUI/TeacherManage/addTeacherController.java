@@ -1,5 +1,4 @@
 package QuanLiKhoaHoc.GUI.TeacherManage;
-
 import QuanLiKhoaHoc.BUS.TeacherManage.TeacherBus;
 import QuanLiKhoaHoc.DTO.Person;
 import QuanLiKhoaHoc.DTO.PersonRole;
@@ -51,9 +50,8 @@ public class addTeacherController implements Initializable {
     public void alertSuccess(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Thông báo");
-        alert.setContentText("Thêm học sinh thành công!");
+        alert.setContentText("Thêm giáo viên thành công!");
         alert.showAndWait();
-
         primaryStage = (Stage) btnCancel.getScene().getWindow();
         primaryStage.close();
     }
