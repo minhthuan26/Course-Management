@@ -23,12 +23,11 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     private final AssignmentBUS assignmentBUS = new AssignmentBUS();
-    private ObservableList<AssignmentTableView> assignmentTableViewList;
     private final ObservableList<String> types = FXCollections.observableArrayList(
             new String("Onsite"),
             new String("Online")
     );
-    private static AssignmentTableView selectedRow = null;
+    private static AssignmentBUS.AssignmentTableView selectedRow = null;
 
     @FXML
     private ChoiceBox<String> courseTypeChoiceBtn;
@@ -49,19 +48,19 @@ public class Controller implements Initializable {
     private Button cancelBtn;
 
     @FXML
-    private TableView<AssignmentTableView> assignmentTableView;
+    private TableView<AssignmentBUS.AssignmentTableView> assignmentTableView;
 
     @FXML
-    private TableColumn<AssignmentTableView, Integer> courseIdTableColumn;
+    private TableColumn<AssignmentBUS.AssignmentTableView, Integer> courseIdTableColumn;
 
     @FXML
-    private TableColumn<AssignmentTableView, Integer> teacherIdTableColumn;
+    private TableColumn<AssignmentBUS.AssignmentTableView, Integer> teacherIdTableColumn;
 
     @FXML
-    private TableColumn<AssignmentTableView, String> courseNameTableColumn;
+    private TableColumn<AssignmentBUS.AssignmentTableView, String> courseNameTableColumn;
 
     @FXML
-    private TableColumn<AssignmentTableView, String> teacherNameTableColumn;
+    private TableColumn<AssignmentBUS.AssignmentTableView, String> teacherNameTableColumn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
@@ -140,7 +139,7 @@ public class Controller implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 selectedRow = selectedRow();
                 if(selectedRow != null){
-                    Assignment assignment = new Assignment(selectedRow.CourseId, selectedRow.PersonId);
+                    Assignment assignment = new Assignment(selectedRow.getCourseId(), selectedRow.getPersonId());
                     if(assignmentBUS.deleteAssignment(assignment) != null){
                         System.out.println("Huỷ thành công");
                         alert("Thông báo", "Đã huỷ phân công");
@@ -159,41 +158,12 @@ public class Controller implements Initializable {
     }
 
     public void showAssignmentList(){
-        assignmentTableViewList = getAssignmentTableViewList();
-        courseIdTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentTableView, Integer>("CourseId"));
-        teacherIdTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentTableView, Integer>("PersonId"));
-        courseNameTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentTableView, String>("CourseName"));
-        teacherNameTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentTableView, String>("PersonName"));
+        ObservableList<AssignmentBUS.AssignmentTableView> assignmentTableViewList = assignmentBUS.getAssignmentTableViewList();
+        courseIdTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentBUS.AssignmentTableView, Integer>("CourseId"));
+        teacherIdTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentBUS.AssignmentTableView, Integer>("PersonId"));
+        courseNameTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentBUS.AssignmentTableView, String>("CourseName"));
+        teacherNameTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentBUS.AssignmentTableView, String>("PersonName"));
         assignmentTableView.setItems(assignmentTableViewList);
-    }
-
-    public ObservableList<AssignmentTableView> getAssignmentTableViewList(){
-        ObservableList<Assignment> assignmentList = assignmentBUS.getAssignmentList();
-        assignmentTableViewList = FXCollections.observableArrayList();
-        ObservableMap<Integer, String> allCourseList = assignmentBUS.getAllCourseListToGUI();
-        ObservableMap<Integer, String> allteacherList = assignmentBUS.getAllTeacherNameAndIdListToGUI();
-
-        for(Assignment assignment : assignmentList){
-            AssignmentTableView assignmentTableView = new AssignmentTableView();
-            for(Map.Entry<Integer, String> course : allCourseList.entrySet()){
-                if(assignment.getCourseId() == course.getKey()){
-                    assignmentTableView.setCourseId(course.getKey());
-                    assignmentTableView.setCourseName(course.getValue());
-                    allCourseList.remove(course.getKey());
-                    break;
-                }
-            }
-            for(Map.Entry<Integer, String> teacher : allteacherList.entrySet()){
-                if(assignment.getPersonId() == teacher.getKey()){
-                    assignmentTableView.setPersonId(teacher.getKey());;
-                    assignmentTableView.setPersonName(teacher.getValue());
-                    allteacherList.remove(teacher.getKey());
-                    break;
-                }
-            }
-            assignmentTableViewList.add(assignmentTableView);
-        }
-        return assignmentTableViewList;
     }
 
     private int getSelectedCourseId(){
@@ -208,7 +178,7 @@ public class Controller implements Initializable {
         return Integer.parseInt(teacherChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
-    public AssignmentTableView selectedRow(){
+    public AssignmentBUS.AssignmentTableView selectedRow(){
         if (assignmentTableView.getSelectionModel().getSelectedIndex() < 0)
             return null;
         selectedRow = assignmentTableView.getSelectionModel().getSelectedItem();
@@ -244,52 +214,5 @@ public class Controller implements Initializable {
         ButtonType okBtn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         alert.getButtonTypes().setAll(okBtn);
         alert.show();
-    }
-
-    public static class AssignmentTableView{
-        private int CourseId, PersonId;
-        private String CourseName, PersonName;
-
-        public int getCourseId() {
-            return CourseId;
-        }
-
-        public void setCourseId(int courseId) {
-            CourseId = courseId;
-        }
-
-        public int getPersonId() {
-            return PersonId;
-        }
-
-        public void setPersonId(int personId) {
-            PersonId = personId;
-        }
-
-        public String getCourseName() {
-            return CourseName;
-        }
-
-        public void setCourseName(String courseName) {
-            CourseName = courseName;
-        }
-
-        public String getPersonName() {
-            return PersonName;
-        }
-
-        public void setPersonName(String personName) {
-            PersonName = personName;
-        }
-
-        @Override
-        public String toString() {
-            return "AssignmentTableView{" +
-                    "CourseId=" + CourseId +
-                    ", PersonId=" + PersonId +
-                    ", CourseName='" + CourseName + '\'' +
-                    ", PersonName='" + PersonName + '\'' +
-                    '}';
-        }
     }
 }

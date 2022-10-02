@@ -328,4 +328,49 @@ public class ResultDAL {
         return resultDetail;
     }
 
+    public Course getCourseById(int courseId){
+        String query = "select * from Course where CourseId=" + courseId;
+        try{
+            ResultSet resultSet = connect.excuteQuery(query);
+            while(resultSet.next()){
+                return new Course(
+                        resultSet.getInt("CourseID"),
+                        resultSet.getString("CourseName"),
+                        resultSet.getString("CourseDescription"),
+                        resultSet.getDate("DateEnd").toLocalDate(),
+                        resultSet.getDate("DateCreate").toLocalDate(),
+                        resultSet.getDate("DateStart").toLocalDate(),
+                        resultSet.getString("CourseImage")
+                );
+            }
+        }
+        catch (Exception error){
+            error.printStackTrace();
+        }
+        return null;
+    }
+
+    public Person getStudentById(int studentId){
+        String query = "select * from Person " +
+                "where PersonId=" + studentId;
+        try{
+            ResultSet resultSet = connect.excuteQuery(query);
+            while(resultSet.next()){
+                return new Person(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getDate(6),
+                        resultSet.getString(7)
+                );
+            }
+        }
+        catch (Exception error){
+            error.printStackTrace();
+        }
+        return null;
+    }
+
 }

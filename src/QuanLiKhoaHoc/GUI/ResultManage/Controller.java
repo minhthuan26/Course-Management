@@ -4,7 +4,6 @@ import QuanLiKhoaHoc.BUS.ResultManage.ResultBUS;
 import QuanLiKhoaHoc.DTO.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,19 +15,22 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.net.URL;
-import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     private final ResultBUS resultBUS = new ResultBUS();
-    private ObservableList<ResultTableView> resultTableViewList;
-    private final ObservableList<String> types = FXCollections.observableArrayList(
+    private final ObservableList<String> courseTypes = FXCollections.observableArrayList(
             new String("Onsite"),
             new String("Online")
     );
+    private final ObservableList<String> searchTypes = FXCollections.observableArrayList(
+            new String("Khoá học"),
+            new String("Học viên")
+    );
 
-    private static ResultTableView selectedRow = null;
+
+    private static ResultBUS.ResultTableView selectedRow = null;
 
     @FXML
     private ChoiceBox<String> courseTypeChoiceBtn;
@@ -40,6 +42,12 @@ public class Controller implements Initializable {
     private ChoiceBox<String> studentChoiceBtn;
 
     @FXML
+    private ChoiceBox<String> searchTypeChoiceBtn;
+
+    @FXML
+    private ChoiceBox<String> searchValueChoiceBtn;
+
+    @FXML
     private Button setScoreBtn;
 
     @FXML
@@ -49,28 +57,31 @@ public class Controller implements Initializable {
     private Button cancelBtn;
 
     @FXML
+    private Button searchBtn;
+
+    @FXML
     private Spinner<Double> scoreSpinner;
 
     @FXML
-    private TableView<ResultTableView> resultTableView;
+    private TableView<ResultBUS.ResultTableView> resultTableView;
 
     @FXML
-    private TableColumn<ResultTableView, Integer> courseIdTableColumn;
+    private TableColumn<ResultBUS.ResultTableView, Integer> courseIdTableColumn;
 
     @FXML
-    private TableColumn<ResultTableView, Integer> studentIdTableColumn;
+    private TableColumn<ResultBUS.ResultTableView, Integer> studentIdTableColumn;
 
     @FXML
-    private TableColumn<ResultTableView, String> courseNameTableColumn;
+    private TableColumn<ResultBUS.ResultTableView, String> courseNameTableColumn;
 
     @FXML
-    private TableColumn<ResultTableView, String> studentNameTableColumn;
+    private TableColumn<ResultBUS.ResultTableView, String> studentNameTableColumn;
 
     @FXML
-    private TableColumn<ResultTableView, Float> scoreTableColumn;
+    private TableColumn<ResultBUS.ResultTableView, Float> scoreTableColumn;
 
     @FXML
-    private TableColumn<ResultTableView, String> ratingTableColumn;
+    private TableColumn<ResultBUS.ResultTableView, String> ratingTableColumn;
     
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
@@ -79,11 +90,14 @@ public class Controller implements Initializable {
     }
 
     public void setDefault(){
-        courseTypeChoiceBtn.setItems(types);
+        courseTypeChoiceBtn.setItems(courseTypes);
         courseTypeChoiceBtn.getSelectionModel().selectFirst();
+        searchTypeChoiceBtn.setItems(searchTypes);
+        searchTypeChoiceBtn.getSelectionModel().selectFirst();
         chooseTypeOfCourse();
+        chooseTypeOfSearch();
         scoreSpinner.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0, 10, 0));
-        showAssignmentList();
+        showResultList(resultBUS.getResultTableViewList());
     }
 
     public void Handle(){
@@ -91,6 +105,13 @@ public class Controller implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 chooseTypeOfCourse();
+            }
+        });
+
+        searchTypeChoiceBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                chooseTypeOfSearch();
             }
         });
 
@@ -193,18 +214,39 @@ public class Controller implements Initializable {
                     errorAlert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
             }
         });
+
+        searchBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                int searchValue = getSelectedSearchValue();
+                if(searchValue > 0){
+                    if(searchTypeChoiceBtn.getSelectionModel().getSelectedItem().equals("Khoá học")){
+                        showResultList(resultBUS.getSearchResultByCourse(getSelectedSearchValue()));
+                    }
+                    else{
+                        showResultList(resultBUS.getSearchResultByStudent(getSelectedSearchValue()));
+                    }
+                }
+            }
+        });
     }
 
-    private int getSelectedCourseId(){
+    public int getSelectedCourseId(){
         if(courseChoiceBtn.getSelectionModel().getSelectedItem() == null)
             return -1;
         return Integer.parseInt(courseChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
-    private int getSelectedStudentId(){
+    public int getSelectedStudentId(){
         if(studentChoiceBtn.getSelectionModel().getSelectedItem() == null)
             return -1;
         return Integer.parseInt(studentChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
+    }
+
+    public int getSelectedSearchValue(){
+        if(searchValueChoiceBtn.getSelectionModel().getSelectedItem() == null)
+            return -1;
+        return Integer.parseInt(searchValueChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
     public void chooseTypeOfCourse(){
@@ -219,56 +261,36 @@ public class Controller implements Initializable {
         getStudenNameList();
     }
 
+    public void chooseTypeOfSearch(){
+        if(searchTypeChoiceBtn.getSelectionModel().getSelectedItem().equals("Khoá học")){
+            searchValueChoiceBtn.setItems(resultBUS.getAllCourseListToGUI());
+            searchValueChoiceBtn.getSelectionModel().select(0);
+        }
+        else{
+            searchValueChoiceBtn.setItems(resultBUS.getAllStudentListToGUI());
+            searchValueChoiceBtn.getSelectionModel().select(0);
+        }
+    }
+
     public void getStudenNameList(){
         studentChoiceBtn.setItems(resultBUS.getStudentNoneResultListToGUI(getSelectedCourseId()));
         studentChoiceBtn.getSelectionModel().select(0);
     }
 
-    public ResultTableView selectRow(){
+    public ResultBUS.ResultTableView selectRow(){
         if (resultTableView.getSelectionModel().getSelectedIndex() < 0)
             return null;
         selectedRow = resultTableView.getSelectionModel().getSelectedItem();
         return selectedRow;
     }
 
-    public ObservableList<ResultTableView> getResultTableViewList(){
-        ObservableList<CourseRegister> allCourseRegisterList = resultBUS.getAllCourseRegisterList();
-        resultTableViewList = FXCollections.observableArrayList();
-        ObservableMap<Integer, String> allStudentList = resultBUS.getAllStudentListToGUI();
-        ObservableMap<Integer, String> allCourseList = resultBUS.getAllCourseListToGUI();
-        for(CourseRegister courseRegister : allCourseRegisterList){
-            ResultTableView resultTableView = new ResultTableView();
-            for(Map.Entry<Integer, String> student : allStudentList.entrySet()){
-                if(student.getKey() == courseRegister.getPersonId()){
-                    resultTableView.setStudentId(student.getKey());
-                    resultTableView.setStudentName(student.getValue());
-                    break;
-                }
-            }
-            for(Map.Entry<Integer, String> course : allCourseList.entrySet()){
-                if(course.getKey() == courseRegister.getCourseId()){
-                    resultTableView.setCourseId(course.getKey());
-                    resultTableView.setCourseName(course.getValue());
-                    break;
-                }
-            }
-            CourseResult courseResult = resultBUS.getCourseResultByRegisterId(courseRegister.getRegisterId());
-            ResultDetail resultDetail = resultBUS.getResultDetailByResultId(courseResult.getResultId());
-            resultTableView.setScore(resultDetail.getScore());
-            resultTableView.setRating(resultDetail.getRating());
-            resultTableViewList.add(resultTableView);
-        }
-        return resultTableViewList;
-    }
-
-    public void showAssignmentList(){
-        resultTableViewList = getResultTableViewList();
-        courseIdTableColumn.setCellValueFactory(new PropertyValueFactory<ResultTableView, Integer>("CourseId"));
-        studentIdTableColumn.setCellValueFactory(new PropertyValueFactory<ResultTableView, Integer>("StudentId"));
-        courseNameTableColumn.setCellValueFactory(new PropertyValueFactory<ResultTableView, String>("CourseName"));
-        studentNameTableColumn.setCellValueFactory(new PropertyValueFactory<ResultTableView, String>("StudentName"));
-        scoreTableColumn.setCellValueFactory(new PropertyValueFactory<ResultTableView, Float>("Score"));
-        ratingTableColumn.setCellValueFactory(new PropertyValueFactory<ResultTableView, String>("Rating"));
+    public void showResultList(ObservableList<ResultBUS.ResultTableView> resultTableViewList){
+        courseIdTableColumn.setCellValueFactory(new PropertyValueFactory<ResultBUS.ResultTableView, Integer>("CourseId"));
+        studentIdTableColumn.setCellValueFactory(new PropertyValueFactory<ResultBUS.ResultTableView, Integer>("StudentId"));
+        courseNameTableColumn.setCellValueFactory(new PropertyValueFactory<ResultBUS.ResultTableView, String>("CourseName"));
+        studentNameTableColumn.setCellValueFactory(new PropertyValueFactory<ResultBUS.ResultTableView, String>("StudentName"));
+        scoreTableColumn.setCellValueFactory(new PropertyValueFactory<ResultBUS.ResultTableView, Float>("Score"));
+        ratingTableColumn.setCellValueFactory(new PropertyValueFactory<ResultBUS.ResultTableView, String>("Rating"));
         resultTableView.setItems(resultTableViewList);
     }
 
@@ -301,71 +323,5 @@ public class Controller implements Initializable {
         ButtonType okBtn = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         alert.getButtonTypes().setAll(okBtn);
         alert.show();
-    }
-
-    public static class ResultTableView{
-        private int CourseId, StudentId;
-        private String CourseName, StudentName, Rating;
-        private float Score;
-
-        public int getCourseId() {
-            return CourseId;
-        }
-
-        public void setCourseId(int courseId) {
-            CourseId = courseId;
-        }
-
-        public int getStudentId() {
-            return StudentId;
-        }
-
-        public void setStudentId(int studentId) {
-            StudentId = studentId;
-        }
-
-        public String getCourseName() {
-            return CourseName;
-        }
-
-        public void setCourseName(String courseName) {
-            CourseName = courseName;
-        }
-
-        public String getStudentName() {
-            return StudentName;
-        }
-
-        public void setStudentName(String studentName) {
-            StudentName = studentName;
-        }
-
-        public String getRating() {
-            return Rating;
-        }
-
-        public void setRating(String rating) {
-            Rating = rating;
-        }
-
-        public float getScore() {
-            return Score;
-        }
-
-        public void setScore(float score) {
-            Score = score;
-        }
-
-        @Override
-        public String toString() {
-            return "ResultTableView{" +
-                    "CourseId=" + CourseId +
-                    ", StudentId=" + StudentId +
-                    ", CourseName='" + CourseName + '\'' +
-                    ", StudentName='" + StudentName + '\'' +
-                    ", Rating='" + Rating + '\'' +
-                    ", Score=" + Score +
-                    '}';
-        }
     }
 }

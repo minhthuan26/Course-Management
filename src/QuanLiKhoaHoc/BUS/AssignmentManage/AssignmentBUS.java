@@ -49,8 +49,8 @@ public class AssignmentBUS {
     }
 
     public ObservableList<String> getOnsiteList(){
-        allCourseList = getAllCourseList();
-        onsiteCourseList = getOnsiteCourseList();
+        getAllCourseList();
+        getOnsiteCourseList();
         ObservableMap<Integer, String> onsiteCourseNameAndIdList = FXCollections.observableHashMap();
         for(OnsiteCourse onsiteCourse : onsiteCourseList){
             for(Course course : allCourseList)
@@ -68,8 +68,8 @@ public class AssignmentBUS {
     }
 
     public ObservableList<String> getOnlineList(){
-        allCourseList = getAllCourseList();
-        onlineCourseList = getOnlineCourseList();
+        getAllCourseList();
+        getOnlineCourseList();
         ObservableMap<Integer, String> onlineCourseNameAndIdList = FXCollections.observableHashMap();
         for(OnlineCourse onlineCourse : onlineCourseList){
             for(Course course : allCourseList)
@@ -86,7 +86,7 @@ public class AssignmentBUS {
     }
 
     public ObservableMap<Integer, String> getAllCourseListToGUI(){
-        allCourseList = getAllCourseList();
+        getAllCourseList();
         ObservableMap<Integer, String> allCourseListToGUI = FXCollections.observableHashMap();
         for(Course course : allCourseList)
             allCourseListToGUI.put(course.getCourseId(), course.getCourseName());
@@ -94,7 +94,7 @@ public class AssignmentBUS {
     }
 
     public ObservableMap<Integer, String> getAllTeacherNameAndIdListToGUI(){
-        allTeacherList = getAllTeacherList();
+        getAllTeacherList();
         ObservableMap<Integer, String> allTeacherNameAndIdList = FXCollections.observableHashMap();
         for(Person person : allTeacherList)
             allTeacherNameAndIdList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
@@ -102,7 +102,7 @@ public class AssignmentBUS {
     }
 
     public ObservableList<String> getTeacherAssignmentListToGUI(){
-        teacherAssignmentList = getTeacherAssignmentList();
+        getTeacherAssignmentList();
         ObservableMap<Integer, String> teacherAssignmentNameAndIdList = FXCollections.observableHashMap();
         for(Person person : teacherAssignmentList){
             teacherAssignmentNameAndIdList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
@@ -114,4 +114,79 @@ public class AssignmentBUS {
         return teacherNameList;
     }
 
+    public ObservableList<AssignmentTableView> getAssignmentTableViewList(){
+        ObservableList<Assignment> assignmentList = getAssignmentList();
+        ObservableList<AssignmentTableView> assignmentTableViewList = FXCollections.observableArrayList();
+        ObservableMap<Integer, String> allCourseList = getAllCourseListToGUI();
+        ObservableMap<Integer, String> allteacherList = getAllTeacherNameAndIdListToGUI();
+
+        for(Assignment assignment : assignmentList){
+            AssignmentTableView assignmentTableView = new AssignmentTableView();
+            for(Map.Entry<Integer, String> course : allCourseList.entrySet()){
+                if(assignment.getCourseId() == course.getKey()){
+                    assignmentTableView.setCourseId(course.getKey());
+                    assignmentTableView.setCourseName(course.getValue());
+                    allCourseList.remove(course.getKey());
+                    break;
+                }
+            }
+            for(Map.Entry<Integer, String> teacher : allteacherList.entrySet()){
+                if(assignment.getPersonId() == teacher.getKey()){
+                    assignmentTableView.setPersonId(teacher.getKey());
+                    assignmentTableView.setPersonName(teacher.getValue());
+                    allteacherList.remove(teacher.getKey());
+                    break;
+                }
+            }
+            assignmentTableViewList.add(assignmentTableView);
+        }
+        return assignmentTableViewList;
+    }
+
+    public static class AssignmentTableView{
+        private int CourseId, PersonId;
+        private String CourseName, PersonName;
+
+        public int getCourseId() {
+            return CourseId;
+        }
+
+        public void setCourseId(int courseId) {
+            CourseId = courseId;
+        }
+
+        public int getPersonId() {
+            return PersonId;
+        }
+
+        public void setPersonId(int personId) {
+            PersonId = personId;
+        }
+
+        public String getCourseName() {
+            return CourseName;
+        }
+
+        public void setCourseName(String courseName) {
+            CourseName = courseName;
+        }
+
+        public String getPersonName() {
+            return PersonName;
+        }
+
+        public void setPersonName(String personName) {
+            PersonName = personName;
+        }
+
+        @Override
+        public String toString() {
+            return "AssignmentTableView{" +
+                    "CourseId=" + CourseId +
+                    ", PersonId=" + PersonId +
+                    ", CourseName='" + CourseName + '\'' +
+                    ", PersonName='" + PersonName + '\'' +
+                    '}';
+        }
+    }
 }
