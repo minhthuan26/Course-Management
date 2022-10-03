@@ -1,10 +1,7 @@
 package QuanLiKhoaHoc.BUS.CourseManage;
 
 import QuanLiKhoaHoc.DAL.CourseManage.CourseManageDAL;
-import QuanLiKhoaHoc.DTO.Assignment;
-import QuanLiKhoaHoc.DTO.Course;
-import QuanLiKhoaHoc.DTO.OnlineCourse;
-import QuanLiKhoaHoc.DTO.OnsiteCourse;
+import QuanLiKhoaHoc.DTO.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -43,7 +40,9 @@ public class CourseManageBUS {
     public Assignment getIdAssignment(int id){
         return courseManageDAL.getIdAssignment(id);
     }
-
+    public CourseRegister getCourseFromCourseRegisterByID(int id){
+        return courseManageDAL.getCourseFromCourseRegisterByID(id);
+    }
     public Course addCourse(String name, String desc, LocalDate cre, LocalDate start, LocalDate end){
         return courseManageDAL.addCourse(name , desc, cre, start, end);
     }
@@ -51,7 +50,15 @@ public class CourseManageBUS {
         return courseManageDAL.addOnlineCourse(id, url);
     }
     public  Course addOnsiteCourse(int id, int less, LocalDate occur){return  courseManageDAL.addOnsiteCourse(id, less, occur);}
-
+    public Course editCourse(String name, String desc, LocalDate datecre, LocalDate start, LocalDate end, int id){
+        return courseManageDAL.editCourse(name, desc, datecre, start, end,id);
+    }
+    public Course editOnline(String url, int id){
+        return courseManageDAL.editOnline(url,id);
+    }
+    public Course editOnsite(int lesson, LocalDate occur, int id){
+        return courseManageDAL.editOnsite(lesson,occur,id);
+    }
     //Tao class moi merge 2 bang chung lai (Online + course)
     public static class OnlineTableView {
         public int getCourseIdOnlineTableColumn() {

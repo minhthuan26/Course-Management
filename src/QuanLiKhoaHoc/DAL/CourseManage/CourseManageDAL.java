@@ -1,10 +1,7 @@
 package QuanLiKhoaHoc.DAL.CourseManage;
 
 import QuanLiKhoaHoc.DAL.ConnectDB;
-import QuanLiKhoaHoc.DTO.Assignment;
-import QuanLiKhoaHoc.DTO.Course;
-import QuanLiKhoaHoc.DTO.OnlineCourse;
-import QuanLiKhoaHoc.DTO.OnsiteCourse;
+import QuanLiKhoaHoc.DTO.*;
 import QuanLiKhoaHoc.GUI.CourseManage.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -163,20 +160,6 @@ public class CourseManageDAL {
     }
 //Sua Khoa Hoc
 
-    public void editCourse(Course course) throws Exception {
-        String query = "Update Course Set ";
-        query= query + "CourseName="+"'"+ course.getCourseName()+"'";
-        query= query + ",CourseDescription="+"'"+ course.getCourseDescription()+"'";
-        query= query + ",DateCreate="+"'"+ course.getDateCreate()+"'";
-        query= query + ",DateStart="+"'"+ course.getDateStart()+"'";
-        query= query + ",DateEnd="+"'"+ course.getDateEnd()+"'";
-        query= query + ",CourseImage="+"'"+ course.getCourseImage()+"'";
-        query= query + " "+"Where CourseId='"+ course.getCourseId()+"'";
-        connect.getConnect();
-        connect.ExecuteUpdate(query);
-        System.out.println(query);
-        connect.closeConnect();
-    }
 
 
 
@@ -288,4 +271,75 @@ public class CourseManageDAL {
         }
         return course;
     }
+
+    public Course editCourse(String name, String desc, LocalDate datecre, LocalDate start, LocalDate end, int id) {
+        Course course = getCourseById(id);
+        if (course!=null) {
+            String query = "Update Course Set ";
+            query = query + "CourseName=" + "'" + name + "'";
+            query = query + ",CourseDescription=" + "'" + desc + "'";
+            query = query + ",DateCreate=" + "'" + datecre + "'";
+            query = query + ",DateStart=" + "'" + start + "'";
+            query = query + ",DateEnd=" + "'" + end + "'";
+            query = query + ",CourseImage=" + "' '";
+            query = query + " " + "Where CourseId='" + id + "'";
+            int result = 0;
+            try {
+                result = connect.ExecuteUpdate(query);
+                if (result == 0) return null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return course;
+        }
+        return null;
+    }
+    public Course editOnline(String url, int id){
+        String query = "Update OnlineCourse Set ";
+        query = query + "CourseUrl=" + "'" + url +"'";
+        query = query + " " + "Where CourseId='" + id + "'";
+        int result =0;
+        try {
+            result = connect.ExecuteUpdate(query);
+            if (result==0) return null;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return getCourseById(id);
+    }
+
+    public Course editOnsite(int lesson, LocalDate occur, int id){
+        String query = "Update OnsiteCourse Set ";
+        query = query + "LessonQuantity=" + "'" + lesson + "'";
+        query = query + ",DayOccur=" + "'" + occur + "'";
+        query = query + " " + "Where CourseId='" + id + "'";
+        int result =0;
+        try {
+            result = connect.ExecuteUpdate(query);
+            if (result==0) return null;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return getCourseById(id);
+    }
+
+    public CourseRegister getCourseFromCourseRegisterByID(int id){
+        String query = "Select * from CourseRegister Where CourseId = " + id;
+
+        try {
+            ResultSet rs = connect.excuteQuery(query);
+            while (rs.next()){
+                return new CourseRegister(
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getInt(3)
+                );
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+
 }

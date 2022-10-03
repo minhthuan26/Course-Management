@@ -70,10 +70,7 @@ public class AddCourseController implements Initializable {
         Handle();
     }
 
-    public void Default(){
-        splitPane.setDividerPositions(0,01);
 
-    }
     public void Handle (){
 
         checkboxOnsite.setOnAction(new EventHandler<ActionEvent>() {
@@ -137,11 +134,6 @@ public class AddCourseController implements Initializable {
                 }else {
                     System.out.println("Fail");
                 }
-
-
-
-
-
             }
         });
 
