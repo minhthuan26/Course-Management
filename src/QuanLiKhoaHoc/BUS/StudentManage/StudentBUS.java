@@ -21,7 +21,7 @@ public class StudentBUS {
         return studentManageDAL.addStudentRole(id);
     }
     // goi ham tao student tu DAL
-    public Person addStudent(String FirstName, String LastName, String Email, String PhoneNumber, Date date){
+    public Person addStudent(String FirstName, String LastName, String Email, String PhoneNumber, String date){
         return studentManageDAL.addStudent(FirstName,LastName,Email,PhoneNumber,date);
     }
     public PersonRole deletePersonRole(int id){

@@ -96,7 +96,7 @@ public class StudentManageDAL {
         return personRole;
     }
 
-    public Person addStudent(String FirstName, String LastName, String Email, String PhoneNumber, Date dayNow) {
+    public Person addStudent(String FirstName, String LastName, String Email, String PhoneNumber, String dayNow) {
         Person person = getStudentByEmail(Email);
         // neu person nay k trung email thi tao person moi
         if (person == null) {

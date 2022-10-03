@@ -31,6 +31,9 @@ public class mainController implements Initializable {
     private TextField txtSDT;
     @FXML
     private TextField txtEmail;
+    @FXML
+    private TextField txtDateOfBirth;
+
 
 
     public void handle(){
@@ -59,8 +62,8 @@ public class mainController implements Initializable {
         primaryStage.close();
     }
     public void addStudent(){
-        Date dayNow =new Date(2022, 12, 20);
-        Person person = studentBUS.addStudent(txtFirstName.getText(),txtLastName.getText(),txtEmail.getText(),txtSDT.getText(),dayNow);
+//        Date dayNow =new Date(2022, 12, 20);
+        Person person = studentBUS.addStudent(txtFirstName.getText(),txtLastName.getText(),txtEmail.getText(),txtSDT.getText(),txtDateOfBirth.getText());
         PersonRole personRole = studentBUS.addStudentRole(person.getPersonId());
     }
 

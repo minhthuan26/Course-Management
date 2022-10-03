@@ -20,7 +20,7 @@ public class TeacherBus {
         return teacherManageDAL.addTeacherRole(id);
     }
     // goi ham tao student tu DAL
-    public Person addTeacher(String FirstName, String LastName, String Email, String PhoneNumber, Date date){
+    public Person addTeacher(String FirstName, String LastName, String Email, String PhoneNumber, String date){
         return teacherManageDAL.addTeacher(FirstName,LastName,Email,PhoneNumber,date);
     }
     public PersonRole deletePersonRole(int id){
