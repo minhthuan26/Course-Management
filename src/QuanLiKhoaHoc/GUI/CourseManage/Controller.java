@@ -1,10 +1,7 @@
 package QuanLiKhoaHoc.GUI.CourseManage;
 
 import QuanLiKhoaHoc.BUS.CourseManage.CourseManageBUS;
-import QuanLiKhoaHoc.DTO.Assignment;
-import QuanLiKhoaHoc.DTO.Course;
-import QuanLiKhoaHoc.DTO.OnlineCourse;
-import QuanLiKhoaHoc.DTO.OnsiteCourse;
+import QuanLiKhoaHoc.DTO.*;
 import QuanLiKhoaHoc.GUI.StudentManage.main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,16 +37,21 @@ public class Controller implements Initializable {
     @FXML
     private Button btnRefresh;
     @FXML
+    private Button btnEdit;
+    @FXML
     private ChoiceBox<String> courseType;
     @FXML
     private SplitPane splitPane;
+
+
+
 
 
     // Khai bao OnlineCourse TableView
     @FXML
     private TableView<CourseManageBUS.OnlineTableView> onlineTableView;
     @FXML
-    private TableColumn<CourseManageBUS.OnlineTableView, Integer> courseIdOnlineTableColumn;
+    public TableColumn<CourseManageBUS.OnlineTableView, Integer> courseIdOnlineTableColumn;
     @FXML
     private TableColumn<CourseManageBUS.OnlineTableView, String> courseNameOnlineTableColumn;
     @FXML
@@ -91,8 +93,8 @@ public class Controller implements Initializable {
     );
 
     private final CourseManageBUS courseManageBUS = new CourseManageBUS();
-    private static CourseManageBUS.OnlineTableView selectedRowOnline = null;
-    private static CourseManageBUS.OnsiteTableView selectedRowOnsite = null;
+    public static CourseManageBUS.OnlineTableView selectedRowOnline = null;
+    public static CourseManageBUS.OnsiteTableView selectedRowOnsite = null;
 
 
     @Override
@@ -147,6 +149,14 @@ public class Controller implements Initializable {
 
     }
 
+//       public int editOnlineId = selectRowOnline().getCourseIdOnlineTableColumn();
+//       public String editOnlineName= selectRowOnline().getCourseNameOnlineTableColumn();
+//      public  String editOnlineDescription= selectRowOnline().getCourseDescriptionOnlineTableColumn();
+//       public LocalDate editOnlineStart = selectRowOnline().getDateStartOnlineTableView();
+//       public LocalDate editOnlineEnd = selectRowOnline().getDateEndOnlineTableView();
+//       public String editOnlineUrl = selectRowOnline().getCourseUrlOnlineTableColumn();
+
+
     public void Handle() {
         btnRefresh.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -170,8 +180,12 @@ public class Controller implements Initializable {
                     Assignment idOfAssignment = courseManageBUS.getIdAssignment(selectedRowOnline.getCourseIdOnlineTableColumn());
                     if (idOfAssignment != null) {
                         alert("Thông báo", "Vui lòng hủy phân công trước khi xóa");
-
-                    } else {
+                    }
+                    CourseRegister courseExist = courseManageBUS.getCourseFromCourseRegisterByID(selectedRowOnline.getCourseIdOnlineTableColumn());
+                    if (courseExist!=null){
+                        alert("Thông báo","Khóa học đã được chấm điểm, không thể xóa");
+                    }
+                    else {
                         Course onlineCourse = courseManageBUS.deleteOnlineCourseTest(selectedRowOnline.getCourseIdOnlineTableColumn());
                         if (onlineCourse != null) {
                             Course course = courseManageBUS.deleteCourseOnline(onlineCourse);
@@ -192,7 +206,12 @@ public class Controller implements Initializable {
                     if (idOfAssignment != null) {
                         alert("Thông báo", "Vui lòng hủy phân công trước khi xóa");
 
-                    } else {
+                    }
+                    CourseRegister courseExist = courseManageBUS.getCourseFromCourseRegisterByID(selectedRowOnsite.getCourseIdOnsiteTableColumn());
+                    if (courseExist!=null){
+                        alert("Thông báo","Khóa học đã được chấm điểm, không thể xóa");
+                    }
+                    else {
                         Course onsiteCourse = courseManageBUS.deleteOnsiteCourseTest(selectRowOnsite().getCourseIdOnsiteTableColumn());
 
                         if (onsiteCourse != null) {
@@ -211,7 +230,61 @@ public class Controller implements Initializable {
                 }
             }
         });
+        btnEdit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                selectedRowOnline = selectRowOnline();
+                if (selectedRowOnline!=null){
+                    Stage newstage = new Stage();
+                    MainEditCourseOnline screen = new MainEditCourseOnline();
+                    Stage oldstage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    newstage.initModality(Modality.WINDOW_MODAL);
+                    newstage.initOwner(oldstage);
+                    try {
+                        screen.start(newstage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+//                    FXMLLoader loader = new FXMLLoader();
+//                    EditCourseOnlineController controller = (EditCourseOnlineController) loader.getController();
+//                    String name = selectedRowOnline.getCourseNameOnlineTableColumn();
+//                    String desc = selectedRowOnline.getCourseDescriptionOnlineTableColumn();
+//                    String url = selectedRowOnline.getCourseUrlOnlineTableColumn();
+//                    controller.show(name,desc,url);
+                }
+                selectedRowOnsite = selectRowOnsite();
+                if (selectedRowOnsite!=null){
+                    Stage newstage = new Stage();
+                    MainEditCourseOnsite screen = new MainEditCourseOnsite();
+                    Stage oldstage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    newstage.initModality(Modality.WINDOW_MODAL);
+                    newstage.initOwner(oldstage);
+                    try {
+                        screen.start(newstage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
+
+//                Stage stage x`= (Stage)((Node) actionEvent.getSource()).getScene().getWindow();
+//                FXMLLoader loader = new FXMLLoader();
+//                loader.setLocation(getClass().getResource("EditCourseOnlineGUI.fxml"));
+//                Parent studentViewParent = null;
+//                try {
+//                    studentViewParent = loader.load();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                Scene scene = new Scene(studentViewParent);
+//                EditCourseOnlineController controller = loader.getController();
+////                CourseManageBUS.OnlineTableView selected = onlineTableView.getSelectionModel().getSelectedItem();
+////                controller.setStudent(selected);
+//
+//                stage.setScene(scene);
+
+            }
+        });
         btnAdd.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -248,7 +321,6 @@ public class Controller implements Initializable {
         onsiteCourseIdOnsiteTableColumn.setCellValueFactory(new PropertyValueFactory<CourseManageBUS.OnsiteTableView, Integer>("onsiteCourseIdOnsiteTableColumn"));
         lessonQuantityOnsiteTableColumn.setCellValueFactory(new PropertyValueFactory<CourseManageBUS.OnsiteTableView, Integer>("lessonQuantityOnsiteTableColumn"));
         dayOccurOnsiteTableColumn.setCellValueFactory(new PropertyValueFactory<CourseManageBUS.OnsiteTableView, Date>("dayOccurOnsiteTableColumn"));
-
         onsiteTableView.setItems(onsiteTableViews);
     }
 
