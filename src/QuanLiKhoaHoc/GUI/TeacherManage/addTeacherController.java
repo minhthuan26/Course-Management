@@ -27,6 +27,9 @@ public class addTeacherController implements Initializable {
     @FXML
     private TextField txtPhoneNumber;
     @FXML
+    private TextField txtDateOfBirth;
+
+    @FXML
     private Button btnAdd;
     @FXML
     private Button btnCancel;
@@ -57,7 +60,7 @@ public class addTeacherController implements Initializable {
     }
     public void addTeacher(){
         Date dayNow =new Date(2022, 12, 20);
-        Person person = teacherBUS.addTeacher(txtFirstName.getText(),txtLastName.getText(),txtEmail.getText(),txtPhoneNumber.getText(),dayNow);
+        Person person = teacherBUS.addTeacher(txtFirstName.getText(),txtLastName.getText(),txtEmail.getText(),txtPhoneNumber.getText(),txtDateOfBirth.getText());
         PersonRole personRole = teacherBUS.addTeacherRole(person.getPersonId());
     }
 

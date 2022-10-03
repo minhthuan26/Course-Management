@@ -58,7 +58,7 @@ public class TeacherManageDAL {
         return null;
     }
     // add teacher after check duplicate email
-    public Person addTeacher (String FirstName, String LastName, String Email, String PhoneNumber, Date dayNow){
+    public Person addTeacher (String FirstName, String LastName, String Email, String PhoneNumber, String Date){
         Person person= getTeacherByEmail(Email);
         // neu person nay k trung email thi tao person moi
         if(person==null){
@@ -66,7 +66,7 @@ public class TeacherManageDAL {
             String query ="INSERT INTO Person Values (N'" + FirstName
                     +  "', N'" + LastName +  "', N'" + Email
                     +  "', '" + PhoneNumber
-                    +  "', '" + dayNow+"','')";
+                    +  "', '" + Date+"','')";
             try {
                 result = connect.ExecuteUpdate(query);
                 if (result == 0) {

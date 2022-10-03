@@ -4,26 +4,54 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuanLiKhoaHoc.GUI.TeacherManage.addTeacherController">
    <children>
       <AnchorPane prefHeight="111.0" prefWidth="600.0" style="-fx-background-color: grey;" AnchorPane.bottomAnchor="289.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label layoutX="267.0" layoutY="47.0" text="Thêm giáo viên" />
+            <Label layoutX="219.0" layoutY="38.0" text="Thêm giáo viên">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="100.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+      <AnchorPane layoutY="111.0" prefHeight="289.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="111.0">
          <children>
-            <Button fx:id="btnAdd" layoutX="423.0" layoutY="113.0" mnemonicParsing="false" text="Thêm" />
-            <Button fx:id="btnCancel" layoutX="423.0" layoutY="163.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="46.0" text="Hủy" />
-            <TextField fx:id="txtLastName" layoutX="84.0" layoutY="113.0" />
-            <TextField fx:id="txtEmail" layoutX="84.0" layoutY="176.0" />
-            <TextField fx:id="txtPhoneNumber" layoutX="84.0" layoutY="233.0" />
-            <TextField fx:id="txtFirstName" layoutX="84.0" layoutY="62.0" />
-            <Label layoutX="84.0" layoutY="45.0" text="Tên" />
-            <Label layoutX="86.0" layoutY="96.0" text="Họ" />
-            <Label layoutX="84.0" layoutY="155.0" text="Email" />
-            <Label layoutX="84.0" layoutY="210.0" text="Số điện thoại" />
+            <Button fx:id="btnAdd" layoutX="423.0" layoutY="90.0" mnemonicParsing="false" text="Thêm">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            <Button fx:id="btnCancel" layoutX="423.0" layoutY="140.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="53.0" text="Hủy">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            <TextField fx:id="txtFirstName" layoutX="84.0" layoutY="31.0" />
+            <TextField fx:id="txtLastName" layoutX="84.0" layoutY="73.0" />
+            <TextField fx:id="txtEmail" layoutX="84.0" layoutY="126.0" />
+            <TextField fx:id="txtPhoneNumber" layoutX="84.0" layoutY="176.0" />
+            <Label layoutX="84.0" layoutY="14.0" text="Tên">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label layoutX="86.0" layoutY="56.0" text="Họ">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label layoutX="88.0" layoutY="105.0" text="Email">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label layoutX="82.0" layoutY="155.0" text="Số điện thoại">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <TextField fx:id="txtDateOfBirth" layoutX="84.0" layoutY="227.0" />
+            <Label layoutX="83.0" layoutY="210.0" text="Ngày sinh (YYYY/MM/DD)">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </children>
