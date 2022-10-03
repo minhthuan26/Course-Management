@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="684.0" prefWidth="862.0" style="-fx-border-radius: 25px; -fx-background-radius: 25px;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuanLiKhoaHoc.GUI.TeacherManage.Controller">
+<AnchorPane prefHeight="684.0" prefWidth="862.0" style="-fx-border-radius: 25px; -fx-background-radius: 25px;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuanLiKhoaHoc.GUI.TeacherManage.Controller">
    <children>
       <AnchorPane layoutY="60.0" prefHeight="89.0" prefWidth="762.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
          <children>
-            <HBox alignment="TOP_CENTER" layoutX="141.0" prefHeight="100.0" prefWidth="481.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="141.0" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="TOP_CENTER" layoutX="-6.0" prefHeight="89.0" prefWidth="774.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-6.0" AnchorPane.rightAnchor="-6.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Button fx:id="btnAddTeacher" mnemonicParsing="false" prefHeight="58.0" prefWidth="160.0" text="Thêm">
                      <graphic>
@@ -41,6 +41,7 @@
                         </ImageView>
                      </graphic>
                   </Button>
+                  <Button fx:id="btnEdit" mnemonicParsing="false" prefHeight="58.0" prefWidth="160.0" text="Sửa" />
                </children>
             </HBox>
          </children>
