@@ -30,4 +30,7 @@ public class TeacherBus {
         return teacherManageDAL.deletePerson(person);
     }
     public Assignment getAssignmenByID(int id){return teacherManageDAL.getIdAssignment(id);}
+    public Person updateTeacher(Person teacher){
+        return teacherManageDAL.updateTeacher(teacher);
+    }
 }

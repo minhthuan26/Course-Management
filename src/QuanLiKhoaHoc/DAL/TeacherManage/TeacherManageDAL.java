@@ -24,7 +24,7 @@ public class TeacherManageDAL {
                 while(resultSet.next()){
                     Person teacher = new Person(resultSet.getInt(1),resultSet.getString(2),
                             resultSet.getString(3),resultSet.getString(4),
-                            resultSet.getString(5),resultSet.getDate(6),
+                            resultSet.getString(5),resultSet.getDate(6).toLocalDate(),
                             resultSet.getString(7));
                     teacherList.add(teacher);
                 }
@@ -47,7 +47,7 @@ public class TeacherManageDAL {
                             rs.getString(3),
                             rs.getString(4),
                             rs.getString(5),
-                            rs.getDate(6),
+                            rs.getDate(6).toLocalDate(),
                             rs.getString(7)
                     );
                 }
@@ -160,5 +160,44 @@ public class TeacherManageDAL {
         }
 
         return null;
+    }
+
+    public Person getTeacherById(int id){
+        String query = "select * from Person where PersonId=" + id;
+        try{
+            ResultSet resultSet = connect.excuteQuery(query);
+            while (resultSet.next()){
+                return new Person(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getDate(6).toLocalDate(),
+                        resultSet.getString(7)
+                );
+            }
+        }
+        catch(Exception error){
+            error.printStackTrace();
+        }
+        return null;
+    }
+
+    public Person updateTeacher(Person teacher){
+        String query = "update Person " +
+                "set FirstName=N'" + teacher.getFirstName() + "', LastName=N'" + teacher.getLastName() + "', " +
+                "PhoneNumber='" + teacher.getPhoneNumber() + "', DateOfBirth='" + teacher.getDateOfBirth() +
+                "' where PersonId=" + teacher.getPersonId();
+        int result = 0;
+        try{
+            result = connect.ExecuteUpdate(query);
+            if(result == 0)
+                return null;
+        }
+        catch (Exception error){
+            error.printStackTrace();
+        }
+        return getTeacherById(teacher.getPersonId());
     }
 }
