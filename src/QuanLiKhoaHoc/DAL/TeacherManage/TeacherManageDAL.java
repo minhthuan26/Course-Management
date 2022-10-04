@@ -34,6 +34,30 @@ public class TeacherManageDAL {
         }
         return teacherList;
     }
+    // lay teacher dua tren ID
+    public ObservableList<Person> getTeacherSearch(int id){
+        ObservableList<Person> teacherSearch = FXCollections.observableArrayList();
+        String query = "Select * from Person, PersonRole where PersonRole.PersonId="+id +"and PersonRole.RoleId=1 and Person.PersonId=PersonRole.PersonId";
+        try {
+            ResultSet resultSet =connect.excuteQuery(query);
+            if (resultSet!=null){
+                while(resultSet.next()){
+                    Person teacher = new Person(resultSet.getInt(1),
+                            resultSet.getString(2),
+                            resultSet.getString(3),
+                            resultSet.getString(4),
+                            resultSet.getString(5),
+                            resultSet.getDate(6),
+                            resultSet.getString(7));
+                    teacherSearch.add(teacher);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return teacherSearch;
+    }
+
     // handle duplicate teacher by email
     public Person getTeacherByEmail(String email){
         String query ="Select * from Person where Person.Email = '" +email+"'";
