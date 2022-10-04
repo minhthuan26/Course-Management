@@ -1,5 +1,6 @@
 package QuanLiKhoaHoc.BUS.AssignmentManage;
 
+import QuanLiKhoaHoc.BUS.ResultManage.ResultBUS;
 import QuanLiKhoaHoc.DAL.AssignmentManage.AssignmentDAL;
 import QuanLiKhoaHoc.DTO.*;
 import javafx.collections.FXCollections;
@@ -85,7 +86,7 @@ public class AssignmentBUS {
         return onlineCourseListToGUI;
     }
 
-    public ObservableMap<Integer, String> getAllCourseListToGUI(){
+    public ObservableMap<Integer, String> getAllCourseNameAndIdList(){
         getAllCourseList();
         ObservableMap<Integer, String> allCourseListToGUI = FXCollections.observableHashMap();
         for(Course course : allCourseList)
@@ -93,11 +94,20 @@ public class AssignmentBUS {
         return allCourseListToGUI;
     }
 
-    public ObservableMap<Integer, String> getAllTeacherNameAndIdListToGUI(){
+    public ObservableList<String> getAllCourseListToGUI() {
+        ObservableMap<Integer, String> allCourseNameAndIdList = getAllCourseNameAndIdList();
+        ObservableList<String> allCourseNameListToGUI = FXCollections.observableArrayList();
+        for (Map.Entry<Integer, String> teacher : allCourseNameAndIdList.entrySet()) {
+            allCourseNameListToGUI.add(teacher.getKey() + "_" + teacher.getValue());
+        }
+        return allCourseNameListToGUI;
+    }
+
+    public ObservableMap<Integer, String> getAllTeacherNameAndIdList(){
         getAllTeacherList();
         ObservableMap<Integer, String> allTeacherNameAndIdList = FXCollections.observableHashMap();
         for(Person person : allTeacherList)
-            allTeacherNameAndIdList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
+            allTeacherNameAndIdList.put(person.getPersonId(), String.join(" ", person.getLastName(), person.getFirstName()));
         return allTeacherNameAndIdList;
     }
 
@@ -105,7 +115,7 @@ public class AssignmentBUS {
         getTeacherAssignmentList();
         ObservableMap<Integer, String> teacherAssignmentNameAndIdList = FXCollections.observableHashMap();
         for(Person person : teacherAssignmentList){
-            teacherAssignmentNameAndIdList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
+            teacherAssignmentNameAndIdList.put(person.getPersonId(), String.join(" ", person.getLastName(), person.getFirstName()));
         }
         ObservableList<String> teacherNameList = FXCollections.observableArrayList();
         for(Map.Entry<Integer, String> teacher : teacherAssignmentNameAndIdList.entrySet()){
@@ -117,8 +127,8 @@ public class AssignmentBUS {
     public ObservableList<AssignmentTableView> getAssignmentTableViewList(){
         ObservableList<Assignment> assignmentList = getAssignmentList();
         ObservableList<AssignmentTableView> assignmentTableViewList = FXCollections.observableArrayList();
-        ObservableMap<Integer, String> allCourseList = getAllCourseListToGUI();
-        ObservableMap<Integer, String> allteacherList = getAllTeacherNameAndIdListToGUI();
+        ObservableMap<Integer, String> allCourseList = getAllCourseNameAndIdList();
+        ObservableMap<Integer, String> allteacherList = getAllTeacherNameAndIdList();
 
         for(Assignment assignment : assignmentList){
             AssignmentTableView assignmentTableView = new AssignmentTableView();
@@ -141,6 +151,63 @@ public class AssignmentBUS {
             assignmentTableViewList.add(assignmentTableView);
         }
         return assignmentTableViewList;
+    }
+
+    public ObservableList<String> getAllTeacherListToGUI() {
+        ObservableMap<Integer, String> allStudentNameAndIdList = getAllTeacherNameAndIdList();
+        ObservableList<String> allStudentNameListToGUI = FXCollections.observableArrayList();
+        for (Map.Entry<Integer, String> teacher : allStudentNameAndIdList.entrySet()) {
+            allStudentNameListToGUI.add(teacher.getKey() + "_" + teacher.getValue());
+        }
+        return allStudentNameListToGUI;
+    }
+
+    public ObservableList<AssignmentTableView> getSearchResultByCourse(int searchId) {
+        ObservableList<Assignment> allAssignmentList = getAssignmentList();
+        ObservableList<AssignmentTableView> resultTableViewList = FXCollections.observableArrayList();
+        ObservableMap<Integer, String> allTeacherList = getAllTeacherNameAndIdList();
+        Course course = assignmentDAL.getSearchResultByCourse(searchId);
+
+        for (Assignment assignment : allAssignmentList) {
+            if(assignment.getCourseId() == searchId){
+                AssignmentTableView resultTableView = new AssignmentTableView();
+                resultTableView.setCourseId(course.getCourseId());
+                resultTableView.setCourseName(course.getCourseName());
+
+                for (Map.Entry<Integer, String> student : allTeacherList.entrySet()) {
+                    if (student.getKey() == assignment.getPersonId()) {
+                        resultTableView.setPersonId(student.getKey());
+                        resultTableView.setPersonName(student.getValue());
+                    }
+                }
+                resultTableViewList.add(resultTableView);
+            }
+        }
+        return resultTableViewList;
+    }
+
+    public ObservableList<AssignmentTableView> getSearchResultByTeacher(int searchId) {
+        ObservableList<Assignment> allAssignmentList = getAssignmentList();
+        ObservableList<AssignmentTableView> resultTableViewList = FXCollections.observableArrayList();
+        ObservableMap<Integer, String> allCourseList = getAllCourseNameAndIdList();
+        Person teacher = assignmentDAL.getResultByTeacherId(searchId);
+
+        for (Assignment assignment : allAssignmentList) {
+            if(assignment.getPersonId() == searchId){
+                AssignmentTableView resultTableView = new AssignmentTableView();
+                resultTableView.setPersonId(teacher.getPersonId());
+                resultTableView.setPersonName(teacher.getLastName() + " " + teacher.getFirstName());
+
+                for (Map.Entry<Integer, String> course : allCourseList.entrySet()) {
+                    if (course.getKey() == assignment.getCourseId()) {
+                        resultTableView.setCourseId(course.getKey());
+                        resultTableView.setCourseName(course.getValue());
+                    }
+                }
+                resultTableViewList.add(resultTableView);
+            }
+        }
+        return resultTableViewList;
     }
 
     public static class AssignmentTableView{

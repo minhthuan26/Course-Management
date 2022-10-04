@@ -44,6 +44,17 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="85.0" prefWidth="200.0" styleClass="HBox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
+                        <ChoiceBox fx:id="searchTypeChoiceBtn" prefHeight="30.0" prefWidth="115.0" />
+                        <ChoiceBox fx:id="searchValueChoiceBtn" prefHeight="30.0" prefWidth="115.0" />
+                        <Button fx:id="searchBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="115.0" text="Tìm kiếm">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../Icons/search_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                         <Button fx:id="refreshBtn" mnemonicParsing="false" prefHeight="30.0" prefWidth="115.0" text="Làm mới">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
