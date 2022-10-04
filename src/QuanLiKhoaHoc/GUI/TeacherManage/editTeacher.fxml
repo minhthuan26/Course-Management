@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 
 <AnchorPane fx:id="wrapPane" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="QuanLiKhoaHoc.GUI.TeacherManage.EditTeacherController">
    <children>
@@ -50,7 +50,7 @@
                   <VBox prefHeight="78.0" prefWidth="486.0">
                      <children>
                         <Label prefHeight="41.0" prefWidth="109.0" text="Ngày sinh: " />
-                        <TextField fx:id="birthTxtField" prefHeight="39.0" prefWidth="466.0" />
+                        <DatePicker fx:id="birthDatePicker" editable="false" prefHeight="36.0" prefWidth="466.0" />
                      </children>
                   </VBox>
                   <AnchorPane prefHeight="102.0" prefWidth="466.0">

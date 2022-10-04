@@ -49,7 +49,10 @@ public class Controller implements Initializable {
     @FXML
     private Button btnRefresh;
 
-    private static Person selectedRow = null;
+    @FXML
+    private Button btnEdit;
+
+    public static Person selectedRow = null;
 
     public ObservableList<Person> getStudentList() {
         studentList = FXCollections.observableArrayList();
@@ -109,6 +112,30 @@ public class Controller implements Initializable {
                     }
                 } else {
                     Alert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
+                }
+            }
+        });
+
+        btnEdit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                selectedRow = selectRow();
+                if(selectedRow == null){
+                    Alert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện sửa");
+                }
+                else{
+                    Stage newstage = new Stage();
+                    EditStudentMain screen = new EditStudentMain();
+                    // ngăn tương tác với dashboard
+                    Stage oldStage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    newstage.initModality(Modality.WINDOW_MODAL);
+                    newstage.initOwner(oldStage);
+                    // chạy newStage
+                    try {
+                        screen.start(newstage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

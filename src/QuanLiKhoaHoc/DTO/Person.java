@@ -1,13 +1,14 @@
 package QuanLiKhoaHoc.DTO;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class Person {
     int PersonId;
     String FirstName, LastName, Email, PhoneNumber, PersonImage;
-    Date DateOfBirth;
+    LocalDate DateOfBirth;
 
-    public Person(int personId, String firstName, String lastName, String email, String phoneNumber, Date dateOfBirth, String personImage) {
+    public Person(int personId, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String personImage) {
         PersonId = personId;
         FirstName = firstName;
         LastName = lastName;
@@ -65,11 +66,11 @@ public class Person {
         PersonImage = personImage;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return DateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         DateOfBirth = dateOfBirth;
     }
 
