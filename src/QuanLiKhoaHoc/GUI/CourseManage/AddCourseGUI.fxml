@@ -33,9 +33,9 @@
                   <Label prefHeight="30.0" prefWidth="186.0" style="-fx-font-size: 20; -fx-font-weight: bold;" />
                   <TextField fx:id="descriptionTextField" />
                   <Label prefHeight="30.0" prefWidth="253.0" style="-fx-font-size: 20; -fx-font-weight: bold;" />
-                  <DatePicker fx:id="dateStartPicker" prefHeight="30.0" prefWidth="426.0" />
+                  <DatePicker fx:id="dateStartPicker" editable="false" prefHeight="30.0" prefWidth="426.0" />
                   <Label prefHeight="30.0" prefWidth="186.0" style="-fx-font-size: 20; -fx-font-weight: bold;" />
-                  <DatePicker fx:id="dateEndtPicker" prefHeight="30.0" prefWidth="484.0" />
+                  <DatePicker fx:id="dateEndtPicker" editable="false" prefHeight="30.0" prefWidth="484.0" />
                   <Label prefHeight="30.0" prefWidth="186.0" style="-fx-font-size: 20; -fx-font-weight: bold;" />
                   <Label prefHeight="30.0" prefWidth="186.0" style="-fx-font-size: 20; -fx-font-weight: bold;" />
                </children>
@@ -77,7 +77,7 @@
                            <children>
                               <TextField fx:id="lessonQuantityTextField" />
                               <Label prefHeight="30.0" prefWidth="186.0" style="-fx-font-size: 20; -fx-font-weight: bold;" />
-                              <DatePicker fx:id="dateOccurPicker" prefHeight="26.0" prefWidth="484.0" />
+                              <DatePicker fx:id="dateOccurPicker" editable="false" prefHeight="26.0" prefWidth="484.0" />
                            </children>
                         </VBox>
                      </children>
