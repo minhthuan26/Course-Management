@@ -4,15 +4,10 @@ import QuanLiKhoaHoc.DAL.CourseManage.CourseManageDAL;
 import QuanLiKhoaHoc.DTO.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 public class CourseManageBUS {
-
-
-
     CourseManageDAL courseManageDAL = new CourseManageDAL();
     public static ObservableList<Course> allCourseList;
     public static ObservableList<OnlineCourse> allOnlineCourseList;
@@ -29,7 +24,6 @@ public class CourseManageBUS {
     public ObservableList<OnsiteCourse> getAllOnsiteCourseList() {
         return allOnsiteCourseList = courseManageDAL.getOnsiteCourseList();
     }
-
     public Course deleteOnlineCourseTest(int courseId){
         return courseManageDAL.deleteOnlineCourseTest(courseId);
     }
@@ -307,127 +301,4 @@ public class CourseManageBUS {
 
         LocalDate dateStartOnsiteTableColumn, dateEndOnsiteTableColumn, dayOccurOnsiteTableColumn, dateCreateOnsiteTableColumn;
     }
-
-
-
-
-    public ObservableList<String> getOnsiteList() {
-        getAllCourseList();
-        getAllOnsiteCourseList();
-        ObservableMap<Integer, String> onsiteCourseNameAndIdList = FXCollections.observableHashMap();
-        for (OnsiteCourse onsiteCourse : allOnsiteCourseList) {
-            for (Course course : allCourseList)
-                if (course.getCourseId() == onsiteCourse.getCourseId()) {
-                    onsiteCourseNameAndIdList.put(course.getCourseId(), course.getCourseName());
-                    break;
-                }
-        }
-        ObservableList<String> onsiteCourseListToGUI = FXCollections.observableArrayList();
-        for (Map.Entry<Integer, String> onsiteCourse : onsiteCourseNameAndIdList.entrySet()) {
-            onsiteCourseListToGUI.add(onsiteCourse.getKey() + "_" + onsiteCourse.getValue());
-        }
-        return onsiteCourseListToGUI;
-    }
-
-    public ObservableList<String> getOnlineList() {
-        getAllCourseList();
-        getAllOnlineCourseList();
-        ObservableMap<Integer, String> onlineCourseNameAndIdList = FXCollections.observableHashMap();
-        for (OnlineCourse onlineCourse : allOnlineCourseList) {
-            for (Course course : allCourseList)
-                if (course.getCourseId() == onlineCourse.getCourseId()) {
-                    onlineCourseNameAndIdList.put(course.getCourseId(), course.getCourseName());
-                    break;
-                }
-        }
-        ObservableList<String> onlineCourseListToGUI = FXCollections.observableArrayList();
-        for (Map.Entry<Integer, String> onlineCourse : onlineCourseNameAndIdList.entrySet()) {
-            onlineCourseListToGUI.add(onlineCourse.getKey() + "_" + onlineCourse.getValue());
-        }
-        return onlineCourseListToGUI;
-    }
-
-
-//    public ObservableMap<Integer, String> getAllCourseNameAndIdList() {
-//        getAllCourseList();
-//        ObservableMap<Integer, String> allCourseNameAndIdList = FXCollections.observableHashMap();
-//        for (Course course : allCourseList)
-//            allCourseNameAndIdList.put(course.getCourseId(), course.getCourseName());
-//        return allCourseNameAndIdList;
-//    }
-//
-//
-//
-//    public ObservableList<String> getAllCourseListToGUI() {
-//        ObservableMap<Integer, String> allCourseNameAndIdList = getAllCourseNameAndIdList();
-//        ObservableList<String> allCourseNameListToGUI = FXCollections.observableArrayList();
-//        for (Map.Entry<Integer, String> teacher : allCourseNameAndIdList.entrySet()) {
-//            allCourseNameListToGUI.add(teacher.getKey() + "_" + teacher.getValue());
-//        }
-//        return allCourseNameListToGUI;
-//    }
-        public ObservableList<OnsiteCourse> getOnsiteCourseListbyId(int id){
-                return courseManageDAL.getOnsiteCourseListbyId(id);
-        }
-    public ObservableList<OnlineCourse> getOnlineCourseListbyId(int id){
-        return courseManageDAL.getOnlineCourseListbyId(id);
-    }
-        public Course getCourseListbyId(int id){
-            return courseManageDAL.getCourseById(id);
-        }
-
-    public ObservableList<OnsiteTableView> getOnsiteTableViewbyId(int id) {
-        getCourseListbyId(id);
-        ObservableList<OnsiteTableView> onsiteTableViews = FXCollections.observableArrayList();
-        getCourseListbyId(id);
-        ObservableList<OnsiteCourse> onsiteTableViewList = getOnsiteCourseListbyId(id);
-        for (OnsiteCourse onsiteCourse : onsiteTableViewList) {
-            if (onsiteCourse.getCourseId()==id){
-                OnsiteTableView onsiteTableView = new CourseManageBUS.OnsiteTableView();
-                onsiteTableView.onsiteCourseIdOnsiteTableColumn = onsiteCourse.getOnsiteCoureId();
-                onsiteTableView.courseIdOnsiteTableColumn = onsiteCourse.getCourseId();
-                onsiteTableView.lessonQuantityOnsiteTableColumn = onsiteCourse.getLessonQuantity();
-                onsiteTableView.dayOccurOnsiteTableColumn = onsiteCourse.getDayOccur();
-                for (Course course : allCourseList) {
-                    if (onsiteCourse.getCourseId() == course.getCourseId()) {
-                        onsiteTableView.courseNameOnsiteTableColumn = course.getCourseName();
-                        onsiteTableView.courseDescriptionOnsiteTableColumn = course.getCourseDescription();
-                        onsiteTableView.dateCreateOnsiteTableColumn = course.getDateCreate();
-                        onsiteTableView.dateStartOnsiteTableColumn = course.getDateStart();
-                        onsiteTableView.dateEndOnsiteTableColumn = course.getDateEnd();
-                    }
-                }
-                onsiteTableViews.add(onsiteTableView);
-            }
-        }
-        return onsiteTableViews;
-    }
-
-    public ObservableList<OnlineTableView> getOnlineTableViewbyId(int id) {
-        getCourseListbyId(id);
-        ObservableList<OnlineTableView> onlineTableViews = FXCollections.observableArrayList();
-        getCourseListbyId(id);
-        ObservableList<OnlineCourse> onlineTableViewList = getOnlineCourseListbyId(id);
-        for (OnlineCourse onlineCourse : onlineTableViewList) {
-            if (onlineCourse.getCourseId()==id){
-                OnlineTableView onlineTableView = new OnlineTableView();
-                onlineTableView.courseIdOnlineTableColumn = onlineCourse.getCourseId();
-                onlineTableView.onlineCourseIdOnlineTableColumn = onlineCourse.getOnlineCourseId();
-                onlineTableView.courseUrlOnlineTableColumn = onlineCourse.getCourseUrl();
-                for (Course course : allCourseList) {
-                    if (onlineCourse.getCourseId() == course.getCourseId()) {
-                        onlineTableView.courseNameOnlineTableColumn = course.getCourseName();
-                        onlineTableView.courseDescriptionOnlineTableColumn = course.getCourseDescription();
-                        onlineTableView.dateCreateOnlineTableView = course.getDateCreate();
-                        onlineTableView.dateStartOnlineTableView = course.getDateStart();
-                        onlineTableView.dateEndOnlineTableView = course.getDateEnd();
-                    }
-                }
-                onlineTableViews.add(onlineTableView);
-            }
-        }
-        return onlineTableViews;
-    }
-
-
 }

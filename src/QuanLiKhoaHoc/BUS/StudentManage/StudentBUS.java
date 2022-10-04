@@ -31,7 +31,5 @@ public class StudentBUS {
         return studentManageDAL.deletePerson(person);
     }
     public CourseRegister getPersonFromCourseRegisterByID(int id){return studentManageDAL.getPersonFromCourseRegisterByID(id);}
-    public Person updateStudent(Person student){
-        return studentManageDAL.updateStudent(student);
-    }
+    public ObservableList<Person> getStudentSearch(int id){return studentManageDAL.getStudentSearch(id);}
 }

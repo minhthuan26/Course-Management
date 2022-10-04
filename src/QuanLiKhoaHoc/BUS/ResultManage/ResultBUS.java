@@ -140,7 +140,7 @@ public class ResultBUS {
         getStudentNoneResultList(courseId);
         ObservableMap<Integer, String> studentNoneResulNameAndIdtList = FXCollections.observableHashMap();
         for (Person person : studentNoneResultList) {
-            studentNoneResulNameAndIdtList.put(person.getPersonId(), String.join(" ", person.getLastName(), person.getFirstName()));
+            studentNoneResulNameAndIdtList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
         }
         ObservableList<String> studentNameListToGUI = FXCollections.observableArrayList();
         for (Map.Entry<Integer, String> teacher : studentNoneResulNameAndIdtList.entrySet()) {
@@ -153,7 +153,7 @@ public class ResultBUS {
         getAllStudentList();
         ObservableMap<Integer, String> allStudentNameAndIdList = FXCollections.observableHashMap();
         for (Person person : allStudentList)
-            allStudentNameAndIdList.put(person.getPersonId(), String.join(" ", person.getLastName(), person.getFirstName()));
+            allStudentNameAndIdList.put(person.getPersonId(), String.join(" ", person.getFirstName(), person.getLastName()));
         return allStudentNameAndIdList;
     }
 
@@ -252,7 +252,7 @@ public class ResultBUS {
             if(courseRegister.getPersonId() == searchId){
                 ResultTableView resultTableView = new ResultTableView();
                 resultTableView.setStudentId(student.getPersonId());
-                resultTableView.setStudentName(student.getLastName() + " " + student.getFirstName());
+                resultTableView.setStudentName(student.getFirstName() + " " + student.getLastName());
 
                 for (Map.Entry<Integer, String> course : allCourseList.entrySet()) {
                     if (course.getKey() == courseRegister.getCourseId()) {

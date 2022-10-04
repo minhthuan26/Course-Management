@@ -26,7 +26,7 @@ public class ResultDAL {
                             resultSet.getString(3),
                             resultSet.getString(4),
                             resultSet.getString(5),
-                            resultSet.getDate(6).toLocalDate(),
+                            resultSet.getDate(6),
                             resultSet.getString(7)
                     );
                     allStudentList.add(student);
@@ -57,7 +57,7 @@ public class ResultDAL {
                             resultSet.getString(3),
                             resultSet.getString(4),
                             resultSet.getString(5),
-                            resultSet.getDate(6).toLocalDate(),
+                            resultSet.getDate(6),
                             resultSet.getString(7)
                     );
                     studentNoneResulttList.add(student);
@@ -362,7 +362,7 @@ public class ResultDAL {
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-                        resultSet.getDate(6).toLocalDate(),
+                        resultSet.getDate(6),
                         resultSet.getString(7)
                 );
             }

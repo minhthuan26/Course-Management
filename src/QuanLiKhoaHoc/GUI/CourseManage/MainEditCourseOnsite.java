@@ -17,7 +17,7 @@ public class MainEditCourseOnsite extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         setRoot("EditCourseOnsiteGUI");
-        setStylesheets("../Main/main");
+//        setStylesheets("");
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
         stage.setTitle("Sửa khóa học onsite");

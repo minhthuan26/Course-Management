@@ -4,6 +4,7 @@ import QuanLiKhoaHoc.BUS.AssignmentManage.AssignmentBUS;
 import QuanLiKhoaHoc.DTO.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -25,11 +27,6 @@ public class Controller implements Initializable {
             new String("Onsite"),
             new String("Online")
     );
-    private final ObservableList<String> searchTypes = FXCollections.observableArrayList(
-            new String("Khoá học"),
-            new String("Giảng viên")
-    );
-
     private static AssignmentBUS.AssignmentTableView selectedRow = null;
 
     @FXML
@@ -42,12 +39,6 @@ public class Controller implements Initializable {
     private ChoiceBox<String> teacherChoiceBtn;
 
     @FXML
-    private ChoiceBox<String> searchTypeChoiceBtn;
-
-    @FXML
-    private ChoiceBox<String> searchValueChoiceBtn;
-
-    @FXML
     private Button assignBtn;
 
     @FXML
@@ -55,9 +46,6 @@ public class Controller implements Initializable {
 
     @FXML
     private Button cancelBtn;
-
-    @FXML
-    private Button searchBtn;
 
     @FXML
     private TableView<AssignmentBUS.AssignmentTableView> assignmentTableView;
@@ -83,13 +71,11 @@ public class Controller implements Initializable {
     public void setDefault(){
         courseTypeChoiceBtn.setItems(types);
         courseTypeChoiceBtn.getSelectionModel().selectFirst();
-        searchTypeChoiceBtn.setItems(searchTypes);
-        searchTypeChoiceBtn.getSelectionModel().selectFirst();
         chooseTypeOfCourse();
-        chooseTypeOfSearch();
+
         teacherChoiceBtn.setItems(assignmentBUS.getTeacherAssignmentListToGUI());
         teacherChoiceBtn.getSelectionModel().select(0);
-        showAssignmentList(assignmentBUS.getAssignmentTableViewList());
+        showAssignmentList();
     }
 
     public void chooseTypeOfCourse(){
@@ -109,13 +95,6 @@ public class Controller implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 chooseTypeOfCourse();
-            }
-        });
-
-        searchTypeChoiceBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                chooseTypeOfSearch();
             }
         });
 
@@ -176,41 +155,10 @@ public class Controller implements Initializable {
                     errorAlert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
             }
         });
-
-        searchBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                int searchValue = getSelectedSearchValue();
-                if(searchValue > 0){
-                    if(searchTypeChoiceBtn.getSelectionModel().getSelectedItem().equals("Khoá học")){
-                        showAssignmentList(assignmentBUS.getSearchResultByCourse(getSelectedSearchValue()));
-                    }
-                    else{
-                        showAssignmentList(assignmentBUS.getSearchResultByTeacher(getSelectedSearchValue()));
-                    }
-                }
-            }
-        });
     }
 
-    public int getSelectedSearchValue(){
-        if(searchValueChoiceBtn.getSelectionModel().getSelectedItem() == null)
-            return -1;
-        return Integer.parseInt(searchValueChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
-    }
-
-    public void chooseTypeOfSearch(){
-        if(searchTypeChoiceBtn.getSelectionModel().getSelectedItem().equals("Khoá học")){
-            searchValueChoiceBtn.setItems(assignmentBUS.getAllCourseListToGUI());
-            searchValueChoiceBtn.getSelectionModel().select(0);
-        }
-        else{
-            searchValueChoiceBtn.setItems(assignmentBUS.getAllTeacherListToGUI());
-            searchValueChoiceBtn.getSelectionModel().select(0);
-        }
-    }
-
-    public void showAssignmentList(ObservableList<AssignmentBUS.AssignmentTableView> assignmentTableViewList){
+    public void showAssignmentList(){
+        ObservableList<AssignmentBUS.AssignmentTableView> assignmentTableViewList = assignmentBUS.getAssignmentTableViewList();
         courseIdTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentBUS.AssignmentTableView, Integer>("CourseId"));
         teacherIdTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentBUS.AssignmentTableView, Integer>("PersonId"));
         courseNameTableColumn.setCellValueFactory(new PropertyValueFactory<AssignmentBUS.AssignmentTableView, String>("CourseName"));
@@ -218,13 +166,13 @@ public class Controller implements Initializable {
         assignmentTableView.setItems(assignmentTableViewList);
     }
 
-    public int getSelectedCourseId(){
+    private int getSelectedCourseId(){
         if(courseChoiceBtn.getSelectionModel().getSelectedItem() == null)
             return -1;
         return Integer.parseInt(courseChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
     }
 
-    public int getSelectedTeacherId(){
+    private int getSelectedTeacherId(){
         if(teacherChoiceBtn.getSelectionModel().getSelectedItem() == null)
             return -1;
         return Integer.parseInt(teacherChoiceBtn.getSelectionModel().getSelectedItem().split("_")[0]);
