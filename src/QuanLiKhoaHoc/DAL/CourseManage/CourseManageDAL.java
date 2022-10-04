@@ -342,4 +342,74 @@ public class CourseManageDAL {
     }
 
 
+
+
+
+
+    public ObservableList<OnsiteCourse> getOnsiteCourseListbyId(int id){
+        ObservableList<OnsiteCourse> onsiteCourseList = FXCollections.observableArrayList();
+        ObservableList<Course> courseList = getCourseList();
+        for (Course course : courseList) {
+            String query = "Select * from OnsiteCourse where CourseId ="+ id;
+            try {
+                ResultSet resultSet = connect.excuteQuery(query);
+                if (resultSet != null) {
+                    while (resultSet.next()) {
+                        OnsiteCourse onsiteCourse = new OnsiteCourse(
+                                course.getCourseId(),
+                                course.getCourseName(),
+                                course.getCourseDescription(),
+                                course.getDateCreate(),
+                                course.getDateStart(),
+                                course.getDateEnd(),
+                                course.getCourseImage(),
+                                resultSet.getInt(1),
+                                resultSet.getInt(3),
+                                resultSet.getTime(4),
+                                resultSet.getTime(5),
+                                resultSet.getDate(6).toLocalDate(),
+                                resultSet.getInt(7)
+                        );
+                        onsiteCourseList.add(onsiteCourse);
+                    }
+                }
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
+        }
+        return onsiteCourseList;
+    }
+
+
+
+    public ObservableList<OnlineCourse> getOnlineCourseListbyId(int id){
+        ObservableList<OnlineCourse> onlineCourseList = FXCollections.observableArrayList();
+        ObservableList<Course> courseList = getCourseList();
+        for (Course course : courseList) {
+            String query = "Select * from OnlineCourse where CourseId ="+ id;
+            try {
+                ResultSet resultSet = connect.excuteQuery(query);
+                if (resultSet != null) {
+                    while (resultSet.next()) {
+                        OnlineCourse onlineCourse = new OnlineCourse(
+                                course.getCourseId(),
+                                course.getCourseName(),
+                                course.getCourseDescription(),
+                                course.getDateCreate(),
+                                course.getDateStart(),
+                                course.getDateEnd(),
+                                course.getCourseImage(),
+                                resultSet.getInt(1),
+                                resultSet.getString(3)
+                        );
+                        onlineCourseList.add(onlineCourse);
+                    }
+                }
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
+        }
+        return onlineCourseList;
+    }
+
 }

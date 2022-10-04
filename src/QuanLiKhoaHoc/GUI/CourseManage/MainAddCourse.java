@@ -17,7 +17,7 @@ public class MainAddCourse extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         setRoot("AddCourseGUI");
-//        setStylesheets("");
+        setStylesheets("../Main/main");
         scene.setFill(Color.TRANSPARENT);
         stage.setScene(scene);
         stage.setTitle("Thêm khóa học");

@@ -87,6 +87,21 @@ public class Controller implements Initializable {
     private TableColumn<CourseManageBUS.OnsiteTableView, Integer> lessonQuantityOnsiteTableColumn;
     @FXML
     private TableColumn<CourseManageBUS.OnsiteTableView, Date> dayOccurOnsiteTableColumn;
+
+
+
+
+
+    ///////////////////////////////////////////////
+    @FXML
+    private ChoiceBox<String> searchChoiceBoxbtn;
+
+    @FXML
+    private Button searchbtn;
+    private final ObservableList<String> searchTypes = FXCollections.observableArrayList(
+            new String("Khoá học")
+    );
+
     private final ObservableList<String> typeCourse = FXCollections.observableArrayList(
             new String("Online"),
             new String("Onsite")
@@ -100,23 +115,47 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Handle();
-        showOnlineCourseList();
-        showOnsiteCourseList();
+        showOnlineCourseList(courseManageBUS.getOnlineTableView());
+        showOnsiteCourseList(courseManageBUS.getOnsiteTableView());
 
         courseType.setItems(typeCourse);
         courseType.getSelectionModel().selectFirst();
+
+        searchChoiceBoxbtn.setItems(searchTypes);
+        searchChoiceBoxbtn.getSelectionModel().selectFirst();
         chooseTypeOfCourse();
+        chooseTypeOfSearch();
 
     }
 
     private void chooseTypeOfCourse() {
         if (courseType.getSelectionModel().getSelectedItem().equals("Onsite")) {
             splitPane.setDividerPositions(0);
+//            courseType.setItems(courseManageBUS.getOnsiteList());
+//            courseType.getSelectionModel().select(0);
         } else {
             splitPane.setDividerPositions(1);
+//            courseType.setItems(courseManageBUS.getOnlineList());
+//            courseType.getSelectionModel().select(0);
         }
+
     }
 
+    public void chooseTypeOfSearch(){
+        if(courseType.getSelectionModel().getSelectedItem().equals("Onsite")){
+            searchChoiceBoxbtn.setItems(courseManageBUS.getOnsiteList());
+            searchChoiceBoxbtn.getSelectionModel().select(0);
+        }
+        else {
+            searchChoiceBoxbtn.setItems(courseManageBUS.getOnlineList());
+            searchChoiceBoxbtn.getSelectionModel().select(0);
+        }
+    }
+    public int getSelectedSearchValue(){
+        if(searchChoiceBoxbtn.getSelectionModel().getSelectedItem() == null)
+            return -1;
+        return Integer.parseInt(searchChoiceBoxbtn.getSelectionModel().getSelectedItem().split("_")[0]);
+    }
 
     private void alert(String title, String Message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -149,6 +188,11 @@ public class Controller implements Initializable {
 
     }
 
+    public int getSelectedCourseId(){
+        if(searchChoiceBoxbtn.getSelectionModel().getSelectedItem() == null)
+            return -1;
+        return Integer.parseInt(searchChoiceBoxbtn.getSelectionModel().getSelectedItem().split("_")[0]);
+    }
 //       public int editOnlineId = selectRowOnline().getCourseIdOnlineTableColumn();
 //       public String editOnlineName= selectRowOnline().getCourseNameOnlineTableColumn();
 //      public  String editOnlineDescription= selectRowOnline().getCourseDescriptionOnlineTableColumn();
@@ -156,19 +200,23 @@ public class Controller implements Initializable {
 //       public LocalDate editOnlineEnd = selectRowOnline().getDateEndOnlineTableView();
 //       public String editOnlineUrl = selectRowOnline().getCourseUrlOnlineTableColumn();
 
-
+//    public void chooseOfCourse(){
+//        if(courseType.getSelectionModel().getSelectedItem().equals("Onsite")){
+//            searchChoiceBoxbtn.setItems(courseManageBUS.getAllOnsiteCourseList());
+//            searchChoiceBoxbtn.getSelectionModel().select(0);
+//        }
+//        else{
+//            searchChoiceBoxbtn.setItems(resultBUS.getOnlineList());
+//            searchChoiceBoxbtn.getSelectionModel().select(0);
+//        }
+//
+//    }
     public void Handle() {
         btnRefresh.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                showOnsiteCourseList();
-                showOnlineCourseList();
-            }
-        });
-        courseType.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                chooseTypeOfCourse();
+                showOnsiteCourseList(courseManageBUS.getOnsiteTableView());
+                showOnlineCourseList(courseManageBUS.getOnlineTableView());
             }
         });
         btnDelete.setOnAction(new EventHandler<ActionEvent>() {
@@ -192,7 +240,7 @@ public class Controller implements Initializable {
                             if (course != null) {
                                 alert("Thông báo", "Xóa thành công");
                                 System.out.println(course);
-                                showOnlineCourseList();
+                                showOnlineCourseList(courseManageBUS.getOnlineTableView());
                             } else {
                                 alert("Thông báo", "Thất bại");
                             }
@@ -219,7 +267,7 @@ public class Controller implements Initializable {
                             if (course != null) {
                                 alert("Thông báo", "Xóa thành công");
                                 System.out.println("Xoa Thanh cong");
-                                showOnsiteCourseList();
+                                showOnsiteCourseList(courseManageBUS.getOnsiteTableView());
                             } else {
                                 alert("Thông báo", "Thất bại");
                             }
@@ -307,11 +355,37 @@ public class Controller implements Initializable {
 
             }
         });
+        courseType.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                chooseTypeOfCourse();
+                chooseTypeOfSearch();
+            }
+        });
+
+        searchbtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println(searchChoiceBoxbtn.getSelectionModel().getSelectedItem());
+                if (courseType.getSelectionModel().getSelectedItem().equals("Onsite")){
+                    showOnsiteCourseList(courseManageBUS.getOnsiteTableViewbyId(getSelectedCourseId()));
+                }
+                else {
+                    showOnlineCourseList(courseManageBUS.getOnlineTableViewbyId(getSelectedCourseId()));
+                }
+            }
+        });
+//        searchChoiceBoxbtn.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                chooseTypeOfSearch();
+//            }
+//        });
     }
 
     //Do du lieu ra bang Onsite
-    public void showOnsiteCourseList() {
-        ObservableList<CourseManageBUS.OnsiteTableView> onsiteTableViews = courseManageBUS.getOnsiteTableView();
+    public void showOnsiteCourseList(ObservableList<CourseManageBUS.OnsiteTableView> onsiteTableViews) {
+//        ObservableList<CourseManageBUS.OnsiteTableView> onsiteTableViews = courseManageBUS.getOnsiteTableView();
         courseIdOnsiteTableColumn.setCellValueFactory(new PropertyValueFactory<CourseManageBUS.OnsiteTableView, Integer>("courseIdOnsiteTableColumn"));
         courseNameOnsiteTableColumn.setCellValueFactory(new PropertyValueFactory<CourseManageBUS.OnsiteTableView, String>("courseNameOnsiteTableColumn"));
         courseDescriptionOnsiteTableColumn.setCellValueFactory(new PropertyValueFactory<CourseManageBUS.OnsiteTableView, String>("courseDescriptionOnsiteTableColumn"));
@@ -325,8 +399,8 @@ public class Controller implements Initializable {
     }
 
     //Do du lieu ra bang Onsite
-    public void showOnlineCourseList() {
-        ObservableList<CourseManageBUS.OnlineTableView> onlineTableViews = courseManageBUS.getOnlineTableView();
+    public void showOnlineCourseList(ObservableList<CourseManageBUS.OnlineTableView> onlineTableViews) {
+//        onlineTableViews= courseManageBUS.getOnlineTableView();
         courseIdOnlineTableColumn.setCellValueFactory(new PropertyValueFactory<CourseManageBUS.OnlineTableView, Integer>("courseIdOnlineTableColumn"));
         courseNameOnlineTableColumn.setCellValueFactory(new PropertyValueFactory<CourseManageBUS.OnlineTableView, String>("courseNameOnlineTableColumn"));
         courseDescriptionOnlineTableColumn.setCellValueFactory(new PropertyValueFactory<CourseManageBUS.OnlineTableView, String>("courseDescriptionOnlineTableColumn"));
