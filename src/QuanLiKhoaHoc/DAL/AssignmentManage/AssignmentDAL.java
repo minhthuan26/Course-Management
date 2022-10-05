@@ -28,7 +28,7 @@ public class AssignmentDAL {
                             resultSet.getString(3),
                             resultSet.getString(4),
                             resultSet.getString(5),
-                            resultSet.getDate(6).toLocalDate(),
+                            resultSet.getDate(6),
                             resultSet.getString(7)
                     );
                     allTeacherList.add(teacher);
@@ -57,7 +57,7 @@ public class AssignmentDAL {
                             resultSet.getString(3),
                             resultSet.getString(4),
                             resultSet.getString(5),
-                            resultSet.getDate(6).toLocalDate(),
+                            resultSet.getDate(6),
                             resultSet.getString(7)
                     );
                     teacherAssignmentList.add(teacher);

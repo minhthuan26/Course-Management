@@ -51,10 +51,7 @@ public class Controller implements Initializable {
     private Button btnSearch;
     @FXML
     private TextField txtSearch;
-    public static Person selectedRow = null;
-    @FXML
-    private Button btnEdit;
-
+    private static Person selectedRow = null;
 
     public ObservableList<Person> getStudentList() {
         studentList = FXCollections.observableArrayList();
@@ -118,7 +115,7 @@ public class Controller implements Initializable {
                     CourseRegister personExist = studentBUS.getPersonFromCourseRegisterByID(selectedRow.getPersonId());
                     if(personExist==null){
                         Person person = new Person(selectedRow.getPersonId(), selectedRow.getFirstName(), selectedRow.getLastName(),
-                                selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth().toLocalDate(), selectedRow.getPersonImage());
+                                selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth(), selectedRow.getPersonImage());
                         studentBUS.deletePersonRole(selectedRow.getPersonId());
                         studentBUS.deletePerson(person);
                         System.out.println("Xóa thành công");
@@ -128,29 +125,6 @@ public class Controller implements Initializable {
                     }
                 } else {
                     Alert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
-                }
-            }
-        });
-        btnEdit.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                selectedRow = selectRow();
-                if(selectedRow == null){
-                    Alert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện sửa");
-                }
-                else{
-                    Stage newstage = new Stage();
-                    EditStudentMain screen = new EditStudentMain();
-                    // ngăn tương tác với dashboard
-                    Stage oldStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    newstage.initModality(Modality.WINDOW_MODAL);
-                    newstage.initOwner(oldStage);
-                    // chạy newStage
-                    try {
-                        screen.start(newstage);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         });

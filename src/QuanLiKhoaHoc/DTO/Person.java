@@ -1,21 +1,20 @@
 package QuanLiKhoaHoc.DTO;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 public class Person {
     int PersonId;
     String FirstName, LastName, Email, PhoneNumber, PersonImage;
     Date DateOfBirth;
 
-    public Person(int personId, String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, String personImage) {
+    public Person(int personId, String firstName, String lastName, String email, String phoneNumber, Date dateOfBirth, String personImage) {
         PersonId = personId;
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         PhoneNumber = phoneNumber;
         PersonImage = personImage;
-        DateOfBirth = Date.valueOf(dateOfBirth);
+        DateOfBirth = dateOfBirth;
     }
 
     public int getPersonId() {

@@ -24,7 +24,7 @@ public class TeacherManageDAL {
                 while(resultSet.next()){
                     Person teacher = new Person(resultSet.getInt(1),resultSet.getString(2),
                             resultSet.getString(3),resultSet.getString(4),
-                            resultSet.getString(5),resultSet.getDate(6).toLocalDate(),
+                            resultSet.getString(5),resultSet.getDate(6),
                             resultSet.getString(7));
                     teacherList.add(teacher);
                 }
@@ -47,7 +47,6 @@ public class TeacherManageDAL {
                             resultSet.getString(3),
                             resultSet.getString(4),
                             resultSet.getString(5),
-                            resultSet.getDate(6).toLocalDate(),
                             resultSet.getDate(6),
                             resultSet.getString(7));
                     teacherSearch.add(teacher);
@@ -72,7 +71,7 @@ public class TeacherManageDAL {
                             rs.getString(3),
                             rs.getString(4),
                             rs.getString(5),
-                            rs.getDate(6).toLocalDate(),
+                            rs.getDate(6),
                             rs.getString(7)
                     );
                 }

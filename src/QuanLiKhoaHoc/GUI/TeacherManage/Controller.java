@@ -87,7 +87,7 @@ public class Controller implements Initializable {
                         Alert("Lỗi","Giáo viên đang được phân công");
                     }else {
                         Person person = new Person(selectedRow.getPersonId(), selectedRow.getFirstName(), selectedRow.getLastName(),
-                                selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth().toLocalDate(), selectedRow.getPersonImage());
+                                selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth(), selectedRow.getPersonImage());
                         teacherBus.deletePersonRole(selectedRow.getPersonId());
                         teacherBus.deletePerson(person);
                         System.out.println("Xóa thành công");
