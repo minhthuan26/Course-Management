@@ -15,7 +15,7 @@ public class Person {
         Email = email;
         PhoneNumber = phoneNumber;
         PersonImage = personImage;
-        DateOfBirth = dateOfBirth;
+        DateOfBirth = Date.valueOf(dateOfBirth);
     }
 
     public int getPersonId() {
