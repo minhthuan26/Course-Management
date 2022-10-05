@@ -1,4 +1,4 @@
-package QuanLiKhoaHoc.GUI.Main;
+package QuanLiKhoaHoc.GUI.StudentManage;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +11,7 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.util.Objects;
 
-public class MainStartApp extends Application {
-
+public class EditStudentMain extends Application {
     public static Scene scene;
 
     public static void main(String[] args) {
@@ -21,22 +20,24 @@ public class MainStartApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        setRoot("main");
-        setStylesheets("main");
+        setRoot("editStudent");
+        setStylesheets("../Main/main");
         scene.setFill(Color.TRANSPARENT);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quản lí khoá học");
         primaryStage.initStyle(StageStyle.TRANSPARENT);
+
+//        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 
     public static void setRoot(String name) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(MainStartApp.class.getResource(name + ".fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(EditStudentMain.class.getResource(name + ".fxml")));
         scene = new Scene(root);
     }
 
     public static void setStylesheets(String name) throws IOException {
-        scene.getStylesheets().add(Objects.requireNonNull(MainStartApp.class.getResource(name + ".css")).toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(EditStudentMain.class.getResource(name + ".css")).toExternalForm());
     }
 
     public static void Test(String string){

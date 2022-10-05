@@ -87,7 +87,7 @@ public class Controller implements Initializable {
                         Alert("Lỗi","Giáo viên đang được phân công");
                     }else {
                         Person person = new Person(selectedRow.getPersonId(), selectedRow.getFirstName(), selectedRow.getLastName(),
-                                selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth(), selectedRow.getPersonImage());
+                                selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth().toLocalDate(), selectedRow.getPersonImage());
                         teacherBus.deletePersonRole(selectedRow.getPersonId());
                         teacherBus.deletePerson(person);
                         System.out.println("Xóa thành công");
@@ -184,7 +184,6 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        getTeacherList();
         showTeacherList();
         handle();
     }
