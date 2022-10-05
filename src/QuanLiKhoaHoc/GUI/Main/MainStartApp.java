@@ -27,8 +27,6 @@ public class MainStartApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quản lí khoá học");
         primaryStage.initStyle(StageStyle.TRANSPARENT);
-
-//        primaryStage.setMaximized(true);
         primaryStage.show();
     }
 
