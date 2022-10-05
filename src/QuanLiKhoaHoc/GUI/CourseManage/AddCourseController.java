@@ -91,10 +91,8 @@ public class AddCourseController implements Initializable {
 
                 String courseName = courseNameTextField.getText();
                 String courseDesc = descriptionTextField.getText();
-                LocalDate dateEnd = LocalDate.parse(dateEndtPicker.getEditor().getText(),
-                        DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                LocalDate dateStart = LocalDate.parse(dateStartPicker.getEditor().getText(),
-                        DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                LocalDate dateEnd = dateEndtPicker.getValue();
+                LocalDate dateStart = dateStartPicker.getValue();
                 LocalDate dateCreate = LocalDate.now();
                 Course course = courseManageBUS.addCourse(courseName, courseDesc, dateCreate,dateStart,dateEnd);
                 if (course!=null){
