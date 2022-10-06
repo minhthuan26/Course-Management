@@ -6,8 +6,6 @@ import QuanLiKhoaHoc.DTO.Person;
 import QuanLiKhoaHoc.DTO.PersonRole;
 import javafx.collections.ObservableList;
 
-import java.sql.Date;
-
 public class StudentBUS {
 
     public StudentManageDAL studentManageDAL = new StudentManageDAL();
@@ -34,4 +32,5 @@ public class StudentBUS {
     public Person updateStudent(Person student){
         return studentManageDAL.updateStudent(student);
     }
+    public ObservableList<Person> getStudentSearch(int id){return studentManageDAL.getStudentSearch(id);}
 }

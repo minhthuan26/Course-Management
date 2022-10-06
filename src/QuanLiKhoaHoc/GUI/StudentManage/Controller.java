@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     public StudentBUS studentBUS = new StudentBUS();
-    ObservableList<Person> studentList;
+    ObservableList<Person> studentList,studentSearch;
     @FXML
     private TableView<Person> studentTableView;
     @FXML
@@ -45,7 +45,10 @@ public class Controller implements Initializable {
     private Button btnAddStudent;
     @FXML
     private Button btnDeleteStudent;
-
+    @FXML
+    private Button btnSearch;
+    @FXML
+    private TextField txtSearch;
     @FXML
     private Button btnRefresh;
 
@@ -68,6 +71,22 @@ public class Controller implements Initializable {
         studentDate.setCellValueFactory(new PropertyValueFactory<Person, Date>("DateOfBirth"));
         studentTableView.setItems(studentList);
     }
+
+    public ObservableList<Person> getStudentSearch() {
+        studentSearch = FXCollections.observableArrayList();
+        return studentSearch = (ObservableList<Person>) studentBUS.getStudentSearch(Integer.parseInt(txtSearch.getText()));
+    }
+
+    public void showStudentSearch(int id) {
+        studentSearch = getStudentSearch();
+        studentID.setCellValueFactory(new PropertyValueFactory<Person, Integer>("PersonId"));
+        studentHo.setCellValueFactory(new PropertyValueFactory<Person, String>("FirstName"));
+        studentTen.setCellValueFactory(new PropertyValueFactory<Person, String>("LastName"));
+        studentSDT.setCellValueFactory(new PropertyValueFactory<Person, Integer>("PhoneNumber"));
+        studentDate.setCellValueFactory(new PropertyValueFactory<Person, Date>("DateOfBirth"));
+        studentTableView.setItems(studentSearch);
+    }
+
 
     public void handle() {
         btnAddStudent.setOnAction(new EventHandler<ActionEvent>() {
@@ -108,11 +127,17 @@ public class Controller implements Initializable {
                         System.out.println("Xóa thành công");
                         Alert("Thành công", "Xóa sinh viên thành công");
                     }else {
-                        Alert("Loi","Thang nay da dc cham diem trong 1 lop loz nao do");
+                        Alert("Lỗi","Sinh viên đang được chấm điểm trong 1 lớp nào đó");
                     }
                 } else {
                     Alert("Lỗi", "Vui lòng chọn 1 dòng trong bảng trước khi thực hiện huỷ");
                 }
+            }
+        });
+        btnSearch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showStudentSearch(Integer.parseInt(txtSearch.getText()));
             }
         });
 
