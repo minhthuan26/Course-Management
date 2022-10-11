@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
     public TeacherBus teacherBus = new TeacherBus();
-    ObservableList<Person> teacherList;
+    ObservableList<Person> teacherList,teacherSearch;
     @FXML
     private TableView<Person> teacherTableView;
     @FXML
@@ -43,7 +43,10 @@ public class Controller implements Initializable {
     private Button btnDeleteTeacher;
     @FXML
     private Button btnRefresh;
-
+    @FXML
+    private Button btnSearch;
+    @FXML
+    private TextField txtSearch;
     @FXML
     private Button btnEdit;
     public static Person selectedRow = null;
@@ -80,7 +83,7 @@ public class Controller implements Initializable {
                 if (selectedRow != null) {
                     Assignment idOfAssignment= teacherBus.getAssignmenByID(selectedRow.getPersonId());
                     if (idOfAssignment!=null){
-                        Alert("Looix","Th nay dang duoc phan cong, deo dc xoa");
+                        Alert("Lỗi","giáo viên đang được phân công, vui lòng hủy phân công trước khi xóa");
                     }else {
                         Person person = new Person(selectedRow.getPersonId(), selectedRow.getFirstName(), selectedRow.getLastName(),
                                 selectedRow.getEmail(), selectedRow.getPhoneNumber(), selectedRow.getDateOfBirth(), selectedRow.getPersonImage());
@@ -118,6 +121,12 @@ public class Controller implements Initializable {
                 }
             }
         });
+        btnSearch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showTeacherSearch(Integer.parseInt(txtSearch.getText()));
+            }
+        });
     }
 
     private void Alert(String title, String Message) {
@@ -140,6 +149,20 @@ public class Controller implements Initializable {
             return null;
         selectedRow = teacherTableView.getSelectionModel().getSelectedItem();
         return selectedRow;
+    }
+    public ObservableList<Person> getTeacherSearch() {
+        teacherSearch = FXCollections.observableArrayList();
+        return teacherSearch = (ObservableList<Person>) teacherBus.getTeacherSearch(Integer.parseInt(txtSearch.getText()));
+    }
+
+    public void showTeacherSearch(int id) {
+        teacherSearch = getTeacherSearch();
+        teacherID.setCellValueFactory(new PropertyValueFactory<Person, Integer>("PersonId"));
+        teacherHo.setCellValueFactory(new PropertyValueFactory<Person, String>("FirstName"));
+        teacherTen.setCellValueFactory(new PropertyValueFactory<Person, String>("LastName"));
+        teacherSDT.setCellValueFactory(new PropertyValueFactory<Person, Integer>("PhoneNumber"));
+        teacherDate.setCellValueFactory(new PropertyValueFactory<Person, Date>("DateOfBirth"));
+        teacherTableView.setItems(teacherSearch);
     }
 
     public ObservableList<Person> getTeacherList() {

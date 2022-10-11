@@ -34,6 +34,30 @@ public class StudentManageDAL {
         }
         return studentList;
     }
+    // lay student dua tren ID
+    public ObservableList<Person> getStudentSearch(int id){
+        ObservableList<Person> studentSearch = FXCollections.observableArrayList();
+        String query = "Select * from Person, PersonRole where PersonRole.PersonId="+id +"and PersonRole.RoleId=2 and Person.PersonId=PersonRole.PersonId";
+        try {
+            ResultSet resultSet =connect.excuteQuery(query);
+            if (resultSet!=null){
+                while(resultSet.next()){
+                    Person teacher = new Person(resultSet.getInt(1),
+                            resultSet.getString(2),
+                            resultSet.getString(3),
+                            resultSet.getString(4),
+                            resultSet.getString(5),
+                            resultSet.getDate(6).toLocalDate(),
+                            resultSet.getString(7));
+                    studentSearch.add(teacher);
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return studentSearch;
+    }
+
 
     // xu ly neu user trung email se khong tao user moi
     public Person getStudentByEmail(String email) {
