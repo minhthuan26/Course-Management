@@ -91,20 +91,27 @@ public class AddCourseController implements Initializable {
 
                 String courseName = courseNameTextField.getText();
                 String courseDesc = descriptionTextField.getText();
-                LocalDate dateEnd = LocalDate.parse(dateEndtPicker.getEditor().getText(),
-                        DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                LocalDate dateStart = LocalDate.parse(dateStartPicker.getEditor().getText(),
-                        DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                String endDay = dateEndtPicker.getEditor().getText();
+                String startDay = dateStartPicker.getEditor().getText();
+                if (endDay.indexOf("/")<2)
+                    endDay = "0" + endDay;
+                if (startDay.indexOf("/")<2)
+                    startDay = "0" + startDay;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                LocalDate dateEnd = LocalDate.parse(endDay, formatter);
+                LocalDate dateStart = LocalDate.parse(startDay, formatter);
                 LocalDate dateCreate = LocalDate.now();
                 Course course = courseManageBUS.addCourse(courseName, courseDesc, dateCreate,dateStart,dateEnd);
                 if (course!=null){
                     System.out.println("Done");
                     if (checkOnsite){
                         int lesson = Integer.parseInt( lessonQuantityTextField.getText());
-                        LocalDate dateOccur = LocalDate.parse(dateOccurPicker.getEditor().getText(),
-                                DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                        String occurDay = dateOccurPicker.getEditor().getText();
+                        if (occurDay.indexOf("/")<2)
+                            occurDay = "0" + occurDay;
+                        LocalDate dateOccur = LocalDate.parse(occurDay, formatter);
 
-                        Course onsiteCourse = courseManageBUS.addOnsiteCourse(course.getCourseId(),lesson,   dateOccur  );
+                        Course onsiteCourse = courseManageBUS.addOnsiteCourse(course.getCourseId(),lesson, dateOccur);
                         if (onsiteCourse!=null){
                             System.out.println("Done onsite");
                             primaryStage = (Stage) btnSave.getScene().getWindow();
@@ -112,8 +119,7 @@ public class AddCourseController implements Initializable {
                         }
                         else {
                             System.out.println("fail");
-                            course = courseManageBUS.deleteCourseOnsite(course);
-
+                            courseManageBUS.deleteCourseOnsite(course);
                         }
                     }
                     else {
@@ -126,8 +132,7 @@ public class AddCourseController implements Initializable {
 
                         }else {
                             System.out.println("Fail");
-                            course = courseManageBUS.deleteCourseOnline(course);
-
+                            courseManageBUS.deleteCourseOnline(course);
                         }
                     }
 

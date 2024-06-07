@@ -38,8 +38,4 @@ public class MainStartApp extends Application {
     public static void setStylesheets(String name) throws IOException {
         scene.getStylesheets().add(Objects.requireNonNull(MainStartApp.class.getResource(name + ".css")).toExternalForm());
     }
-
-    public static void Test(String string){
-        System.out.println(string);
-    }
 }

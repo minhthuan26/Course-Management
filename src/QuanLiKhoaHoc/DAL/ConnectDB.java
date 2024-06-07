@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class ConnectDB {
     private final String hostName = "localhost";
-    private final String dbName = "QuanLiKhoaHoc";
+    private final String dbName = "CourseManagement";
     private final String userName = "sa";
     private final String password = "26042001";
     private Connection connect;

@@ -110,8 +110,8 @@ public class CourseManageDAL {
     public  Course addCourse(String name, String desc, LocalDate datecre, LocalDate start, LocalDate end) {
         Course course = getCourseByName(name);
         if (course==null) {
-            String query = "Insert into Course values('" +
-                    name + "', '" +
+            String query = "Insert into Course values(N'" +
+                    name + "', N'" +
                     desc + "', '" +
                     datecre + "', '" +
                     start + "', '" +
@@ -164,7 +164,7 @@ public class CourseManageDAL {
 
 
     public Course getCourseByName(String name){
-        String query = "select * from Course where CourseName='" + name+"'";
+        String query = "select * from Course where CourseName=N'" + name+"'";
         try{
             ResultSet resultSet = connect.excuteQuery(query);
             while(resultSet.next()){
@@ -276,8 +276,8 @@ public class CourseManageDAL {
         Course course = getCourseById(id);
         if (course!=null) {
             String query = "Update Course Set ";
-            query = query + "CourseName=" + "'" + name + "'";
-            query = query + ",CourseDescription=" + "'" + desc + "'";
+            query = query + "CourseName=" + "N'" + name + "'";
+            query = query + ",CourseDescription=" + "N'" + desc + "'";
             query = query + ",DateCreate=" + "'" + datecre + "'";
             query = query + ",DateStart=" + "'" + start + "'";
             query = query + ",DateEnd=" + "'" + end + "'";

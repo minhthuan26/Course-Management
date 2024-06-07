@@ -1,7 +1,7 @@
-create database QuanLiKhoaHoc
+create database CourseManagement
 go
 
-use QuanLiKhoaHoc
+use CourseManagement
 go
 
 create table Person(
@@ -178,3 +178,11 @@ alter table Account
 add constraint FK_Account_Person_PersonId 
 foreign key (PersonId) 
 references Person(PersonId)
+
+insert into Roles values 
+(N'Giáo Viên'),
+(N'Học viên')
+
+insert into Room values 
+(N'P.01'),
+(N'P.02')
