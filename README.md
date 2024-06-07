@@ -8,6 +8,10 @@
 ### Technology
   - Language: Java, JavaFx
   - Database: MSSQL Server
+  - ### Members
+  - [Le Minh Thuan](https://github.com/minhthuan26)
+  - [Trinh Nam Sieu Sao](https://github.com/Sieusao5010)
+  - [Quach Hung Tai](https://github.com/tai032001)
 ### UI
   - Teacher Management
   ![](./assets/z5516079619261_3b06496c90ac0a71027a7d540b3de5ba.jpg)
